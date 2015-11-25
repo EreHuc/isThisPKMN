@@ -1,7 +1,7 @@
-creeMap();
+creeMap(map1);
 
 var red = new Image();
-red.src = "character.png";
+red.src = "Ressource/character.png";
 
 
 
