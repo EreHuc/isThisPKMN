@@ -1,5 +1,5 @@
 var key, wall;
-
+window.onload = function () {
 creeMap(map1);
 dessinerPerso(5, ctx2, x, y);
 window.onkeydown = function(e) {
@@ -47,8 +47,9 @@ window.onkeydown = function(e) {
         break;
     default:
         break;
+      }
     }
-  }
+  };
 };
 
 

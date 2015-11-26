@@ -1,10 +1,7 @@
 var myCanvas2 = document.getElementById('myCanvas2');
 var ctx2 = myCanvas2.getContext('2d');
-
 var x = 0;
 var y = 26;
-
-
 var character = "sacha";
 var Perso = new Image();
 Perso.src = "Ressource/sacha.png";
