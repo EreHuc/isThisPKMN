@@ -17,21 +17,21 @@ dessinerTile = function(numero, context, xDestination, yDestination) {
       ySource = 32;
     }
   }
-    ctx.drawImage(tuile, xSource, ySource, 16, 16, xDestination, yDestination, 16, 16);
+    context.drawImage(tuile, xSource, ySource, 16, 16, xDestination, yDestination, 16, 16);
 };
 
 var map1 =
 [
   [07  ,07  ,07  ,07  ,07  ,07  ,16  ,07  ,07  ,07  ,07  ,07  ,07  ,07  ,07  ,07  ],
   [17  ,18  ,18  ,18  ,18  ,18  ,16  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,19  ],
-  [10  ,04  ,01  ,01  ,01  ,01  ,04  ,02  ,01  ,01  ,03  ,01  ,01  ,01  ,01  ,12  ],
+  [16  ,04  ,01  ,01  ,01  ,01  ,04  ,02  ,01  ,01  ,03  ,01  ,01  ,01  ,01  ,12  ],
   [10  ,04  ,01  ,01  ,01  ,01  ,04  ,01  ,01  ,01  ,01  ,01  ,05  ,05  ,01  ,12  ],
   [10  ,04  ,01  ,01  ,01  ,01  ,04  ,01  ,01  ,01  ,01  ,01  ,05  ,06  ,01  ,12  ],
   [10  ,04  ,01  ,01  ,01  ,01  ,04  ,01  ,01  ,01  ,02  ,01  ,02  ,01  ,01  ,12  ],
   [10  ,04  ,01  ,02  ,01  ,01  ,04  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,12  ],
-  [10  ,01  ,04  ,01  ,01  ,01  ,04  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,12  ],
+  [10  ,04  ,04  ,04  ,01  ,01  ,04  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,12  ],
   [10  ,01  ,01  ,04  ,01  ,02  ,04  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,12  ],
-  [10  ,01  ,01  ,01  ,04  ,04  ,04  ,04  ,04  ,04  ,04  ,04  ,01  ,01  ,01  ,12  ],
+  [10  ,01  ,01  ,04  ,04  ,04  ,04  ,04  ,04  ,04  ,04  ,04  ,01  ,01  ,01  ,12  ],
   [10  ,03  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,02  ,04  ,01  ,01  ,01  ,12  ],
   [10  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,01  ,04  ,01  ,01  ,01  ,12  ],
   [10  ,01  ,01  ,01  ,01  ,01  ,01  ,03  ,01  ,01  ,01  ,04  ,01  ,01  ,01  ,12  ],
@@ -41,11 +41,13 @@ var map1 =
 ];
 
 var creeMap = function (map) {
-  for (var i = 0; map[i]; i++) {
-    for (var j = 0; map[i][j]; j++) {
-      dessinerTile(map[i][j], ctx, j*16, i*16);
-      console.log('passage dans la boucle j, valeur de j : ' + j + ' valeur de map[i][j] : ' + map[i][j]);
+  // window.onload = function () {
+    for (var i = 0; map[i]; i++) {
+      for (var j = 0; map[i][j]; j++) {
+        dessinerTile(map[i][j], ctx, j*16, i*16);
+        // console.log('passage dans la boucle j, valeur de j : ' + j + ' valeur de map[i][j] : ' + map[i][j]);
+      }
+      // console.log('passage dans la boucle i, valeur de i : ' + i);
     }
-    console.log('passage dans la boucle i, valeur de i : ' + i);
-  }
+  // };
 };
