@@ -6,12 +6,18 @@
     <title>Jeu</title>
   </head>
   <body>
-    <img src="Ressource/character.png" alt="Sprite du personnage" />
+    <img src="Ressource/sacha.png" alt="Sprite de sacha" />
+    <img src="Ressource/pikachu.png" alt="Sprite de pikachu" />
     <img src="Ressource/tile.png" alt="Sprite des éléments de la carte" />
     <canvas id="myCanvas" width="500" height="300">
       texte alternatif !?
     </canvas>
     <canvas id="myCanvas2" width="500" height="300"></canvas>
+    <form class="myForm" method="post">
+      <input type="radio" name="Personnage" value="sacha" checked>Sacha
+      <input type="radio" name="Personnage" value="pikachu">Pikachu
+      <input type="button" name="name" onclick="switchChar();">
+    </form>
   </body>
   <script type="text/javascript" src="Script/map.js"></script>
   <script type="text/javascript" src="Script/perso.js"></script>

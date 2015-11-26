@@ -1,18 +1,49 @@
 var myCanvas2 = document.getElementById('myCanvas2');
 var ctx2 = myCanvas2.getContext('2d');
+var x = 0;
+var y = 26;
 
-// var DIRECTION = {
-// 	"BAS"    : 0,
-// 	"HAUT"   : 1,
-// 	"DROITE" : 2,
-// 	"GAUCHE" : 3,
-// 	"MARCHEGAUCHE" : 6
-// };
 
-var sacha = new Image();
-sacha.src = "Ressource/character.png";
+var character = "sacha";
+var Perso = new Image();
+Perso.src = "Ressource/sacha.png";
 
-dessinerSacha = function(numero, context, xDestination, yDestination) {
+var switchChar = function(){
+	var inputs = window.document.getElementsByName('Personnage');
+	for(i=0;inputs[i];i++){
+		if(inputs[i].checked){
+			character = inputs[i].value;
+		}
+	}
+  if (character == "sacha") {
+    Perso.src = "Ressource/sacha.png";
+  } else {
+    Perso.src = "Ressource/pikachu.png";
+  }
+  switch (key) {
+    case 37:
+      ctx2.clearRect(x, y, 16, 16);
+      dessinerPerso(7, ctx2, x, y);
+      break;
+    case 39:
+      ctx2.clearRect(x, y, 16, 16);
+      dessinerPerso(5, ctx2, x, y);
+      break;
+    case 38:
+      ctx2.clearRect(x, y, 16, 16);
+      dessinerPerso(3, ctx2, x, y);
+      break;
+    case 40:
+      ctx2.clearRect(x, y, 16, 16);
+      dessinerPerso(1, ctx2, x, y);
+      break;
+    default:
+      ctx2.clearRect(x, y, 16, 16);
+      dessinerPerso(5, ctx2, x, y);
+  }
+};
+
+dessinerPerso = function(numero, context, xDestination, yDestination) {
   if(numero <= 2) {
     var xSource = numero * 16 - 16;
     var ySource = 0;
@@ -30,18 +61,61 @@ dessinerSacha = function(numero, context, xDestination, yDestination) {
       }
     }
   }
-    context.drawImage(sacha, xSource, ySource, 16, 16, xDestination, yDestination, 16, 16);
+    context.drawImage(Perso, xSource, ySource, 16, 16, xDestination, yDestination, 16, 16);
 };
 
-// function Personnage(context, x, y, direction) {
-// 	context.drawImage(
-// 	sacha,
-// 	0, direction * 16, // Point d'origine du rectangle source à prendre dans notre image
-// 	16, 16, // Taille du rectangle source (c'est la taille du personnage)
-// 	(x * 16), (y * 16), // Point de destination (dépend de la taille du personnage)
-// 	16, 16 // Taille du rectangle destination (c'est la taille du personnage)
-//   );
-// }
+var deplacementy = function (arg) {
+  if (arg==1) {
+    setTimeout(function () {
+      ctx2.clearRect(x, y, 16, 16);
+      y+=8;
+      dessinerPerso(2, ctx2, x, y);
+    }, 125);
+    setTimeout(function () {
+      ctx2.clearRect(x, y, 16, 16);
+      y+=8;
+      dessinerPerso(1, ctx2, x, y);
+  }, 250);
+  console.log(y);
+  } else {
+    setTimeout(function () {
+      ctx2.clearRect(x, y, 16, 16);
+      y-=8;
+      dessinerPerso(4, ctx2, x, y);
+    }, 125);
+    setTimeout(function () {
+      ctx2.clearRect(x, y, 16, 16);
+      y-=8;
+      dessinerPerso(3, ctx2, x, y);
+    }, 250);
+    console.log(y);
+  }
+};
 
-// ctx.drawImage(sacha,0, 0, 16, 16, 12, 12, 16, 16);
-//Personnage(ctx,1,1,DIRECTION.BAS);
+var deplacementx = function (arg) {
+  if (arg==1) {
+    setTimeout(function () {
+      ctx2.clearRect(x, y, 16, 16);
+      x+=8;
+      dessinerPerso(6, ctx2, x, y);
+    }, 125);
+    setTimeout(function () {
+      ctx2.clearRect(x, y, 16, 16);
+      x+=8;
+      dessinerPerso(5, ctx2, x, y);
+  }, 250);
+  console.log(x);
+  } else {
+    setTimeout(function () {
+      ctx2.clearRect(x, y, 16, 16);
+      x-=8;
+      dessinerPerso(8, ctx2, x, y);
+    }, 125);
+    setTimeout(function () {
+      ctx2.clearRect(x, y, 16, 16);
+      x-=8;
+      dessinerPerso(7, ctx2, x, y);
+    }, 250);
+    console.log(x);
+  }
+};

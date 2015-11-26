@@ -1,29 +1,29 @@
+var key;
+
 creeMap(map1);
-
-
-
+dessinerPerso(5, ctx2, x, y);
 window.onkeydown = function(e) {
-  var key = e.keyCode || e.which;
+  key = e.keyCode || e.which;
   switch (key) {
-      case 37:
+  case 37:
       deplacementx(0);
       ctx2.clearRect(x, y, 16, 16);
-      dessinerSacha(7, ctx2, x, y);
+      dessinerPerso(7, ctx2, x, y);
       break;
   case 39:
         deplacementx(1);
         ctx2.clearRect(x, y, 16, 16);
-        dessinerSacha(5, ctx2, x, y);
+        dessinerPerso(5, ctx2, x, y);
       break;
   case 38:
       deplacementy(0);
       ctx2.clearRect(x, y, 16, 16);
-      dessinerSacha(3, ctx2, x, y);
+      dessinerPerso(3, ctx2, x, y);
       break;
   case 40:
       deplacementy(1);
       ctx2.clearRect(x, y, 16, 16);
-      dessinerSacha(1, ctx2, x, y);
+      dessinerPerso(1, ctx2, x, y);
       //-Move down
       break;
   default:
@@ -31,64 +31,7 @@ window.onkeydown = function(e) {
   }
 };
 
-var x = 0;
-var y = 26;
-dessinerSacha(5, ctx2, x, y);
-var deplacementy = function (arg) {
-  if (arg==1) {
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y+=8;
-      dessinerSacha(2, ctx2, x, y);
-    }, 125);
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y+=8;
-      dessinerSacha(1, ctx2, x, y);
-  }, 250);
-  console.log(y);
-  } else {
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y-=8;
-      dessinerSacha(4, ctx2, x, y);
-    }, 125);
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y-=8;
-      dessinerSacha(3, ctx2, x, y);
-    }, 250);
-    console.log(y);
-  }
-};
 
-var deplacementx = function (arg) {
-  if (arg==1) {
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      x+=8;
-      dessinerSacha(6, ctx2, x, y);
-    }, 125);
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      x+=8;
-      dessinerSacha(5, ctx2, x, y);
-  }, 250);
-  console.log(x);
-  } else {
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      x-=8;
-      dessinerSacha(8, ctx2, x, y);
-    }, 125);
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      x-=8;
-      dessinerSacha(7, ctx2, x, y);
-    }, 250);
-    console.log(x);
-  }
-};
 
 
 
