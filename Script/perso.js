@@ -176,7 +176,7 @@ var mur = function (direction, x, y, map) {
 					i=(y+6)/16;
 					// console.log("x.modified : " + j);
 					// console.log("y.modified : " + j);
-					if (map[i][j] == 7 || map[i][j] == 9 || map[i][j] == 10 || map[i][j] == 11 || map[i][j] == 12 || map[i][j] == 13 || map[i][j] == 14 || map[i][j] == 15 || map[i][j] == 17 || map[i][j] == 18 || map[i][j] == 19) {
+					if (map[i][j] == 7 || map[i][j] == 9 || map[i][j] == 10 || map[i][j] == 11 || map[i][j] == 12 || map[i][j] == 13 || map[i][j] == 14 || map[i][j] == 15 || map[i][j] == 17 || map[i][j] == 18 || map[i][j] == 19 || map[i][j] == 20 || map[i][j] == 21) {
 						val = false;
 						ctx2.clearRect(x+16, y, 16, 16);
 		        dessinerPerso(7, ctx2, x+16, y);
@@ -195,7 +195,7 @@ var mur = function (direction, x, y, map) {
 				i=(y+6)/16;
 				// console.log("x.modified : " + j);
 				// console.log("y.modified : " + j);
-				if (map[i][j] == 7 || map[i][j] == 9 || map[i][j] == 10 || map[i][j] == 11 || map[i][j] == 12 || map[i][j] == 13 || map[i][j] == 14 || map[i][j] == 15 || map[i][j] == 17 || map[i][j] == 18 || map[i][j] == 19) {
+				if (map[i][j] == 7 || map[i][j] == 9 || map[i][j] == 10 || map[i][j] == 11 || map[i][j] == 12 || map[i][j] == 13 || map[i][j] == 14 || map[i][j] == 15 || map[i][j] == 17 || map[i][j] == 18 || map[i][j] == 19 || map[i][j] == 20 || map[i][j] == 21) {
 					val = false;
 					ctx2.clearRect(x-16, y, 16, 16);
           dessinerPerso(5, ctx2, x-16, y);
@@ -210,7 +210,7 @@ var mur = function (direction, x, y, map) {
 				y-=10;
 				j=x/16;
 				i=y/16;
-				if (map[i][j] == 7 || map[i][j] == 9 || map[i][j] == 10 || map[i][j] == 11 || map[i][j] == 12 || map[i][j] == 13 || map[i][j] == 14 || map[i][j] == 15 || map[i][j] == 17 || map[i][j] == 18 || map[i][j] == 19) {
+				if (map[i][j] == 7 || map[i][j] == 9 || map[i][j] == 10 || map[i][j] == 11 || map[i][j] == 12 || map[i][j] == 13 || map[i][j] == 14 || map[i][j] == 15 || map[i][j] == 17 || map[i][j] == 18 || map[i][j] == 19 || map[i][j] == 20 || map[i][j] == 21) {
 					val = false;
 					ctx2.clearRect(x, y+10, 16, 16);
 					dessinerPerso(3, ctx2, x, y+10);
@@ -223,7 +223,7 @@ var mur = function (direction, x, y, map) {
 				y+=22;
 				j=x/16;
 				i=y/16;
-				if (map[i][j] == 7 || map[i][j] == 9 || map[i][j] == 10 || map[i][j] == 11 || map[i][j] == 12 || map[i][j] == 13 || map[i][j] == 14 || map[i][j] == 15 || map[i][j] == 17 || map[i][j] == 18 || map[i][j] == 19) {
+				if (map[i][j] == 7 || map[i][j] == 9 || map[i][j] == 10 || map[i][j] == 11 || map[i][j] == 12 || map[i][j] == 13 || map[i][j] == 14 || map[i][j] == 15 || map[i][j] == 17 || map[i][j] == 18 || map[i][j] == 19 || map[i][j] == 20 || map[i][j] == 21) {
 					val = false;
 					ctx2.clearRect(x, y-22, 16, 16);
 					dessinerPerso(1, ctx2, x, y-22);
