@@ -1,37 +1,55 @@
-var key;
+var key, wall;
 
 creeMap(map1);
 dessinerPerso(5, ctx2, x, y);
 window.onkeydown = function(e) {
   key = e.keyCode || e.which;
-  switch (key) {
-  case 37:
-      deplacementx(0);
-      ctx2.clearRect(x, y, 16, 16);
-      dessinerPerso(7, ctx2, x, y);
-      break;
-  case 39:
-        deplacementx(1);
+  wall = mur(key, x, y, map1);
+  if (!wall) {
+
+  } else {
+    switch (key) {
+    case 37:
+        deplacementx(0);
         ctx2.clearRect(x, y, 16, 16);
-        dessinerPerso(5, ctx2, x, y);
-      break;
-  case 38:
-      deplacementy(0);
-      ctx2.clearRect(x, y, 16, 16);
-      dessinerPerso(3, ctx2, x, y);
-      break;
-  case 40:
-      deplacementy(1);
-      ctx2.clearRect(x, y, 16, 16);
-      dessinerPerso(1, ctx2, x, y);
-      //-Move down
-      break;
-  default:
-      break;
+        dessinerPerso(7, ctx2, x, y);
+        setTimeout(function () {
+
+        }, 500);
+        //-Moveleft
+        break;
+    case 39:
+          deplacementx(1);
+          ctx2.clearRect(x, y, 16, 16);
+          dessinerPerso(5, ctx2, x, y);
+          setTimeout(function () {
+
+          }, 500);
+          //-Move Right
+        break;
+    case 38:
+        deplacementy(0);
+        ctx2.clearRect(x, y, 16, 16);
+        dessinerPerso(3, ctx2, x, y);
+        setTimeout(function () {
+
+        }, 500);
+        //-Move Up
+        break;
+    case 40:
+        deplacementy(1);
+        ctx2.clearRect(x, y, 16, 16);
+        dessinerPerso(1, ctx2, x, y);
+        setTimeout(function () {
+
+        }, 500);
+        //-Move down
+        break;
+    default:
+        break;
+    }
   }
 };
-
-
 
 
 
