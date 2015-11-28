@@ -1,4 +1,4 @@
-var key, wall, animation = 0, tempo = 80, distance=16;
+var key, wall, animation = 0, tempo = 50, distance=16, anim = 1;
 
 window.onload = function () {
   creeMap(map1);
@@ -13,19 +13,35 @@ var fct = function (e) {
     if (!wall) {
       switch (key) {
       case 37:
-          deplacementx(0);
+          if(x !== 0){
+            deplacementx(0);
+          }
           //-Moveleft
           break;
       case 39:
-          deplacementx(1);
+          if (x != 500) {
+          deplacementx(1);  
+          }
           //-Move Right
           break;
       case 38:
-          deplacementy(0);
+          if(anim){
+            deplacementy(2);
+            anim=0;
+          } else {
+            deplacementy(3);
+            anim=1;
+          }
           //-Move Up
           break;
       case 40:
+        if(anim){
+          deplacementy(0);
+          anim=0;
+        } else {
           deplacementy(1);
+          anim=1;
+        }
           //-Move down
           break;
       default:

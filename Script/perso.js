@@ -1,6 +1,6 @@
 var myCanvas2 = document.getElementById('myCanvas2');
 var ctx2 = myCanvas2.getContext('2d');
-var x = 0;
+var x = 32;
 var y = 26;
 var u = 0;
 var character = "sacha";
@@ -78,58 +78,65 @@ var deplacementy = function (arg) {
 	animation = 1 ;
 	setTimeout(function () {
 		animation = 0;
-	}, tempo * 3);
-  if (arg==1) {
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y+=distance/4;
-      dessinerPerso(2, ctx2, x, y);
-    }, tempo);
-		setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y+=distance/4;
-      dessinerPerso(9, ctx2, x, y);
-    }, tempo * 2);
-		setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y+=distance/4;
-      dessinerPerso(2, ctx2, x, y);
-    }, tempo * 3);
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y+=distance/4;
-      dessinerPerso(1, ctx2, x, y);
-  	}, tempo * 4);
-  } else {
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y-=distance/4;
-      dessinerPerso(4, ctx2, x, y);
-    }, tempo );
-		setTimeout(function () {
-			ctx2.clearRect(x, y, 16, 16);
-			y-=distance/4;
-			dessinerPerso(10, ctx2, x, y);
-		}, tempo * 2);
-		setTimeout(function () {
-			ctx2.clearRect(x, y, 16, 16);
-			y-=distance/4;
-			dessinerPerso(4, ctx2, x, y);
-		}, tempo * 3);
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      y-=distance/4;
-      dessinerPerso(3, ctx2, x, y);
-    }, tempo * 4);
-  }
-
+	}, tempo * 2);
+  switch (arg) {
+  	case 0:
+	    setTimeout(function () {
+	      ctx2.clearRect(x, y, 16, 16);
+	      y+=distance/4;
+	      dessinerPerso(2, ctx2, x, y);
+	    }, tempo);
+			setTimeout(function () {
+	      ctx2.clearRect(x, y, 16, 16);
+	      y+=distance/4;
+	      dessinerPerso(1, ctx2, x, y);
+	    }, tempo * 2);
+  		break;
+  	case 1:
+			setTimeout(function () {
+	      ctx2.clearRect(x, y, 16, 16);
+	      y+=distance/4;
+	      dessinerPerso(9, ctx2, x, y);
+	    }, tempo);
+	    setTimeout(function () {
+	      ctx2.clearRect(x, y, 16, 16);
+	      y+=distance/4;
+	      dessinerPerso(1, ctx2, x, y);
+	  	}, tempo * 2);
+  	  break;
+  	case 2:
+	    setTimeout(function () {
+	      ctx2.clearRect(x, y, 16, 16);
+	      y-=distance/4;
+	      dessinerPerso(4, ctx2, x, y);
+	    }, tempo );
+			setTimeout(function () {
+				ctx2.clearRect(x, y, 16, 16);
+				y-=distance/4;
+				dessinerPerso(3, ctx2, x, y);
+			}, tempo * 2);
+  	  break;
+		case 3:
+			setTimeout(function () {
+				ctx2.clearRect(x, y, 16, 16);
+				y-=distance/4;
+				dessinerPerso(10, ctx2, x, y);
+			}, tempo);
+	    setTimeout(function () {
+	      ctx2.clearRect(x, y, 16, 16);
+	      y-=distance/4;
+	      dessinerPerso(3, ctx2, x, y);
+	    }, tempo * 2);
+		  break;
+		default:
+	}
 };
 
 var deplacementx = function (arg) {
 	animation = 1 ;
 	setTimeout(function () {
 		animation = 0;
-	}, tempo * 3);
+	}, tempo * 2);
 	if (arg==1) {
 		setTimeout(function () {
       ctx2.clearRect(x, y, 16, 16);
@@ -141,16 +148,6 @@ var deplacementx = function (arg) {
       x+=distance/4;
       dessinerPerso(5, ctx2, x, y);
   }, tempo * 2);
-	setTimeout(function () {
-		ctx2.clearRect(x, y, 16, 16);
-		x+=distance/4;
-		dessinerPerso(6, ctx2, x, y);
-	}, tempo * 3);
-	setTimeout(function () {
-		ctx2.clearRect(x, y, 16, 16);
-		x+=distance/4;
-		dessinerPerso(5, ctx2, x, y);
-	}, tempo *4);
   } else {
     setTimeout(function () {
       ctx2.clearRect(x, y, 16, 16);
@@ -162,16 +159,7 @@ var deplacementx = function (arg) {
       x-=distance/4;
       dessinerPerso(7, ctx2, x, y);
     }, tempo * 2);
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      x-=distance/4;
-      dessinerPerso(8, ctx2, x, y);
-    }, tempo * 3);
-    setTimeout(function () {
-      ctx2.clearRect(x, y, 16, 16);
-      x-=distance/4;
-      dessinerPerso(7, ctx2, x, y);
-    }, tempo * 4);
+
   }
 };
 
@@ -181,7 +169,7 @@ var mur = function (direction, x, y, map) {
 		case 37:
 					x-=16;
 					j=Math.ceil(x/16);
-					i=Math.ceil(y/16);
+					i=Math.ceil((y-6)/16);
 					if (map[i][j] >= 9 && map[i][j] <= 21) {
 						val = true;
 						ctx2.clearRect(x+16, y, 16, 16);
@@ -193,8 +181,8 @@ var mur = function (direction, x, y, map) {
 	      break;
 	  case 39:
 				x+=16;
-				j=Math.ceil(x/16);
-				i=Math.ceil(y/16);
+				j=Math.floor(x/16);
+				i=Math.ceil((y-6)/16);
 				if (map[i][j] >= 9 && map[i][j] <= 21) {
 					val = true;
 					ctx2.clearRect(x-16, y, 16, 16);
@@ -205,28 +193,32 @@ var mur = function (direction, x, y, map) {
 	        //-Move Right
 	      break;
 	  case 38:
-				y-=16;
-				j=Math.ceil(x/16);
-				i=Math.ceil(y/16);
-				if (map[i][j] >= 9 && map[i][j] <= 21) {
-					val = true;
-					ctx2.clearRect(x, y+16, 16, 16);
-					dessinerPerso(3, ctx2, x, y+16);
-				} else {
-					val = false;
+				if(y !== 0){
+					y-=16;
+					j=Math.ceil(x/16);
+					i=Math.ceil(y/16);
+					if (((x%16 == 8) && map[i][j-1] >= 9 && map[i][j-1] <= 21) || (map[i][j] >= 9 && map[i][j] <= 21)) {
+						val = true;
+						ctx2.clearRect(x, y+16, 16, 16);
+						dessinerPerso(3, ctx2, x, y+16);
+					} else {
+						val = false;
+					}
 				}
 	      //-Move Up
 	      break;
 	  case 40:
-				y+=16;
-				j=Math.ceil(x/16);
-				i=Math.ceil(y/16);
-				if (map[i][j] >= 9 && map[i][j] <= 21) {
-					val = true;
-					ctx2.clearRect(x, y-16, 16, 16);
-					dessinerPerso(1, ctx2, x, y-16);
-				} else {
-					val = false;
+				if (x != 500) {
+					y+=16;
+					j=Math.ceil(x/16);
+					i=Math.round(y/16);
+					if (((x%16 == 8) && map[i][j-1] >= 9 && map[i][j-1]<= 21) || (map[i][j] >= 9 && map[i][j] <= 21)){
+						val = true;
+						ctx2.clearRect(x, y-16, 16, 16);
+						dessinerPerso(1, ctx2, x, y-16);
+					} else {
+						val = false;
+					}
 				}
 	      //-Move down
 	      break;
