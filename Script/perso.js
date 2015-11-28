@@ -1,8 +1,6 @@
 var myCanvas2 = document.getElementById('myCanvas2');
 var ctx2 = myCanvas2.getContext('2d');
-var x = 32;
-var y = 26;
-var u = 0;
+
 var character = "sacha";
 var Perso = new Image();
 Perso.src = "Ressource/sacha.png";
@@ -43,9 +41,10 @@ var switchChar = function(){
 };
 
 dessinerPerso = function(numero, context, xDestination, yDestination) {
-  if(numero <= 2) {
-    var xSource = numero * 16 - 16;
-    var ySource = 0;
+	var xSource, ySource;
+	if(numero <= 2) {
+    xSource = numero * 16 - 16;
+    ySource = 0;
   } else {
     if (numero <= 4) {
       xSource = (numero - 2) * 16 - 16;
@@ -76,8 +75,10 @@ dessinerPerso = function(numero, context, xDestination, yDestination) {
 
 var deplacementy = function (arg) {
 	animation = 1 ;
+	console.log(animation);
 	setTimeout(function () {
 		animation = 0;
+		console.log(animation);
 	}, tempo * 2);
   switch (arg) {
   	case 0:
@@ -134,8 +135,10 @@ var deplacementy = function (arg) {
 
 var deplacementx = function (arg) {
 	animation = 1 ;
+	console.log(animation);
 	setTimeout(function () {
 		animation = 0;
+		console.log(animation);
 	}, tempo * 2);
 	if (arg==1) {
 		setTimeout(function () {
@@ -226,4 +229,49 @@ var mur = function (direction, x, y, map) {
 	      break;
 	}
 	return val;
+};
+
+var fct = function (e) {
+  if (!animation) {
+    key = e.keyCode || e.which;
+    wall = mur(key, x, y, map1);
+    if (!wall) {
+      switch (key) {
+      case 37:
+          if(x !== 0){
+            deplacementx(0);
+          }
+          //-Moveleft
+          break;
+      case 39:
+          if (x != 500) {
+          	deplacementx(1);
+          }
+          //-Move Right
+          break;
+      case 38:
+          if(anim){
+            deplacementy(2);
+            anim=0;
+          } else {
+            deplacementy(3);
+            anim=1;
+          }
+          //-Move Up
+          break;
+      case 40:
+        if(anim){
+          deplacementy(0);
+          anim=0;
+        } else {
+          deplacementy(1);
+          anim=1;
+        }
+          //-Move down
+          break;
+      default:
+          break;
+      }
+    }
+  }
 };
