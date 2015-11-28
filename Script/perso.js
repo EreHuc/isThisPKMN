@@ -169,8 +169,8 @@ var mur = function (direction, x, y, map) {
 		case 37:
 					x-=16;
 					j=Math.ceil(x/16);
-					i=Math.ceil((y-6)/16);
-					if (map[i][j] >= 9 && map[i][j] <= 21) {
+					i=Math.ceil(y/16);
+					if (((y%16 == 2) && map[i-1][j] >= 9 && map[i+1][j] <= 21) || (map[i][j] >= 9 && map[i][j] <= 21)) {
 						val = true;
 						ctx2.clearRect(x+16, y, 16, 16);
 		        dessinerPerso(7, ctx2, x+16, y);
@@ -182,8 +182,8 @@ var mur = function (direction, x, y, map) {
 	  case 39:
 				x+=16;
 				j=Math.floor(x/16);
-				i=Math.ceil((y-6)/16);
-				if (map[i][j] >= 9 && map[i][j] <= 21) {
+				i=Math.ceil(y/16);
+				if (((y%16 == 2) && map[i-1][j] >= 9 && map[i+1][j] <= 21) || (map[i][j] >= 9 && map[i][j] <= 21)) {
 					val = true;
 					ctx2.clearRect(x-16, y, 16, 16);
           dessinerPerso(5, ctx2, x-16, y);
