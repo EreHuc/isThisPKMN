@@ -233,7 +233,7 @@ var mur = function (direction, x, y, map) {
 
 var fct = function (e) {
   if (!animation) {
-    key = e.keyCode || e.which;
+	  key = e.keyCode || e.which;
     wall = mur(key, x, y, map1);
     if (!wall) {
       switch (key) {
