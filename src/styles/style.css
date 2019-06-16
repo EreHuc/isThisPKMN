@@ -54,16 +54,16 @@ a{
 img{
   display: none;
 }
-/*******************HEADER**********************/
 
-#myCanvas2{
+/****************End reset CSS******************/
+
+body {
+  background: #232323;
+  color: white;
+}
+
+#canvas_player{
   position: absolute;
   left: 0;
   top: 0;
 }
-
-/******************SECTION**********************/
-
-
-
-/******************FOOTER**********************/
