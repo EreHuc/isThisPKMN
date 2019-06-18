@@ -1,8 +1,7 @@
 module.exports = {
   'env': {
     'browser': true,
-    'es6': true,
-    'node': true
+    'es6': true
   },
   'plugins': ['prettier'],
   'extends': 'eslint:recommended',
@@ -14,7 +13,8 @@ module.exports = {
     'prettier/prettier': 'error',
     'indent': [
       'error',
-      2
+      2,
+      { 'SwitchCase': 1 }
     ],
     'linebreak-style': [
       'error',

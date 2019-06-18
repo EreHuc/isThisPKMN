@@ -1,12 +1,12 @@
 import { canvas as canvasDetail } from './constant';
 
-export const createCanvas = ({
+function createCanvas({
   id,
   element,
   scale = canvasDetail.scale,
   width = canvasDetail.width,
   height = canvasDetail.height,
-}) => {
+}) {
   const canvas = document.createElement('canvas');
   canvas.classList.add('canvas');
   canvas.setAttribute('id', id);
@@ -20,9 +20,9 @@ export const createCanvas = ({
   context.imageSmoothingEnabled = false;
 
   return context;
-};
+}
 
-export const drawTile = ({ tile, tileImg, tileId, context, xDest, yDest }) => {
+function drawTile({ tile, tileImg, tileId, context, xDest, yDest }) {
   const xSource = (tileId % tile.tilePerRow) * tile.width;
   const ySource = Math.floor(tileId / tile.tilePerRow) * tile.height;
 
@@ -37,4 +37,6 @@ export const drawTile = ({ tile, tileImg, tileId, context, xDest, yDest }) => {
     tile.width,
     tile.height,
   );
-};
+}
+
+export { createCanvas, drawTile };

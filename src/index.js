@@ -2,6 +2,7 @@ import map from './maps';
 import { drawMap } from './map.constructor';
 import { backgroundTile, playerTile } from './constant';
 import { createCanvas, drawTile } from './canvas.constructor';
+import './debug/debug-nav.js';
 
 // var key, wall, animation = 0, tempo = 100, distance=16, anim = 1, x = 32, y = 26;
 
