@@ -1,12 +1,12 @@
-import { backgroundTile } from './constant';
-import { drawTile } from './canvas.constructor';
+import { backgroundTile } from '../variables';
+import { drawTile } from './canvas';
 
-const _drawMap = drawTile => (map, context, tileImg) => {
+const _drawMap = drawTile => ({ map, context, backgroundImg }) => {
   for (let y = 0; y < map.length; y++) {
     for (let x = 0; x < map[y].length; x++) {
       drawTile({
         tile: backgroundTile,
-        tileImg,
+        tileImg: backgroundImg,
         tileId: map[y][x].id,
         context,
         xDest: x * backgroundTile.width,

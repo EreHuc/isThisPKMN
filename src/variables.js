@@ -65,6 +65,12 @@ export const playerTile = {
     left: 10,
   },
   tilePerRow: 3,
+  direction: {
+    up: 0,
+    down: 1,
+    left: 2,
+    right: 3,
+  },
 };
 
 export const _keyCodes = {

@@ -1,26 +1,38 @@
 import {
-  SetDirection,
-  SetMovement,
-  SetSprite,
-  SetFilters,
-} from '../reducers/player.reducers';
+  SetPlayerDirection,
+  SetPlayerMovement,
+  SetPlayerCurrentImage,
+  SetPlayerFilters,
+  SetPlayerPosition,
+  SetPlayerTileId,
+} from '../reducers/player.reducer';
 
-export const setMovement = isMoving => ({
-  type: SetMovement,
-  payload: isMoving,
+export const setPlayerMovement = canMove => ({
+  type: SetPlayerMovement,
+  payload: canMove,
 });
 
-export const setSpriteSrc = spriteSrc => ({
-  type: SetSprite,
+export const setPlayerCurrentImage = spriteSrc => ({
+  type: SetPlayerCurrentImage,
   payload: spriteSrc,
 });
 
-export const setDirection = direction => ({
-  type: SetDirection,
+export const setPlayerDirection = direction => ({
+  type: SetPlayerDirection,
   payload: direction,
 });
 
-export const setFilters = filters => ({
-  type: SetFilters,
+export const setPlayerFilters = filters => ({
+  type: SetPlayerFilters,
   payload: filters,
+});
+
+export const setPlayerPosition = positions => ({
+  type: SetPlayerPosition,
+  payload: positions,
+});
+
+export const setPlayerTileId = tileId => ({
+  type: SetPlayerTileId,
+  payload: tileId,
 });

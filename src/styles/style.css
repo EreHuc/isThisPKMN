@@ -60,6 +60,7 @@ img{
 body {
   background: #232323;
   color: white;
+  overflow: hidden;
 }
 
 #canvas_player{

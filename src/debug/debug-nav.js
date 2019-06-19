@@ -1,10 +1,9 @@
 import { store } from '../store';
 import {
-  setDirection,
-  setFilters,
-  setSpriteSrc,
+  setPlayerDirection,
+  setPlayerFilters,
 } from '../store/actions/player.actions';
-import { playerTile } from '../constant';
+import { setPlayerImage } from '../store/actions/images.actions';
 
 class DebugNav extends HTMLElement {
   constructor() {
@@ -76,22 +75,24 @@ class DebugNav extends HTMLElement {
       }
     });
     sliderFilter.addEventListener('input', ({ target }) => {
-      store.dispatch(setFilters(`hue-rotate(${target.value}deg)`));
+      store.dispatch(setPlayerFilters(`hue-rotate(${target.value}deg)`));
     });
     spriteSelector.addEventListener('input', ({ target }) => {
+      const { images } = store.getState();
+
       switch (target.value) {
         case 'pikachu':
-          store.dispatch(setSpriteSrc(playerTile.altSrc));
+          store.dispatch(setPlayerImage(images.altPlayer));
           break;
         case 'sacha':
-          store.dispatch(setSpriteSrc(playerTile.src));
+          store.dispatch(setPlayerImage(images.player));
           break;
         default:
-          store.dispatch(setSpriteSrc(playerTile.src));
+          store.dispatch(setPlayerImage(images.player));
       }
     });
     directionSelector.addEventListener('input', ({ target }) => {
-      store.dispatch(setDirection(target.value));
+      store.dispatch(setPlayerDirection(target.value));
     });
 
     style.textContent = `
