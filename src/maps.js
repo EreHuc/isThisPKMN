@@ -348,8 +348,8 @@ const map1 = {
     ],
   ],
   startPosition: {
-    x: 144,
-    y: 144,
+    x: 28,
+    y: 32,
   },
   tilePerRow: 18,
   tilePerColumn: 16,
