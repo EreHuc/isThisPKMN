@@ -1,5 +1,7 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+ctx.scale(2, 2);
+ctx.imageSmoothingEnabled = false;
 
 var tuile = new Image();
 tuile.src = "Ressource/tile.png";

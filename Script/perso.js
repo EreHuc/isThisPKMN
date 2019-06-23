@@ -1,5 +1,7 @@
 var myCanvas2 = document.getElementById('myCanvas2');
 var ctx2 = myCanvas2.getContext('2d');
+ctx2.scale(2, 2);
+ctx2.imageSmoothingEnabled = false;
 
 var character = "sacha";
 var Perso = new Image();
