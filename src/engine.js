@@ -1,12 +1,8 @@
-import {
-  createBackgroundCanvas,
-  createPlayerCanvas,
-  drawTile,
-} from './utils/canvas';
+import { createBackgroundCanvas, createPlayerCanvas } from './utils/canvas';
 import { backgroundTile, playerTile } from './variables';
 import { drawMap } from './utils/map';
 import map from './maps';
-import { drawPlayer, playerMovement } from './utils/player';
+import { playerAnimation } from './utils/player';
 import {
   setPlayerCurrentImage,
   setPlayerPosition,
@@ -34,50 +30,15 @@ function initGame(store) {
   store.dispatch(setBackgroundContext(backgroundContext));
   store.dispatch(setPlayerContext(playerContext));
 
-  // const sliderInput = document.getElementById('slider');
-
   loadBackground.then(backgroundImg => {
     drawMap({ map: map.tileList, context: backgroundContext, backgroundImg });
     store.dispatch(setPlayerPosition(map.startPosition));
     store.dispatch(setBackgroundImage(backgroundImg));
 
     loadPlayer.then(playerImg => {
-      // const playerDirection = store.getState().player.direction;
-      //
-      // Array(12)
-      //   .fill(null)
-      //   .forEach((_, index) => {
-      //     drawPlayer({
-      //       context: playerContext,
-      //       playerImg,
-      //       playerPosition: {
-      //         x: index * 16,
-      //         y: index * 16,
-      //       },
-      //       playerDirection,
-      //     });
-      //   });
-
-      // sliderInput.addEventListener('input', e => {
-      //   playerContext.filter = `hue-rotate(${e.target.value}deg)`;
-      //   playerContext.clearRect(0, 0, 16 * 18, 16 * 16);
-      //   Array(12)
-      //     .fill(null)
-      //     .forEach((_, index) => {
-      //       drawTile({
-      //         tile: playerTile,
-      //         tileImg: playerImg,
-      //         tileId: index,
-      //         context: playerContext,
-      //         xDest: index * 16,
-      //         yDest: index * 16,
-      //       });
-      //     });
-      // });
-
       store.dispatch(setPlayerImage(playerImg));
       store.dispatch(setPlayerCurrentImage(playerImg));
-      playerMovement.start();
+      playerAnimation.start();
     });
   });
 
@@ -89,7 +50,9 @@ function initGame(store) {
 function loadImage(src) {
   return new Promise(resolve => {
     const image = new Image();
-    image.onload = loadEvent => resolve(loadEvent.path[0]);
+    image.onload = loadEvent => {
+      resolve(loadEvent.target);
+    };
     image.src = src;
   });
 }

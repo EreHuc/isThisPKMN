@@ -7,9 +7,9 @@ import {
   SetPlayerTileId,
 } from '../reducers/player.reducer';
 
-export const setPlayerMovement = canMove => ({
+export const setPlayerMovement = isMoving => ({
   type: SetPlayerMovement,
-  payload: canMove,
+  payload: isMoving,
 });
 
 export const setPlayerCurrentImage = spriteSrc => ({
@@ -17,9 +17,9 @@ export const setPlayerCurrentImage = spriteSrc => ({
   payload: spriteSrc,
 });
 
-export const setPlayerDirection = direction => ({
+export const setPlayerDirection = moveDirection => ({
   type: SetPlayerDirection,
-  payload: direction,
+  payload: moveDirection,
 });
 
 export const setPlayerFilters = filters => ({

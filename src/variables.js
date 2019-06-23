@@ -2,7 +2,7 @@ import tileSrc from './assets/tile.png';
 import playerSrc from './assets/sacha.png';
 import playerAltSrc from './assets/pikachu.png';
 
-const layer = {
+export const layer = {
   floor: 0,
   player: 1,
   obstacle: 2,

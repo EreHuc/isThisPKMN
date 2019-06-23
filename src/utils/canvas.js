@@ -45,6 +45,10 @@ function drawTile({ tile, tileImg, tileId, context, xDest, yDest }) {
   );
 }
 
+function clearTile({ context, x, y, w, h }) {
+  return context.clearRect(x, y, w, h);
+}
+
 const createBackgroundCanvas = createCanvas({
   id: 'canvas_background',
   element: document.body,
@@ -55,4 +59,4 @@ const createPlayerCanvas = createCanvas({
   element: document.body,
 });
 
-export { drawTile, createBackgroundCanvas, createPlayerCanvas };
+export { drawTile, clearTile, createBackgroundCanvas, createPlayerCanvas };

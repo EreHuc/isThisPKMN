@@ -351,6 +351,8 @@ const map1 = {
     x: 144,
     y: 144,
   },
+  tilePerRow: 18,
+  tilePerColumn: 16,
 };
 
 export default map1;
