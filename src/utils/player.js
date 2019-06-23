@@ -132,6 +132,8 @@ function _playerAnimationFrame(
       if (isMoving && (hitStun > 1 || moveDirection === lastMoveDirection)) {
         moves[moveDirection]();
 
+        canDrawPlayer = true;
+
         state.setLocalState({
           moveDirection,
         });
@@ -147,7 +149,9 @@ function _playerAnimationFrame(
         hitStun: hitStun + 1,
       });
 
-      canDrawPlayer = true;
+      if (hitStun === 0) {
+        canDrawPlayer = true;
+      }
     } else {
       if (lastMovingState !== isMoving) {
         idles[moveDirection]();
@@ -157,9 +161,7 @@ function _playerAnimationFrame(
         });
 
         canDrawPlayer = true;
-      }
 
-      if (hitStun !== 0) {
         state.setLocalState({
           hitStun: 0,
         });
@@ -169,9 +171,10 @@ function _playerAnimationFrame(
     if (canDrawPlayer) {
       drawPlayer();
 
-      state.setLocalState({
-        isMoving,
-      });
+      lastMovingState !== isMoving &&
+        state.setLocalState({
+          isMoving,
+        });
     }
 
     const rafId = window.requestAnimationFrame(step);
