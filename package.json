@@ -4,9 +4,6 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "constant": "^1.0.2",
-    "map": "^1.0.1",
-    "maps": "^0.3.3",
     "parcel": "^1.12.3",
     "redux": "^4.0.1"
   },
