@@ -1,4 +1,3 @@
-import './debug/debug-nav.js';
 import { initGame } from './engine';
 import { store } from './store';
 

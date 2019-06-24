@@ -1,4 +1,5 @@
 import { canvas as canvasDetail } from '../variables';
+import { store } from '../store';
 
 function createCanvas({
   id,
@@ -17,7 +18,7 @@ function createCanvas({
     const context = element
       .insertBefore(canvas, element.firstChild)
       .getContext('2d');
-    context.scale(scale, scale);
+
     context.imageSmoothingEnabled = false;
 
     Object.entries(options).forEach(([key, value]) => {
@@ -45,6 +46,32 @@ function drawTile({ tile, tileImg, tileId, context, xDest, yDest }) {
   );
 }
 
+function setTransform(x, y, context) {
+  context.setTransform(
+    canvasDetail.scale,
+    0,
+    0,
+    canvasDetail.scale,
+    -canvasDetail.scale * x + canvasDetail.width,
+    -canvasDetail.scale * y + canvasDetail.height,
+  );
+}
+
+function _setContextTransform(store) {
+  return map => {
+    const {
+      player: {
+        positions: { x, y },
+      },
+      contexts,
+    } = store.getState();
+
+    Object.values(contexts).forEach(context => {
+      setTransform(x, y, context, map);
+    });
+  };
+}
+
 function clearTile({ context, x, y, w, h }) {
   return context.clearRect(x, y, w, h);
 }
@@ -59,4 +86,12 @@ const createPlayerCanvas = createCanvas({
   element: document.body,
 });
 
-export { drawTile, clearTile, createBackgroundCanvas, createPlayerCanvas };
+export const setContextTransform = _setContextTransform(store);
+
+export {
+  drawTile,
+  clearTile,
+  createBackgroundCanvas,
+  createPlayerCanvas,
+  setTransform,
+};

@@ -6,7 +6,13 @@ import {
 } from '../store/actions/player.actions';
 import { store } from '../store';
 
-function _canMove(x, y) {
+function _canMove(wall) {
+  return (x, y) => {
+    return wall(x, y) && true;
+  };
+}
+
+function wall(x, y) {
   // Define player hit box.
   // Hit box smaller than player because of error in block detection
   // Hit box size : top : -4 px higher; bottom: -1px lower; left & right : -1px wider;
@@ -67,29 +73,31 @@ function _idle({ idleTile, store }) {
   };
 }
 
+const canMove = _canMove(wall);
+
 const moveUp = _move({
   moveTiles: [playerTile.move.up, playerTile.move.upAlt],
   y: -4,
   store,
-  canMove: _canMove,
+  canMove: canMove,
 });
 const moveDown = _move({
   moveTiles: [playerTile.move.down, playerTile.move.downAlt],
   y: 4,
   store,
-  canMove: _canMove,
+  canMove: canMove,
 });
 const moveLeft = _move({
   moveTiles: [playerTile.idle.left, playerTile.move.left],
   x: -4,
   store,
-  canMove: _canMove,
+  canMove: canMove,
 });
 const moveRight = _move({
   moveTiles: [playerTile.idle.right, playerTile.move.right],
   x: 4,
   store,
-  canMove: _canMove,
+  canMove: canMove,
 });
 
 const idleUp = _idle({ store, idleTile: playerTile.idle.up });

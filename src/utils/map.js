@@ -1,109 +1,111 @@
 import { backgroundTile } from '../variables';
-import { clearTile, drawTile } from './canvas';
-import localState from './local-state';
+import { store } from '../store';
+import { drawTile } from './canvas';
 
-const _drawMap = (drawTile, clearTile, localState) => {
-  const state = localState();
+const _backgroundStep = () => {
+  let start = 0;
 
-  return ({ map, context, backgroundImg }) => {
-    const step = timestamp => {
-      const {
-        start = 0,
-        animatedTiles,
-        animatedTileIndex = 0,
-        animationDirection = 1,
-      } = state.getLocalState();
+  return (timestamp, state) => {
+    const {
+      animatedTiles,
+      animationDirection = 1,
+      tileIndex = 0,
+    } = state.getLocalState();
 
-      if (timestamp - start > 300) {
-        let tileIndex;
-
-        switch (animationDirection) {
-          case 1:
-            if (animatedTileIndex === animatedTiles[0].ids.length - 1) {
-              tileIndex = animatedTileIndex;
-
-              state.setLocalState({
-                animationDirection: -animationDirection,
-              });
-            } else {
-              tileIndex = animatedTileIndex + animationDirection;
-            }
-            break;
-          case -1:
-            if (animatedTileIndex === 0) {
-              tileIndex = animatedTileIndex;
-
-              state.setLocalState({
-                animationDirection: -animationDirection,
-              });
-            } else {
-              tileIndex = animatedTileIndex + animationDirection;
-            }
-            break;
-        }
-
-        state.setLocalState({
-          animatedTileIndex: tileIndex,
-        });
-
-        animatedTiles.forEach(animatedTile => {
-          const tileId = animatedTile.ids[tileIndex];
-
-          clearTile({
-            context,
-            x: animatedTile.xDest,
-            y: animatedTile.yDest,
-            w: backgroundTile.width,
-            h: backgroundTile.height,
-          });
-
-          drawTile({
-            tile: backgroundTile,
-            tileImg: backgroundImg,
-            tileId,
-            context,
-            xDest: animatedTile.xDest,
-            yDest: animatedTile.yDest,
-          });
-        });
-
-        state.setLocalState({
-          start: timestamp,
-        });
+    if (timestamp - start > 300) {
+      let animatedTilesIndex;
+      switch (animationDirection) {
+        case 1:
+          if (tileIndex === animatedTiles[0].ids.length - 1) {
+            animatedTilesIndex = tileIndex;
+            state.setLocalState({
+              animationDirection: -animationDirection,
+            });
+          } else {
+            animatedTilesIndex = tileIndex + animationDirection;
+          }
+          break;
+        case -1:
+          if (tileIndex === 0) {
+            animatedTilesIndex = tileIndex;
+            state.setLocalState({
+              animationDirection: -animationDirection,
+            });
+          } else {
+            animatedTilesIndex = tileIndex + animationDirection;
+          }
+          break;
       }
 
-      window.requestAnimationFrame(step);
-    };
+      state.setLocalState({
+        tileIndex: animatedTilesIndex,
+      });
 
-    for (let y = 0; y < map.length; y++) {
-      for (let x = 0; x < map[y].length; x++) {
-        const { id, ids } = map[y][x];
-        const {
-          animatedTiles = [],
-          animatedTileIndex = 0,
-        } = state.getLocalState();
-        const xDest = x * backgroundTile.width;
-        const yDest = y * backgroundTile.height;
-
-        drawTile({
-          tile: backgroundTile,
-          tileImg: backgroundImg,
-          tileId: id === undefined ? ids[animatedTileIndex] : id,
-          context,
-          xDest,
-          yDest,
-        });
-
-        if (id === undefined) {
-          state.setLocalState({
-            animatedTiles: [...animatedTiles, { ids, xDest, yDest }],
-          });
-        }
-      }
+      start = timestamp;
     }
-
-    window.requestAnimationFrame(step);
   };
 };
 
-export const drawMap = _drawMap(drawTile, clearTile, localState);
+const _drawBackground = (store, drawTile) => state => {
+  const {
+    animatedTiles = [],
+    idleTiles = [],
+    tileIndex,
+  } = state.getLocalState();
+
+  const {
+    contexts: { background: backgroundContext },
+    images: { background: backgroundImg },
+  } = store.getState();
+
+  animatedTiles.forEach(animatedTile => {
+    const tileId = animatedTile.ids[tileIndex];
+
+    drawTile({
+      tile: backgroundTile,
+      tileImg: backgroundImg,
+      tileId,
+      context: backgroundContext,
+      xDest: animatedTile.xDest,
+      yDest: animatedTile.yDest,
+    });
+  });
+
+  idleTiles.forEach(idleTile => {
+    drawTile({
+      tile: backgroundTile,
+      tileImg: backgroundImg,
+      tileId: idleTile.id,
+      context: backgroundContext,
+      xDest: idleTile.xDest,
+      yDest: idleTile.yDest,
+    });
+  });
+};
+
+const initDrawBackground = (map, state) => {
+  for (let y = 0; y < map.tileList.length; y++) {
+    for (let x = 0; x < map.tileList[y].length; x++) {
+      const { id, ids } = map.tileList[y][x];
+      const { idleTiles = [], animatedTiles = [] } = state.getLocalState();
+      const xDest = x * backgroundTile.width;
+      const yDest = y * backgroundTile.height;
+
+      if (id === undefined) {
+        state.setLocalState({
+          animatedTiles: [...animatedTiles, { ids, xDest, yDest }],
+        });
+      } else {
+        state.setLocalState({
+          idleTiles: [...idleTiles, { id, xDest, yDest }],
+        });
+      }
+    }
+  }
+};
+
+const drawBackground = _drawBackground(store, drawTile);
+
+const backgroundStep = _backgroundStep();
+
+export { drawBackground, initDrawBackground, backgroundStep };

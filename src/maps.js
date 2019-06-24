@@ -24,29 +24,52 @@ const {
   waterBottomRightCorner,
 } = backgroundTile.list;
 
-const map1 = {
+const padded4Water = array => {
+  return [...Array(4).fill(water), ...array, ...Array(4).fill(water)];
+};
+
+const upperIsland = {
   tileList: [
-    [
-      water,
-      water,
-      water,
-      water,
-      water,
-      water,
-      water,
+    padded4Water([
+      waterBottomRightDot,
+      ...Array(17).fill(waterBottom),
+      waterBottomLeftDot,
+    ]),
+    ...Array(17).fill(
+      padded4Water(
+        ...Array(17).fill([waterRight, ...Array(17).fill(grass), waterLeft]),
+      ),
+    ),
+    padded4Water([
+      waterTopRightDot,
+      ...Array(7).fill(waterTop),
       woodPlank,
+      ...Array(9).fill(waterTop),
+      waterTopLeftDot,
+    ]),
+  ],
+  tilePerRow: 27,
+  tilePerColumn: 19,
+  startPosition: {
+    x: 16,
+    y: 16,
+  },
+};
+
+const centralIsland = {
+  tileList: [
+    padded4Water([
+      ...Array(8).fill(water),
+      woodPlank,
+      ...Array(10).fill(water),
+    ]),
+    padded4Water([
+      ...Array(8).fill(water),
+      woodPlank,
+      ...Array(10).fill(water),
+    ]),
+    padded4Water([
       water,
-      water,
-      water,
-      water,
-      water,
-      water,
-      water,
-      water,
-      water,
-      water,
-    ],
-    [
       water,
       waterBottomRightDot,
       waterBottom,
@@ -65,8 +88,9 @@ const map1 = {
       waterBottom,
       waterBottomLeftDot,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      woodPlank,
       woodPlank,
       woodPlank,
       dirtyGrass,
@@ -85,8 +109,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       dirtyGrass,
@@ -105,8 +130,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       dirtyGrass,
@@ -125,8 +151,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       dirtyGrass,
@@ -145,8 +172,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       dirtyGrass,
@@ -165,8 +193,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       dirtyGrass,
@@ -185,8 +214,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       grass,
@@ -205,8 +235,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       grass,
@@ -225,8 +256,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       grassAlt2,
@@ -245,8 +277,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       grass,
@@ -265,8 +298,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       grass,
@@ -285,8 +319,9 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       waterRight,
       grass,
@@ -305,8 +340,30 @@ const map1 = {
       grass,
       waterLeft,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
+      water,
+      waterRight,
+      grass,
+      grass,
+      grass,
+      grass,
+      grassAlt,
+      grass,
+      grass,
+      grass,
+      grass,
+      grass,
+      dirtyGrass,
+      grass,
+      grassAlt,
+      grass,
+      waterLeft,
+      water,
+    ]),
+    padded4Water([
+      water,
       water,
       waterTopRightDot,
       waterTop,
@@ -325,8 +382,9 @@ const map1 = {
       waterTop,
       waterTopLeftDot,
       water,
-    ],
-    [
+    ]),
+    padded4Water([
+      water,
       water,
       water,
       water,
@@ -345,14 +403,50 @@ const map1 = {
       water,
       water,
       water,
-    ],
+    ]),
+    padded4Water([
+      water,
+      water,
+      water,
+      water,
+      water,
+      water,
+      water,
+      water,
+      water,
+      water,
+      water,
+      water,
+      water,
+      woodPlank,
+      water,
+      water,
+      water,
+      water,
+      water,
+    ]),
   ],
   startPosition: {
-    x: 32,
-    y: 32,
+    x: 48,
+    y: 48,
   },
-  tilePerRow: 18,
-  tilePerColumn: 16,
+  tilePerRow: 27,
+  tilePerColumn: 19,
 };
 
-export default map1;
+const map = {
+  tileList: [
+    ...Array(4).fill(Array(27).fill(water)),
+    ...upperIsland.tileList,
+    ...centralIsland.tileList,
+    ...Array(4).fill(Array(27).fill(water)),
+  ],
+  startPosition: {
+    x: 128,
+    y: 128,
+  },
+  tilePerRow: 27,
+  tilePerColumn: 46,
+};
+
+export default map;

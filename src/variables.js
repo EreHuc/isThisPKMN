@@ -34,13 +34,16 @@ export const backgroundTile = {
     waterBottom: { layer: layer.obstacle, ids: [17, 33, 49, 65, 17] },
     waterBottomLeftDot: { layer: layer.obstacle, ids: [18, 34, 50, 66, 18] },
     waterBottomLeftCorner: { layer: layer.obstacle, ids: [19, 35, 51, 67, 19] },
-    waterBottomRightCorner: { layer: layer.obstacle, ids: [20, 36, 52, 68, 20] },
+    waterBottomRightCorner: {
+      layer: layer.obstacle,
+      ids: [20, 36, 52, 68, 20],
+    },
   },
 };
 
 export const canvas = {
-  width: 288,
-  height: 256,
+  width: 304,
+  height: 304,
   scale: 2,
 };
 

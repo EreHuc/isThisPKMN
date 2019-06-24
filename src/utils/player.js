@@ -1,67 +1,9 @@
 import { clearTile, drawTile } from './canvas';
-import { keyCodes, playerTile } from '../variables';
+import { playerTile } from '../variables';
 import { store } from '../store';
-import {
-  setPlayerDirection,
-  setPlayerMovement,
-} from '../store/actions/player.actions';
 import localState from './local-state';
 import { keyHandler } from './key-handler';
 import { idles, moves } from './moves';
-
-const keydownCallback = store => keyCode => {
-  let canMove = false;
-  switch (keyCode) {
-    case keyCodes.up:
-      // moveUp();
-      store.dispatch(setPlayerDirection(keyCodes.up));
-      canMove = true;
-      break;
-    case keyCodes.down:
-      // moveDown();
-      store.dispatch(setPlayerDirection(keyCodes.down));
-      canMove = true;
-      break;
-    case keyCodes.right:
-      // moveRight();
-      store.dispatch(setPlayerDirection(keyCodes.right));
-      canMove = true;
-      break;
-    case keyCodes.left:
-      // moveLeft();
-      store.dispatch(setPlayerDirection(keyCodes.left));
-      canMove = true;
-      break;
-    default:
-      // eslint-disable-next-line no-console
-      console.log('NOT HANDLED');
-  }
-
-  canMove && store.dispatch(setPlayerMovement(true));
-};
-
-const keyupCallback = store => keyCode => {
-  let canStop = false;
-  switch (keyCode) {
-    case keyCodes.up:
-      canStop = true;
-      break;
-    case keyCodes.down:
-      canStop = true;
-      break;
-    case keyCodes.right:
-      canStop = true;
-      break;
-    case keyCodes.left:
-      canStop = true;
-      break;
-    default:
-      // eslint-disable-next-line no-console
-      console.log('NOT HANDLED');
-  }
-
-  canStop && store.dispatch(setPlayerMovement(false));
-};
 
 function _drawPlayer(drawTile, clearTile, localState, store) {
   const state = localState();
@@ -102,20 +44,10 @@ function _drawPlayer(drawTile, clearTile, localState, store) {
   };
 }
 
-function _playerAnimationFrame(
-  store,
-  localState,
-  keyHandler,
-  moves,
-  idles,
-  drawPlayer,
-  keyupCallback,
-  keydownCallback,
-  destroyMovementHandler,
-) {
+function _playerStep(store, localState, keyHandler, moves, idles) {
   const state = localState();
 
-  const step = timestamp => {
+  return timestamp => {
     let canDrawPlayer = false;
     const {
       player: { isMoving, moveDirection },
@@ -169,57 +101,20 @@ function _playerAnimationFrame(
     }
 
     if (canDrawPlayer) {
-      drawPlayer();
-
       lastMovingState !== isMoving &&
         state.setLocalState({
           isMoving,
         });
     }
-
-    const rafId = window.requestAnimationFrame(step);
-    state.setLocalState({ rafId });
   };
-
-  const stop = () => {
-    const { rafId } = state.getLocalState();
-    window.cancelAnimationFrame(rafId);
-    destroyMovementHandler(store, keyupCallback, keydownCallback);
-  };
-
-  const start = () => {
-    drawPlayer();
-    const rafId = window.requestAnimationFrame(step);
-
-    state.setLocalState({ rafId });
-
-    keyHandler({
-      onKeyUp: keyupCallback(store),
-      onKeyDown: keydownCallback(store),
-    });
-  };
-
-  return {
-    start,
-    stop,
-  };
-}
-
-function _destroyMovementHandler(store, keyupCallback, keydownCallback) {
-  window.removeEventListener('keydown', keydownCallback(store));
-  window.removeEventListener('keyup', keyupCallback(store));
 }
 
 export const drawPlayer = _drawPlayer(drawTile, clearTile, localState, store);
 
-export const playerAnimation = _playerAnimationFrame(
+export const playerStep = _playerStep(
   store,
   localState,
   keyHandler,
   moves,
   idles,
-  drawPlayer,
-  keyupCallback,
-  keydownCallback,
-  _destroyMovementHandler,
 );

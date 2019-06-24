@@ -1,8 +1,6 @@
 import { createBackgroundCanvas, createPlayerCanvas } from './utils/canvas';
 import { backgroundTile, playerTile } from './variables';
-import { drawMap } from './utils/map';
 import map from './maps';
-import { playerAnimation } from './utils/player';
 import {
   setPlayerCurrentImage,
   setPlayerPosition,
@@ -16,6 +14,7 @@ import {
   setBackgroundImage,
   setPlayerImage,
 } from './store/actions/images.actions';
+import { animations } from './utils/animations';
 
 function initGame(store) {
   const backgroundContext = createBackgroundCanvas();
@@ -31,14 +30,15 @@ function initGame(store) {
   store.dispatch(setPlayerContext(playerContext));
 
   loadBackground.then(backgroundImg => {
-    drawMap({ map: map.tileList, context: backgroundContext, backgroundImg });
+    // drawMap({ map, context: backgroundContext, backgroundImg });
     store.dispatch(setPlayerPosition(map.startPosition));
     store.dispatch(setBackgroundImage(backgroundImg));
 
     loadPlayer.then(playerImg => {
       store.dispatch(setPlayerImage(playerImg));
       store.dispatch(setPlayerCurrentImage(playerImg));
-      playerAnimation.start();
+      // playerAnimation.start();
+      animations.start();
     });
   });
 
