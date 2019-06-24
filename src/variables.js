@@ -42,8 +42,8 @@ export const backgroundTile = {
 };
 
 export const canvas = {
-  width: 304,
-  height: 304,
+  width: 256,
+  height: 256,
   scale: 2,
 };
 

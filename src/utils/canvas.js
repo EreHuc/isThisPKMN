@@ -1,5 +1,6 @@
-import { canvas as canvasDetail } from '../variables';
+import { backgroundTile, canvas as canvasDetail } from '../variables';
 import { store } from '../store';
+import map from '../maps';
 
 function createCanvas({
   id,
@@ -52,8 +53,16 @@ function setTransform(x, y, context) {
     0,
     0,
     canvasDetail.scale,
-    -canvasDetail.scale * x + canvasDetail.width,
-    -canvasDetail.scale * y + canvasDetail.height,
+    -canvasDetail.scale * x +
+      Math.min(
+        Math.floor((map.tilePerRow * backgroundTile.width) / 2),
+        canvasDetail.width,
+      ),
+    -canvasDetail.scale * y +
+      Math.min(
+        Math.floor((map.tilePerColumn * backgroundTile.width) / 2),
+        canvasDetail.height,
+      ),
   );
 }
 
