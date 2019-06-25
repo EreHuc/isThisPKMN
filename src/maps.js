@@ -442,8 +442,8 @@ const map = {
     ...Array(4).fill(Array(27).fill(water)),
   ],
   startPosition: {
-    x: 128,
-    y: 128,
+    x: 216,
+    y: 524,
   },
   tilePerRow: 27,
   tilePerColumn: 46,

@@ -1,4 +1,8 @@
-import { backgroundTile, canvas as canvasDetail } from '../variables';
+import {
+  backgroundTile,
+  canvas as canvasDetail,
+  playerTile,
+} from '../variables';
 import { store } from '../store';
 import map from '../maps';
 
@@ -53,16 +57,8 @@ function setTransform(x, y, context) {
     0,
     0,
     canvasDetail.scale,
-    -canvasDetail.scale * x +
-      Math.min(
-        Math.floor((map.tilePerRow * backgroundTile.width) / 2),
-        canvasDetail.width,
-      ),
-    -canvasDetail.scale * y +
-      Math.min(
-        Math.floor((map.tilePerColumn * backgroundTile.width) / 2),
-        canvasDetail.height,
-      ),
+    -canvasDetail.scale * (x - canvasDetail.width / 2 + playerTile.width / 2),
+    -canvasDetail.scale * (y - canvasDetail.height / 2 + playerTile.height / 2),
   );
 }
 
