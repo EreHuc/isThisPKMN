@@ -6,7 +6,6 @@ export const SetBackgroundImage = 'SET_BACKGROUND_IMAGE';
 
 const imagesState = {
   player: null,
-  altPlayer: null,
   background: null,
 };
 
@@ -17,7 +16,7 @@ export function imagesReducer(state = imagesState, { type, payload }) {
     case SetBackgroundImage:
       return { ...state, background: payload };
     case SetAltPlayerImage:
-      return { ...state, altPlayer: payload };
+      return { ...state, [payload.name]: payload.image };
     default:
       return state;
   }

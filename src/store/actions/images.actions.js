@@ -14,7 +14,10 @@ export const setBackgroundImage = backgroundImage => ({
   payload: backgroundImage,
 });
 
-export const setAltPlayerImage = altPlayerImage => ({
+export const setAltPlayerImage = (altPlayerName, altPlayerImage) => ({
   type: SetAltPlayerImage,
-  payload: altPlayerImage,
+  payload: {
+    name: altPlayerName,
+    image: altPlayerImage,
+  },
 });

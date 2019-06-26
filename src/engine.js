@@ -42,8 +42,24 @@ function initGame(store) {
     });
   });
 
-  loadAltPlayer.then(altPlayerImage => {
-    store.dispatch(setAltPlayerImage(altPlayerImage));
+  loadPikachu.then(altPlayerImage => {
+    store.dispatch(setAltPlayerImage('pikachu', altPlayerImage));
+  });
+
+  loadPkmn.then(altPlayerImage => {
+    store.dispatch(setAltPlayerImage('pkmn', altPlayerImage));
+  });
+
+  loadMelofee.then(altPlayerImage => {
+    store.dispatch(setAltPlayerImage('melofee', altPlayerImage));
+  });
+
+  loadJessie.then(altPlayerImage => {
+    store.dispatch(setAltPlayerImage('jessie', altPlayerImage));
+  });
+
+  loadJames.then(altPlayerImage => {
+    store.dispatch(setAltPlayerImage('james', altPlayerImage));
   });
 }
 
@@ -61,6 +77,10 @@ const loadBackground = loadImage(backgroundTile.src);
 
 const loadPlayer = loadImage(playerTile.src);
 
-const loadAltPlayer = loadImage(playerTile.altSrc);
+const loadPikachu = loadImage(playerTile.pikachuSrc);
+const loadPkmn = loadImage(playerTile.pkmnSrc);
+const loadMelofee = loadImage(playerTile.melofeeSrc);
+const loadJessie = loadImage(playerTile.jessieSrc);
+const loadJames = loadImage(playerTile.jamesSrc);
 
 export { initGame };

@@ -1,6 +1,10 @@
 import tileSrc from './assets/tile.png';
 import playerSrc from './assets/sacha.png';
-import playerAltSrc from './assets/pikachu.png';
+import pikachuSrc from './assets/pikachu.png';
+import pkmnSrc from './assets/pkmn.png';
+import melofeeSrc from './assets/melofee.png';
+import jessieSrc from './assets/jessie.png';
+import jamesSrc from './assets/james.png';
 
 export const layer = {
   floor: 0,
@@ -51,7 +55,11 @@ export const playerTile = {
   height: 16,
   width: 16,
   src: playerSrc,
-  altSrc: playerAltSrc,
+  pikachuSrc,
+  pkmnSrc,
+  melofeeSrc,
+  jessieSrc,
+  jamesSrc,
   layer: layer.player,
   idle: {
     up: 3,
@@ -74,13 +82,6 @@ export const playerTile = {
     left: 2,
     right: 3,
   },
-};
-
-export const _keyCodes = {
-  up: 38,
-  down: 40,
-  right: 36,
-  left: 37,
 };
 
 export const keyCodes = {
