@@ -15,12 +15,12 @@ function _canMove(wall) {
 function wall(x, y) {
   // Define player hit box.
   // Hit box smaller than player because of error in block detection
-  // Hit box size : top : -4 px higher; bottom: -1px lower; left & right : -1px wider;
+  // Hit box size : top : -5 px higher; bottom: -2px lower; left & right : -2px wider;
   // Top as an higher value because of realism ( head can go through obstacle )
-  const x1 = Math.floor((x + 1) / playerTile.width);
-  const x2 = Math.floor((x + 15) / playerTile.width);
-  const y1 = Math.floor((y + 4) / playerTile.height);
-  const y2 = Math.floor((y + 15) / playerTile.height);
+  const x1 = Math.floor((x + 2) / playerTile.width);
+  const x2 = Math.floor((x + 14) / playerTile.width);
+  const y1 = Math.floor((y + 5) / playerTile.height);
+  const y2 = Math.floor((y + 14) / playerTile.height);
 
   return [[x1, y1], [x1, y2], [x2, y1], [x2, y2]].reduce(
     (acc, [tileX, tileY]) => {
@@ -37,23 +37,11 @@ function wall(x, y) {
   );
 }
 
-function _move({ moveTiles = [], x = 0, y = 0, store, canMove }) {
+function _moveAnimation({ moveTiles = [], store }) {
   return () => {
     const {
-      player: { positions, tileId: playerTileId },
+      player: { tileId: playerTileId },
     } = store.getState();
-
-    const playerX = positions.x + x;
-    const playerY = positions.y + y;
-
-    if (canMove(playerX, playerY)) {
-      store.dispatch(
-        setPlayerPosition({
-          y: playerY,
-          x: playerX,
-        }),
-      );
-    }
 
     const currentTileIndex = moveTiles.findIndex(
       tileId => tileId === playerTileId,
@@ -67,6 +55,26 @@ function _move({ moveTiles = [], x = 0, y = 0, store, canMove }) {
   };
 }
 
+function _move({ x = 0, y = 0, store, canMove }) {
+  return () => {
+    const {
+      player: { positions },
+    } = store.getState();
+
+    const playerX = positions.x + x;
+    const playerY = positions.y + y;
+
+    if (canMove(playerX, playerY)) {
+      store.dispatch(
+        setPlayerPosition({
+          y: playerY,
+          x: playerX,
+        }),
+      );
+    }
+  };
+}
+
 function _idle({ idleTile, store }) {
   return () => {
     store.dispatch(setPlayerTileId(idleTile));
@@ -75,27 +83,43 @@ function _idle({ idleTile, store }) {
 
 const canMove = _canMove(wall);
 
-const moveUp = _move({
+const moveAnimationUp = _moveAnimation({
   moveTiles: [playerTile.move.up, playerTile.move.upAlt],
-  y: -4,
+  store,
+});
+
+const moveAnimationDown = _moveAnimation({
+  moveTiles: [playerTile.move.down, playerTile.move.downAlt],
+  store,
+});
+
+const moveAnimationLeft = _moveAnimation({
+  moveTiles: [playerTile.idle.left, playerTile.move.left],
+  store,
+});
+
+const moveAnimationRight = _moveAnimation({
+  moveTiles: [playerTile.idle.right, playerTile.move.right],
+  store,
+});
+
+const moveUp = _move({
+  y: -playerTile.pxPerFrameMovement,
   store,
   canMove: canMove,
 });
 const moveDown = _move({
-  moveTiles: [playerTile.move.down, playerTile.move.downAlt],
-  y: 4,
+  y: playerTile.pxPerFrameMovement,
   store,
   canMove: canMove,
 });
 const moveLeft = _move({
-  moveTiles: [playerTile.idle.left, playerTile.move.left],
-  x: -4,
+  x: -playerTile.pxPerFrameMovement,
   store,
   canMove: canMove,
 });
 const moveRight = _move({
-  moveTiles: [playerTile.idle.right, playerTile.move.right],
-  x: 4,
+  x: playerTile.pxPerFrameMovement,
   store,
   canMove: canMove,
 });
@@ -104,6 +128,13 @@ const idleUp = _idle({ store, idleTile: playerTile.idle.up });
 const idleDown = _idle({ store, idleTile: playerTile.idle.down });
 const idleLeft = _idle({ store, idleTile: playerTile.idle.left });
 const idleRight = _idle({ store, idleTile: playerTile.idle.right });
+
+export const moveAnimations = {
+  [keyCodes.right]: moveAnimationRight,
+  [keyCodes.left]: moveAnimationLeft,
+  [keyCodes.up]: moveAnimationUp,
+  [keyCodes.down]: moveAnimationDown,
+};
 
 export const moves = {
   [keyCodes.right]: moveRight,

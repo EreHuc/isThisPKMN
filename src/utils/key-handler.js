@@ -68,10 +68,10 @@ export const keyHandler = ({ onKeyDown, onKeyUp }) => {
 
       const [currentKeyCode] = state.getCurrentKeyCode();
       if (currentKeyCode !== oldKeyCode) {
-        onKeyUp(oldKeyCode);
-
         if (currentKeyCode) {
           onKeyDown(currentKeyCode);
+        } else {
+          onKeyUp(oldKeyCode);
         }
       }
     });

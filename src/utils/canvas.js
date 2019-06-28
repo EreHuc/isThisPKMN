@@ -1,10 +1,5 @@
-import {
-  backgroundTile,
-  canvas as canvasDetail,
-  playerTile,
-} from '../variables';
+import { canvas as canvasDetail, playerTile } from '../variables';
 import { store } from '../store';
-import map from '../maps';
 
 function createCanvas({
   id,

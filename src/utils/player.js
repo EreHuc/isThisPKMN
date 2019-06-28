@@ -3,7 +3,7 @@ import { playerTile } from '../variables';
 import { store } from '../store';
 import localState from './local-state';
 import { keyHandler } from './key-handler';
-import { idles, moves } from './moves';
+import { idles, moveAnimations, moves } from './moves';
 
 function _drawPlayer(drawTile, clearTile, localState, store) {
   const state = localState();
@@ -44,11 +44,17 @@ function _drawPlayer(drawTile, clearTile, localState, store) {
   };
 }
 
-function _playerStep(store, localState, keyHandler, moves, idles) {
+function _playerStep(
+  store,
+  localState,
+  keyHandler,
+  moves,
+  moveAnimations,
+  idles,
+) {
   const state = localState();
 
   return timestamp => {
-    let canDrawPlayer = false;
     const {
       player: { isMoving, moveDirection },
     } = store.getState();
@@ -60,15 +66,9 @@ function _playerStep(store, localState, keyHandler, moves, idles) {
       hitStun = 0,
     } = state.getLocalState();
 
-    if (timestamp - start > 100) {
-      if (isMoving && (hitStun > 1 || moveDirection === lastMoveDirection)) {
-        moves[moveDirection]();
-
-        canDrawPlayer = true;
-
-        state.setLocalState({
-          moveDirection,
-        });
+    if (timestamp - start > 200 || moveDirection !== lastMoveDirection) {
+      if (isMoving && hitStun > 2) {
+        moveAnimations[moveDirection]();
       }
 
       state.setLocalState({
@@ -81,31 +81,26 @@ function _playerStep(store, localState, keyHandler, moves, idles) {
         hitStun: hitStun + 1,
       });
 
-      if (hitStun === 0) {
-        canDrawPlayer = true;
-      }
-    } else {
-      if (lastMovingState !== isMoving) {
-        idles[moveDirection]();
+      if (hitStun > 2 || moveDirection === lastMoveDirection) {
+        moves[moveDirection]();
 
         state.setLocalState({
           moveDirection,
         });
-
-        canDrawPlayer = true;
-
-        state.setLocalState({
-          hitStun: 0,
-        });
       }
+    } else if (lastMovingState !== isMoving) {
+      idles[moveDirection]();
+
+      state.setLocalState({
+        moveDirection,
+        hitStun: 0,
+      });
     }
 
-    if (canDrawPlayer) {
-      lastMovingState !== isMoving &&
-        state.setLocalState({
-          isMoving,
-        });
-    }
+    lastMovingState !== isMoving &&
+      state.setLocalState({
+        isMoving,
+      });
   };
 }
 
@@ -116,5 +111,6 @@ export const playerStep = _playerStep(
   localState,
   keyHandler,
   moves,
+  moveAnimations,
   idles,
 );

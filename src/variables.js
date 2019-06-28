@@ -61,6 +61,7 @@ export const playerTile = {
   jessieSrc,
   jamesSrc,
   layer: layer.player,
+  pxPerFrameMovement: 1,
   idle: {
     up: 3,
     right: 6,
