@@ -58,13 +58,128 @@ img{
 /****************End reset CSS******************/
 
 body {
-  background: #232323;
+  /*background: #232323;*/
+  background-color: #f9e52e;
   color: white;
   overflow: hidden;
 }
 
-#canvas_player{
+canvas {
   position: absolute;
   left: 0;
   top: 0;
+}
+
+#canvas_player {
+  z-index: 1;
+}
+
+#gbc-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#gbc-screen {
+  display: inline-block;
+  height: 480px;
+  width: 432px;
+  border-radius: 20px 20px 50% 50% / 20px 20px 30px 30px;
+  background: #222222;
+  padding: 65px 100px 120px 100px;
+  margin: 20px;
+  position: relative;
+}
+
+#gbc-canvas {
+  position: relative;
+  height: 480px;
+  width: 432px;
+  background: #292929;
+}
+
+#gbc-power {
+  position: absolute;
+  background-color: #ff0151;
+  box-shadow: 0 0 5px 1px #ff0151, 8px 0 #222222, 14px 0 #b0b0b0, 23px 0 #222222, 28px 0 #b0b0b0, 37px 0 #222222, 41px 0 #b0b0b0;
+  top: 190px;
+  left: 20px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+#gbc-power-text {
+  position: absolute;
+  left: 23px;
+  top: 218px;
+  font-size: 17px;
+  font-family: 'Asap', sans-serif;
+  color: #b0b0b0;
+  letter-spacing: -1px;
+}
+
+#gbc-color-text {
+  z-index: 15;
+  color: #ff0151;
+  position: absolute;
+  bottom: 35px;
+  left: 373px;
+  font-family: 'Comic Sans', 'Comic Sans MS', 'ChalkboardSE-Bold', sans-serif, cursive;
+  font-size: 60px;
+  letter-spacing: -2px;
+  font-weight: 700;
+  transform: scale(0.85);
+}
+
+#gbc-color-text::before {
+  content: "L";
+  position: absolute;
+  left: 31px;
+  top: 15px;
+  line-height: 12px;
+  text-indent: 28px;
+  color: #85e367;
+  border: 10px #5151dd solid;
+  border-radius: 50%;
+  width: 21px;
+  height: 21px;
+}
+
+#gbc-color-text::after {
+  content: "R";
+  position: absolute;
+  left: 96px;
+  top: 15px;
+  line-height: 16px;
+  text-indent: 28px;
+  color: #01b4dd;
+  border: 10px #f9e52e solid;
+  border-radius: 50%;
+  width: 21px;
+  height: 21px;
+}
+
+#gbc-gameboy-text {
+  color: #b0b0b0;
+  font-weight: 400;
+  font-style: italic;
+  font-family: 'Asap', sans-serif;
+  letter-spacing: -2px;
+  white-space: nowrap;
+  position: absolute;
+  bottom: 36px;
+  left: 105px;
+  font-size: 55px;
+}
+
+#gbc-bottom {
+  height: 100vh;
+  width: 500px;
+  position: absolute;
+  top: 50%;
+  z-index: -1;
+  background: rgba(255, 255, 255, .2);
 }

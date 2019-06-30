@@ -78,12 +78,12 @@ function clearTile({ context, x, y, w, h }) {
 
 const createBackgroundCanvas = createCanvas({
   id: 'canvas_background',
-  element: document.body,
+  element: document.getElementById('gbc-canvas'),
 });
 
 const createPlayerCanvas = createCanvas({
   id: 'canvas_player',
-  element: document.body,
+  element: document.getElementById('gbc-canvas'),
 });
 
 export const setContextTransform = _setContextTransform(store);

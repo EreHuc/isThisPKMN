@@ -87,17 +87,14 @@ const moveAnimationUp = _moveAnimation({
   moveTiles: [playerTile.move.up, playerTile.move.upAlt],
   store,
 });
-
 const moveAnimationDown = _moveAnimation({
   moveTiles: [playerTile.move.down, playerTile.move.downAlt],
   store,
 });
-
 const moveAnimationLeft = _moveAnimation({
   moveTiles: [playerTile.idle.left, playerTile.move.left],
   store,
 });
-
 const moveAnimationRight = _moveAnimation({
   moveTiles: [playerTile.idle.right, playerTile.move.right],
   store,
@@ -142,6 +139,7 @@ export const moves = {
   [keyCodes.up]: moveUp,
   [keyCodes.down]: moveDown,
 };
+
 export const idles = {
   [keyCodes.up]: idleUp,
   [keyCodes.down]: idleDown,

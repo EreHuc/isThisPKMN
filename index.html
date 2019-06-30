@@ -2,11 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="src/styles/style.css">
     <title>Is this PKMN Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Asap&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/style.css">
   </head>
   <body>
-    <select id="select_sprites"></select>
+<!--    <select id="select_sprites"></select>-->
+    <div id="gbc-container">
+      <div id="gbc-screen">
+        <div id="gbc-power"></div>
+        <div id="gbc-power-text">POWER</div>
+        <div id="gbc-gameboy-text">GAME BOY</div>
+        <div id="gbc-color-text">C</div>
+        <div id="gbc-canvas"></div>
+      </div>
+      <div id="gbc-bottom"></div>
+    </div>
     <script type="text/javascript" src="src/index.js"></script>
   </body>
 </html>
