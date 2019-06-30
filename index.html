@@ -4,21 +4,30 @@
     <meta charset="utf-8">
     <title>Is this PKMN Game</title>
     <link href="https://fonts.googleapis.com/css?family=Asap" rel="stylesheet">
-    <link rel="stylesheet" href="src/styles/style.css">
+    <link rel="stylesheet" href="src/styles/style.scss">
     <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no">
   </head>
   <body>
-<!--    <select id="select_sprites"></select>-->
-    <div id="gbc-container">
-      <div id="gbc-screen">
-        <div id="gbc-power"></div>
-        <div id="gbc-power-text">POWER</div>
-        <div id="gbc-gameboy-text">GAME BOY</div>
-        <div id="gbc-color-text">C</div>
-        <div id="gbc-canvas"></div>
+    <header>
+      <div id="select-container">
+        <div id="select-label">
+          <span>SELECT CHARACTER</span><span class="indicator"></span>
+        </div>
+        <div id="select-sprites" data-tag="select-sprites"></div>
       </div>
-      <div id="gbc-bottom"></div>
-    </div>
+    </header>
+    <main>
+      <div id="gbc-container">
+        <div id="gbc-screen">
+          <div id="gbc-power"></div>
+          <div id="gbc-power-text">POWER</div>
+          <div id="gbc-gameboy-text">GAME BOY</div>
+          <div id="gbc-color-text">C</div>
+          <div id="gbc-canvas"></div>
+        </div>
+        <div id="gbc-bottom"></div>
+      </div>
+    </main>
     <script type="text/javascript" src="src/index.js"></script>
   </body>
 </html>

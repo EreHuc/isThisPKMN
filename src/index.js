@@ -1,11 +1,15 @@
 import { initGame } from './engine';
 import { store } from './store';
-// import { setPlayerCurrentImage } from './store/actions/player.actions';
+import { setPlayerCurrentImage } from './store/actions/player.actions';
 
 window.addEventListener('DOMContentLoaded', () => {
   initGame(store);
+  selectCharacter(store);
+  handleSize();
+});
 
-  const handleSize = () => {
+function handleSize() {
+  const resizeEventHandler = () => {
     const gbcContainer = document.getElementById('gbc-container');
     const {
       offsetHeight: gbcScreenH,
@@ -21,30 +25,39 @@ window.addEventListener('DOMContentLoaded', () => {
     gbcContainer.setAttribute('style', `transform: scale(${scale});`);
   };
 
-  window.addEventListener('resize', handleSize);
-  handleSize();
+  window.addEventListener('resize', resizeEventHandler);
 
-  // let sprites = [];
-  // store.subscribe(() => {
-  //   const { images } = store.getState();
-  //   const imagesList = Object.entries(images);
-  //
-  //   if (imagesList.length !== sprites.length) {
-  //     sprites = [...imagesList];
-  //     document.getElementById('select_sprites').innerHTML = sprites
-  //       .map(([spriteName]) => {
-  //         return `<option value="${spriteName}">${spriteName}</option>`;
-  //       })
-  //       .join('\n');
-  //   }
-  // });
-  // document
-  //   .getElementById('select_sprites')
-  //   .addEventListener('change', ({ target: { value } }) => {
-  //     store.dispatch(
-  //       setPlayerCurrentImage(
-  //         sprites.find(([spriteName]) => spriteName === value)[1],
-  //       ),
-  //     );
-  //   });
-});
+  resizeEventHandler();
+}
+
+function selectCharacter(store) {
+  let sprites = [];
+
+  document.querySelector('#select-label').addEventListener('click', () => {
+    document.querySelector('#select-container').classList.toggle('active');
+  });
+
+  store.subscribe(() => {
+    const container = document.querySelector('[data-tag="select-sprites"]');
+    const { images } = store.getState();
+    const imagesList = Object.entries(images);
+
+    if (imagesList.length !== sprites.length) {
+      container.innerHTML = '';
+
+      imagesList.forEach(([spriteName, spriteImage]) => {
+        const divElement = document.createElement('div');
+        divElement.innerText = spriteName;
+        divElement.addEventListener('click', () => {
+          store.dispatch(setPlayerCurrentImage(spriteImage));
+          document
+            .querySelector('#select-container')
+            .classList.toggle('active');
+        });
+        container.appendChild(divElement);
+      });
+
+      sprites = [...imagesList];
+    }
+  });
+}
