@@ -1,5 +1,5 @@
-import { drawTile } from '../../../src/utils/canvas';
-import { backgroundTile } from '../variables';
+import { clearTile, drawTile } from '../../../src/utils/canvas';
+import { backgroundCanvas, backgroundTile } from '../variables';
 import { store } from '../store';
 
 function _drawElementList(drawTile) {
@@ -19,22 +19,52 @@ function _drawElementList(drawTile) {
   };
 }
 
-function _drawMap(store, drawTile) {
+function _drawMap(store, drawTile, clearTile) {
   return () => {
     const {
-      canvas: { map },
+      canvas: {
+        map: { background: backgroundMap, foreground: foregroundMap },
+      },
       images: { background },
-      contexts: { background: context },
+      contexts: {
+        background: backgroundContext,
+        foreground: foregroundContext,
+      },
     } = store.getState();
 
-    map.forEach((subMap, y) => {
+    [backgroundContext, foregroundContext].forEach(context => {
+      clearTile({
+        context,
+        y: 0,
+        x: 0,
+        w: backgroundCanvas.width,
+        h: backgroundCanvas.height,
+      });
+    });
+
+    backgroundMap.forEach((subMap, y) => {
       subMap.forEach((element, x) => {
         if (element) {
           drawTile({
             tile: backgroundTile,
             tileImg: background,
             tileId: element.id === undefined ? element.ids[0] : element.id,
-            context,
+            context: backgroundContext,
+            xDest: x * backgroundTile.width,
+            yDest: y * backgroundTile.height,
+          });
+        }
+      });
+    });
+
+    foregroundMap.forEach((subMap, y) => {
+      subMap.forEach((element, x) => {
+        if (element) {
+          drawTile({
+            tile: backgroundTile,
+            tileImg: background,
+            tileId: element.id === undefined ? element.ids[0] : element.id,
+            context: foregroundContext,
             xDest: x * backgroundTile.width,
             yDest: y * backgroundTile.height,
           });
@@ -46,4 +76,4 @@ function _drawMap(store, drawTile) {
 
 export const drawElementList = _drawElementList(drawTile);
 
-export const drawMap = _drawMap(store, drawTile);
+export const drawMap = _drawMap(store, drawTile, clearTile);

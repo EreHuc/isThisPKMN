@@ -1,8 +1,21 @@
-// import { SetMap } from '../reducers/canvas.reducer';
-import { SetMap, SetSelectedElement } from '../reducers/canvas.reducer';
+import {
+  SetBackgroundMap,
+  SetForegroundMap,
+  SetSelectedCanvas,
+  SetSelectedElement,
+} from '../reducers/canvas.reducer';
 
-export const setMap = (x, y, element) => ({
-  type: SetMap,
+export const setBackgroundMap = (x, y, element) => ({
+  type: SetBackgroundMap,
+  payload: {
+    x,
+    y,
+    element,
+  },
+});
+
+export const setForegroundMap = (x, y, element) => ({
+  type: SetForegroundMap,
   payload: {
     x,
     y,
@@ -13,4 +26,9 @@ export const setMap = (x, y, element) => ({
 export const setSelectedElement = selectedElement => ({
   type: SetSelectedElement,
   payload: selectedElement,
+});
+
+export const setSelectedCanvas = selectedCanvas => ({
+  type: SetSelectedCanvas,
+  payload: selectedCanvas,
 });

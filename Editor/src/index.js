@@ -10,8 +10,14 @@ import { setBackgroundImage } from './store/actions/images.actions';
 import {
   setBackgroundContext,
   setElementsContext,
+  setForegroundContext,
 } from './store/actions/contexts.actions';
-import { setMap, setSelectedElement } from './store/actions/canvas.actions';
+import {
+  setBackgroundMap,
+  setForegroundMap,
+  setSelectedCanvas,
+  setSelectedElement,
+} from './store/actions/canvas.actions';
 import { animation } from './utils/animations';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -20,6 +26,14 @@ window.addEventListener('DOMContentLoaded', () => {
     containerElement: document.getElementById('canvas-container'),
     height: eCanvas.height,
     width: eCanvas.width,
+    scale: 1,
+  })();
+
+  const foregroundContext = createCanvas({
+    id: 'foreground-canvas',
+    containerElement: document.getElementById('canvas-container'),
+    height: bCanvas.height,
+    width: bCanvas.width,
     scale: 1,
   })();
 
@@ -32,23 +46,33 @@ window.addEventListener('DOMContentLoaded', () => {
   })();
 
   elementContext.scale(eCanvas.scale, eCanvas.scale);
+  foregroundContext.scale(eCanvas.scale, eCanvas.scale);
   backgroundContext.scale(bCanvas.scale, bCanvas.scale);
 
   store.dispatch(setBackgroundContext(backgroundContext));
+  store.dispatch(setForegroundContext(foregroundContext));
   store.dispatch(setElementsContext(elementContext));
 
   const elementCanvas = document.getElementById('element-canvas');
   const backgroundCanvas = document.getElementById('background-canvas');
+  const foregroundCanvas = document.getElementById('foreground-canvas');
+  const switchCanvasElement = document.getElementById('switch');
 
   elementCanvas.addEventListener(
     'click',
     getCurrentElementOnClickHandler(elementCanvas, store),
   );
 
-  backgroundCanvas.addEventListener(
+  foregroundCanvas.addEventListener(
     'click',
     setCurrentElementOnClickHandler(backgroundCanvas, store),
   );
+
+  switchCanvasElement.addEventListener('input', ({ target: { checked } }) => {
+    const label = checked === true ? 'background' : 'foreground';
+    document.getElementById('switch-label').innerText = label;
+    store.dispatch(setSelectedCanvas(label));
+  });
 
   loadBackground.then(backgroundImg => {
     store.dispatch(setBackgroundImage(backgroundImg));
@@ -86,7 +110,7 @@ const setCurrentElementOnClickHandler = (
   store,
 ) => clickEvent => {
   const {
-    canvas: { selectedElement },
+    canvas: { selectedElement, selectedCanvas },
   } = store.getState();
 
   const { x, y } = getMousePos(backgroundCanvas, clickEvent);
@@ -94,7 +118,18 @@ const setCurrentElementOnClickHandler = (
   const backgroundY = Math.floor(y / (backgroundTile.height * eCanvas.scale));
 
   if (selectedElement) {
-    store.dispatch(setMap(backgroundX, backgroundY, selectedElement));
+    switch (selectedCanvas) {
+      case 'background':
+        store.dispatch(
+          setBackgroundMap(backgroundX, backgroundY, selectedElement),
+        );
+        break;
+      case 'foreground':
+        store.dispatch(
+          setForegroundMap(backgroundX, backgroundY, selectedElement),
+        );
+        break;
+    }
   }
 };
 
@@ -117,4 +152,3 @@ function loadImage(src) {
 }
 
 const loadBackground = loadImage(backgroundTile.src);
-

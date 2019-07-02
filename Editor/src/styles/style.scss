@@ -33,12 +33,31 @@ body {
 }
 
 #canvas-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
   height: 100vh;
+  position: relative;
 }
 
 #background-canvas {
   background: grey;
+  z-index: 1;
+}
+
+#background-canvas, #foreground-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+#element-canvas {
+  background: #b0b0b0;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#selector {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
