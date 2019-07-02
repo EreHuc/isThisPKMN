@@ -16,7 +16,7 @@
   &.active {
     > #select-sprites {
       bottom: 0;
-      padding: 20px;
+      padding: 60px 20px 20px;
       overflow: auto;
     }
 
@@ -32,24 +32,24 @@
     top: 15px;
     padding: 5px;
     cursor: pointer;
-    z-index: $z-index-header;
+    z-index: 5;
+    width: 1460px;
+    background: -webkit-linear-gradient(0deg, #3232fc 40%, #85e367 40%, #85e367 45%, #ff52e8 45%, #ff52e8 50%, #ff0151 50%, #ff0151 55%, #f9e52e 55%, #f9e52e 60%, #f0f0f0 60%, #f0f0f0 65%, #222222 65%, #222222 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-position: -480px;
+    background-repeat: no-repeat;
+
+    &:hover {
+      animation: screen-gameboy-text 1.5s;
+    }
 
     > span.indicator::after {
       content: '+';
     }
 
-    &:hover > * {
-      //box-shadow: 0 2px #222222;
-    }
-
     > span {
-      background: -webkit-linear-gradient(0deg, #3232fc 40%, #85e367 40%, #85e367 45%, #ff52e8 45%, #ff52e8 50%, #ff0151 50%, #ff0151 55%, #f9e52e 55%, #f9e52e 60%, #f0f0f0 60%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-position: -480px;
-      background-repeat: no-repeat;
-      animation: screen-gameboy-text 1s infinite;
-      color: #3232fc;
+      color: #222222;
     }
 
   }
@@ -59,7 +59,7 @@
     background: rgba(249, 229, 46, 0.8);
     z-index: $z-index-header;
     width: 100%;
-    top: 60px;
+    top: 0;
     bottom: 100vh;
     display: flex;
     align-items: center;
@@ -91,8 +91,14 @@
   }
 }
 
-@media screen and (min-width: 425px) {
+@media screen and (min-width: 500px) {
   * {
     font-size: 30px;
+  }
+}
+
+@media screen and (min-height: 700px) {
+  #select-container > #select-sprites > * {
+    line-height: 100px;
   }
 }

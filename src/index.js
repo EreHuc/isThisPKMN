@@ -32,13 +32,17 @@ function handleSize() {
 
 function selectCharacter(store) {
   let sprites = [];
+  const container = document.querySelector('[data-tag="select-sprites"]');
 
   document.querySelector('#select-label').addEventListener('click', () => {
     document.querySelector('#select-container').classList.toggle('active');
   });
 
+  container.addEventListener('click', () => {
+    document.querySelector('#select-container').classList.remove('active');
+  });
+
   store.subscribe(() => {
-    const container = document.querySelector('[data-tag="select-sprites"]');
     const { images } = store.getState();
     const imagesList = Object.entries(images);
 
@@ -46,15 +50,17 @@ function selectCharacter(store) {
       container.innerHTML = '';
 
       imagesList.forEach(([spriteName, spriteImage]) => {
-        const divElement = document.createElement('div');
-        divElement.innerText = spriteName;
-        divElement.addEventListener('click', () => {
-          store.dispatch(setPlayerCurrentImage(spriteImage));
-          document
-            .querySelector('#select-container')
-            .classList.toggle('active');
-        });
-        container.appendChild(divElement);
+        if (spriteName !== 'background') {
+          const divElement = document.createElement('div');
+          divElement.innerText = spriteName;
+          divElement.addEventListener('click', () => {
+            store.dispatch(setPlayerCurrentImage(spriteImage));
+            document
+              .querySelector('#select-container')
+              .classList.toggle('active');
+          });
+          container.appendChild(divElement);
+        }
       });
 
       sprites = [...imagesList];

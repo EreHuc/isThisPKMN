@@ -106,11 +106,9 @@ $gameboy-transparent: rgba(140, 46, 217, 0.125);
 
 @keyframes screen-gameboy-text {
     10% {
-        color: $gameboy-purple;
-        -webkit-text-fill-color: transparent;
         background-position: -480px;
     }
     100% {
-        background-position: 480px;
+        background-position: 400px;
     }
 }

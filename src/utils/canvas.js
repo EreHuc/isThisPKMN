@@ -1,12 +1,12 @@
-import { canvas as canvasDetail, playerTile } from '../variables';
+import { canvas, playerTile } from '../variables';
 import { store } from '../store';
 
-function createCanvas({
+export function createCanvas({
   id,
-  element,
-  scale = canvasDetail.scale,
-  width = canvasDetail.width,
-  height = canvasDetail.height,
+  containerElement,
+  scale = canvas.scale,
+  width = canvas.width,
+  height = canvas.height,
 }) {
   return function(options = {}) {
     const canvas = document.createElement('canvas');
@@ -15,8 +15,8 @@ function createCanvas({
     canvas.width = width * scale;
     canvas.height = height * scale;
 
-    const context = element
-      .insertBefore(canvas, element.firstChild)
+    const context = containerElement
+      .insertBefore(canvas, containerElement.firstChild)
       .getContext('2d');
 
     context.imageSmoothingEnabled = false;
@@ -46,19 +46,26 @@ function drawTile({ tile, tileImg, tileId, context, xDest, yDest }) {
   );
 }
 
-function setTransform(x, y, context) {
+function setTransform(
+  x,
+  y,
+  context,
+  scale = canvas.scale,
+  width = canvas.width,
+  height = canvas.height,
+) {
   context.setTransform(
-    canvasDetail.scale,
+    scale,
     0,
     0,
-    canvasDetail.scale,
-    -canvasDetail.scale * (x - canvasDetail.width / 2 + playerTile.width / 2),
-    -canvasDetail.scale * (y - canvasDetail.height / 2 + playerTile.height / 2),
+    scale,
+    -scale * (x - width / 2 + playerTile.width / 2),
+    -scale * (y - height / 2 + playerTile.height / 2),
   );
 }
 
 function _setContextTransform(store) {
-  return map => {
+  return () => {
     const {
       player: {
         positions: { x, y },
@@ -67,7 +74,7 @@ function _setContextTransform(store) {
     } = store.getState();
 
     Object.values(contexts).forEach(context => {
-      setTransform(x, y, context, map);
+      setTransform(x, y, context);
     });
   };
 }
@@ -78,12 +85,12 @@ function clearTile({ context, x, y, w, h }) {
 
 const createBackgroundCanvas = createCanvas({
   id: 'canvas_background',
-  element: document.getElementById('gbc-canvas'),
+  containerElement: document.getElementById('gbc-canvas'),
 });
 
 const createPlayerCanvas = createCanvas({
   id: 'canvas_player',
-  element: document.getElementById('gbc-canvas'),
+  containerElement: document.getElementById('gbc-canvas'),
 });
 
 export const setContextTransform = _setContextTransform(store);

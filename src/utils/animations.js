@@ -7,7 +7,7 @@ import { backgroundStep, drawBackground, initDrawBackground } from './map';
 import { drawPlayer, playerStep } from './player';
 import { keydownCallback, keyHandler, keyupCallback } from './key-handler';
 
-export const _animation = (
+const _animation = (
   store,
   localState,
   drawPlayer,
@@ -48,7 +48,7 @@ export const _animation = (
 
     backgroundStep(timestamp, state);
     playerStep(timestamp);
-    setContextTransform(map);
+    setContextTransform();
     drawPlayer();
     drawBackground(state);
     requestNextFrame(state);

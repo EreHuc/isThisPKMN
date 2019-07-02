@@ -14,11 +14,10 @@
     "prettier": "^1.18.2"
   },
   "scripts": {
-    "start": "npm run dev",
-    "dev": "npm run watch:dev",
-    "prod": "npm run build:prod",
-    "build:prod": "parcel build index.html",
-    "watch:dev": "parcel index.html"
+    "start": "npm run start:game",
+    "start:game": "parcel index.html",
+    "prod:game": "parcel build index.html",
+    "dev:editor": "parcel editor_index.html --port 1337"
   },
   "repository": {
     "type": "git",
