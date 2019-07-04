@@ -23,7 +23,7 @@ function _drawMap(store, drawTile, clearTile) {
   return () => {
     const {
       canvas: {
-        map: { background: backgroundMap, foreground: foregroundMap },
+        maps: { background: backgroundMap, foreground: foregroundMap },
       },
       images: { background },
       contexts: {
@@ -42,8 +42,8 @@ function _drawMap(store, drawTile, clearTile) {
       });
     });
 
-    backgroundMap.forEach((subMap, y) => {
-      subMap.forEach((element, x) => {
+    backgroundMap.forEach((map, y) => {
+      map.forEach((element, x) => {
         if (element) {
           drawTile({
             tile: backgroundTile,
@@ -57,8 +57,8 @@ function _drawMap(store, drawTile, clearTile) {
       });
     });
 
-    foregroundMap.forEach((subMap, y) => {
-      subMap.forEach((element, x) => {
+    foregroundMap.forEach((map, y) => {
+      map.forEach((element, x) => {
         if (element) {
           drawTile({
             tile: backgroundTile,
@@ -72,6 +72,21 @@ function _drawMap(store, drawTile, clearTile) {
       });
     });
   };
+}
+
+export function drawGrid(context, canvasDetail) {
+  for (let y = 0; y < canvasDetail.height / 32; y++) {
+    context.beginPath();
+    context.moveTo(0, y * 32);
+    context.lineTo(canvasDetail.width, y * 32);
+    context.stroke();
+  }
+  for (let x = 0; x < canvasDetail.width / 32; x++) {
+    context.beginPath();
+    context.moveTo(x * 32, 0);
+    context.lineTo(x * 32, canvasDetail.height);
+    context.stroke();
+  }
 }
 
 export const drawElementList = _drawElementList(drawTile);

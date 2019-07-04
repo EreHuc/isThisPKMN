@@ -9,8 +9,22 @@
 <body>
 <div id="canvas-container"></div>
 <aside id="selector">
-  <label for="switch" id="switch-label" >background</label>
-  <input type="checkbox" id="switch" checked>
+<!--  <label for="switch" id="switch-label">background</label>-->
+<!--  <input type="checkbox" id="switch" checked>-->
+  <button type="button" id="layer-btn">Background</button>
+  <a href="" id="dl-a" style="display: none;"></a>
+  <button id="dl-btn" type="button">download maps</button>
+  <form id="upload-files-form">
+    <label for="file-input-background">Background file</label>
+    <input type="file" name="background" id="file-input-background" accept="application/json">
+    <label for="file-input-foreground">Foreground file</label>
+    <input type="file" name="foreground" id="file-input-foreground" accept="application/json">
+    <button type="submit" id="upload-files-btn">Upload file</button>
+  </form>
+  <button id="reset-map-btn" type="button">Reset map</button>
+  <button id="toggle-background-btn" type="button">Hide background</button>
+  <button id="toggle-foreground-btn" type="button">Hide foreground</button>
+  <button id="toggle-grid-btn" type="button">Hide grid</button>
 </aside>
 <script type="text/javascript" src="Editor/src/index.js"></script>
 </body>

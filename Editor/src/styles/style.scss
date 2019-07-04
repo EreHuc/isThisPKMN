@@ -37,27 +37,39 @@ body {
   position: relative;
 }
 
-#background-canvas {
-  background: grey;
-  z-index: 1;
-}
-
-#background-canvas, #foreground-canvas {
+#background-canvas, #foreground-canvas, #background-grid-canvas {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 0;
 }
 
-#element-canvas {
-  background: #b0b0b0;
+#background-canvas {
+  background: grey;
+}
+
+#background-grid-canvas {
+  z-index: 2;
+}
+
+#element-canvas, #elements-grid-canvas {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 0;
+}
+
+#elements-grid-canvas {
+  background: #b0b0b0;
+  z-index: -1;
 }
 
 #selector {
   position: absolute;
   right: 0;
   bottom: 0;
+}
+
+.hidden {
+  opacity: 0;
 }
