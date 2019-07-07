@@ -2,8 +2,10 @@ import {
   SetBackgroundMap,
   SetForegroundMap,
   SetMaps,
+  SetPlayerPositions,
   SetSelectedCanvas,
   SetSelectedElement,
+  SetSelectedElementPositions,
 } from '../reducers/canvas.reducer';
 
 export const setBackgroundMap = (x, y, element) => ({
@@ -34,7 +36,23 @@ export const setSelectedElement = selectedElement => ({
   payload: selectedElement,
 });
 
+export const setSelectedElementPositions = (x, y) => ({
+  type: SetSelectedElementPositions,
+  payload: {
+    x,
+    y,
+  },
+});
+
 export const setSelectedCanvas = selectedCanvas => ({
   type: SetSelectedCanvas,
   payload: selectedCanvas,
+});
+
+export const setPlayerPositions = (x, y) => ({
+  type: SetPlayerPositions,
+  payload: {
+    x,
+    y,
+  },
 });

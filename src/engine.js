@@ -1,4 +1,8 @@
-import { createBackgroundCanvas, createPlayerCanvas } from './utils/canvas';
+import {
+  createBackgroundCanvas,
+  createForegroundCanvas,
+  createPlayerCanvas,
+} from './utils/canvas';
 import { backgroundTile, playerTile } from './variables';
 import map from './maps';
 import {
@@ -7,6 +11,7 @@ import {
 } from './store/actions/player.actions';
 import {
   setBackgroundContext,
+  setForegroundContext,
   setPlayerContext,
 } from './store/actions/contexts.actions';
 import {
@@ -15,10 +20,11 @@ import {
   setPlayerImage,
 } from './store/actions/images.actions';
 import { animations } from './utils/animations';
+import { setScale } from './store/actions/map.actions';
 
 function initGame(store) {
+  const foregroundContext = createForegroundCanvas();
   const backgroundContext = createBackgroundCanvas();
-
   const playerContext = createPlayerCanvas({
     shadowBlur: 1,
     shadowColor: 'rgba(0,0,0,.5)',
@@ -26,8 +32,9 @@ function initGame(store) {
     shadowOffsetY: 0,
   });
 
-  store.dispatch(setBackgroundContext(backgroundContext));
+  store.dispatch(setForegroundContext(foregroundContext));
   store.dispatch(setPlayerContext(playerContext));
+  store.dispatch(setBackgroundContext(backgroundContext));
 
   loadBackground.then(backgroundImg => {
     // drawMap({ map, context: backgroundContext, backgroundImg });
@@ -60,6 +67,21 @@ function initGame(store) {
 
   loadJames.then(altPlayerImage => {
     store.dispatch(setAltPlayerImage('james', altPlayerImage));
+  });
+
+  document.getElementById('down-scale').addEventListener('click', () => {
+    const {
+      map: { scale },
+    } = store.getState();
+
+    store.dispatch(setScale(scale - 1));
+  });
+  document.getElementById('up-scale').addEventListener('click', () => {
+    const {
+      map: { scale },
+    } = store.getState();
+
+    store.dispatch(setScale(scale + 1));
   });
 }
 

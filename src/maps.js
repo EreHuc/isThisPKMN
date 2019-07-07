@@ -1,4 +1,7 @@
 import { backgroundTile } from './variables';
+import foreground from './foreground.json';
+import bigBackground from './assets/maps/houses_2_background.json';
+import bigForeground from './assets/maps/houses_2_foreground.json';
 
 const {
   grass,
@@ -449,4 +452,19 @@ const map = {
   tilePerColumn: 46,
 };
 
-export default map;
+export { map };
+
+const foregroundMap = {
+  tileList: foreground,
+  startPosition: {
+    x: 288,
+    y: 157,
+  },
+  tilePerRow: 72,
+  tilePerColumn: 36,
+};
+
+// export default foregroundMap;
+export const background = bigBackground;
+
+export default bigForeground;

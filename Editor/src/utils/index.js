@@ -1,31 +1,40 @@
 import { store } from '../store';
-import { setMaps } from '../store/actions/canvas.actions';
+import { setMaps, setPlayerPositions } from '../store/actions/canvas.actions';
+import { backgroundTile } from '../variables';
 
 export function _exportMaps(store) {
   return () => {
     const {
       canvas: {
         maps: { background, foreground },
+        playerPositions: { x, y },
+        size: { width, height },
       },
     } = store.getState();
 
-    const downloadFile = (jsonObject, name) => {
+    const name = prompt('Map name');
+
+    const downloadFile = (tileList, type, name) => {
+      const map = {
+        tileList,
+        startPosition: { x: x * 16, y: y * 16 },
+        tilePerColumn: height,
+        tilePerRow: width,
+      };
+
       const dataStr =
         'data:text/json;charset=utf-8,' +
-        encodeURIComponent(JSON.stringify(jsonObject, null, 4));
+        encodeURIComponent(JSON.stringify(map, null, 4));
       const dlAnchorElement = document.getElementById('dl-a');
       dlAnchorElement.setAttribute('href', dataStr);
-      dlAnchorElement.setAttribute('download', `${name}.json`);
+      dlAnchorElement.setAttribute('download', `${name}_${type}.json`);
       dlAnchorElement.click();
     };
 
-    const downloadBackgroundMap = downloadFile(background, 'background');
-    const downloadForegroundMap = downloadFile(foreground, 'foreground');
-
-    return {
-      downloadBackgroundMap,
-      downloadForegroundMap,
-    };
+    if (name && name.trim()) {
+      downloadFile(background, 'background', name);
+      downloadFile(foreground, 'foreground', name);
+    }
   };
 }
 
@@ -64,9 +73,15 @@ export function _uploadMaps(store) {
       .then(([background, foreground]) => {
         store.dispatch(
           setMaps({
-            background,
-            foreground,
+            background: background.tileList,
+            foreground: foreground.tileList,
           }),
+        );
+        store.dispatch(
+          setPlayerPositions(
+            background.startPosition.x,
+            background.startPosition.y,
+          ),
         );
       });
   };

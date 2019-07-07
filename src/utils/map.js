@@ -1,8 +1,9 @@
-import { backgroundTile } from '../variables';
+import { backgroundTile, canvas } from '../variables';
 import { store } from '../store';
 import { drawTile } from './canvas';
+import { background } from '../maps';
 
-const _backgroundStep = () => {
+const _foregroundStep = () => {
   let start = 0;
 
   return (timestamp, state) => {
@@ -12,7 +13,7 @@ const _backgroundStep = () => {
       tileIndex = 0,
     } = state.getLocalState();
 
-    if (timestamp - start > 300) {
+    if (animatedTiles && timestamp - start > 300) {
       let animatedTilesIndex;
       switch (animationDirection) {
         case 1:
@@ -46,7 +47,7 @@ const _backgroundStep = () => {
   };
 };
 
-const _drawBackground = (store, drawTile) => state => {
+const _drawForeground = (store, drawTile, canDraw) => state => {
   const {
     animatedTiles = [],
     idleTiles = [],
@@ -54,36 +55,41 @@ const _drawBackground = (store, drawTile) => state => {
   } = state.getLocalState();
 
   const {
-    contexts: { background: backgroundContext },
+    contexts: { foreground: foregroundContext },
     images: { background: backgroundImg },
   } = store.getState();
 
   animatedTiles.forEach(animatedTile => {
     const tileId = animatedTile.ids[tileIndex];
-
-    drawTile({
-      tile: backgroundTile,
-      tileImg: backgroundImg,
-      tileId,
-      context: backgroundContext,
-      xDest: animatedTile.xDest,
-      yDest: animatedTile.yDest,
-    });
+    if (canDraw(animatedTile.xDest, animatedTile.yDest)) {
+      drawTile({
+        tile: backgroundTile,
+        tileImg: backgroundImg,
+        tileId,
+        context: foregroundContext,
+        xDest: animatedTile.xDest,
+        yDest: animatedTile.yDest,
+      });
+    }
   });
 
   idleTiles.forEach(idleTile => {
-    drawTile({
-      tile: backgroundTile,
-      tileImg: backgroundImg,
-      tileId: idleTile.id,
-      context: backgroundContext,
-      xDest: idleTile.xDest,
-      yDest: idleTile.yDest,
-    });
+    if (canDraw(idleTile.xDest, idleTile.yDest)) {
+      drawTile({
+        tile: backgroundTile,
+        tileImg: backgroundImg,
+        tileId: idleTile.id,
+        context: foregroundContext,
+        xDest: idleTile.xDest,
+        yDest: idleTile.yDest,
+      });
+    }
   });
+
+  drawBackground(store, background.tileList, canDraw);
 };
 
-const initDrawBackground = (map, state) => {
+const initDrawForeground = (map, state) => {
   for (let y = 0; y < map.tileList.length; y++) {
     for (let x = 0; x < map.tileList[y].length; x++) {
       const { id, ids } = map.tileList[y][x];
@@ -104,8 +110,49 @@ const initDrawBackground = (map, state) => {
   }
 };
 
-const drawBackground = _drawBackground(store, drawTile);
+const _canDraw = store => (x, y) => {
+  const {
+    player: {
+      positions: { x: xPlayer, y: yPlayer },
+    },
+  } = store.getState();
 
-const backgroundStep = _backgroundStep();
+  const deltaY = canvas.height / 2;
+  const deltaX = canvas.width / 2;
+  const isX = Math.abs(xPlayer - x) <= deltaX + 16;
+  const isY = Math.abs(yPlayer - y) <= deltaY + 16;
+  return isX && isY;
+};
 
-export { drawBackground, initDrawBackground, backgroundStep };
+const canDraw = _canDraw(store);
+
+const drawForeground = _drawForeground(store, drawTile, canDraw);
+
+const foregroundStep = _foregroundStep();
+
+export const drawBackground = (store, background, canDraw) => {
+  const {
+    contexts: { background: backgroundContext },
+    images: { background: backgroundImg },
+  } = store.getState();
+
+  background.forEach((tiles, y) => {
+    tiles.forEach((tile, x) => {
+      const xDest = x * backgroundTile.width;
+      const yDest = y * backgroundTile.height;
+
+      if (tile && canDraw(xDest, yDest)) {
+        drawTile({
+          tile: backgroundTile,
+          tileImg: backgroundImg,
+          tileId: tile.id === undefined ? tile.ids[0] || 0 : tile.id || 0,
+          context: backgroundContext,
+          xDest: xDest,
+          yDest: yDest,
+        });
+      }
+    });
+  });
+};
+
+export { drawForeground, initDrawForeground, foregroundStep };

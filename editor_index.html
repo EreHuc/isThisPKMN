@@ -7,7 +7,10 @@
   <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no">
 </head>
 <body>
-<div id="canvas-container"></div>
+<div id="canvas-container">
+  <div id="canvas-map-container"></div>
+  <div id="canvas-element-container"></div>
+</div>
 <aside id="selector">
 <!--  <label for="switch" id="switch-label">background</label>-->
 <!--  <input type="checkbox" id="switch" checked>-->
@@ -15,10 +18,10 @@
   <a href="" id="dl-a" style="display: none;"></a>
   <button id="dl-btn" type="button">download maps</button>
   <form id="upload-files-form">
+    <input type="file" name="background" id="file-input-background" accept="application/json" required>
     <label for="file-input-background">Background file</label>
-    <input type="file" name="background" id="file-input-background" accept="application/json">
+    <input type="file" name="foreground" id="file-input-foreground" accept="application/json" required>
     <label for="file-input-foreground">Foreground file</label>
-    <input type="file" name="foreground" id="file-input-foreground" accept="application/json">
     <button type="submit" id="upload-files-btn">Upload file</button>
   </form>
   <button id="reset-map-btn" type="button">Reset map</button>

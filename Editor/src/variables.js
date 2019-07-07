@@ -15,26 +15,27 @@ export const backgroundTile = {
   list: {
     ...originalBackgroundTile.list,
     start: {
-      id: 15,
+      id: 78,
     },
     erase: {
-      id: 23,
+      id: 86,
     },
     empty: {
-      id: 31,
+      id: 79,
     },
+    invisibleWall: { layer: layer.obstacle, id: 87 },
   },
 };
 
 export const backgroundCanvas = {
-  height: 576,
+  height: 1152,
   width: 1152,
   scale: 2,
 };
 
 export const elementCanvas = {
-  height: 576,
-  width: 224,
+  height: 1152,
+  width: 8 * 16 * 2,
   scale: 2,
-  elementPerRow: 7,
+  elementPerRow: 8,
 };

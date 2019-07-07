@@ -4,6 +4,7 @@ import {
   SetElementsContext,
   SetElementsGridContext,
   SetForegroundContext,
+  SetElementsSelectorContext,
 } from '../reducers/contexts.reducer';
 
 export const setBackgroundContext = backgroundContext => ({
@@ -29,4 +30,9 @@ export const setBackgroundGridContext = backgroundGridContext => ({
 export const setElementsGridContext = elementsGridContext => ({
   type: SetElementsGridContext,
   payload: elementsGridContext,
+});
+
+export const setElementsSelectorContext = elementsSelectorContext => ({
+  type: SetElementsSelectorContext,
+  payload: elementsSelectorContext,
 });

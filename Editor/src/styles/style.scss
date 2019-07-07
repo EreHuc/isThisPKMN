@@ -26,6 +26,51 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  display: none;
+}
+
+/****************End reset CSS******************/
+
+
+@font-face {
+  font-family: 'PressStart2P';
+  src: url("../../../src/assets/fonts/PressStart2P.ttf");
+}
+
 body {
   height: 100vh;
   width: 100vw;
@@ -33,9 +78,21 @@ body {
 }
 
 #canvas-container {
-  height: 100vh;
+  height: 576px;
+  width: 100%;
   position: relative;
+  overflow: auto;
 }
+
+#canvas-map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 1152px;
+  overflow: auto;
+}
+
 
 #background-canvas, #foreground-canvas, #background-grid-canvas {
   position: absolute;
@@ -52,22 +109,128 @@ body {
   z-index: 2;
 }
 
-#element-canvas, #elements-grid-canvas {
+#elements-canvas {
+  background: #b0b0b0;
+}
+
+#canvas-element-container {
   position: absolute;
   top: 0;
   right: 0;
+  bottom: 0;
   z-index: 0;
+  overflow: auto;
 }
 
 #elements-grid-canvas {
-  background: #b0b0b0;
-  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+
+}
+
+#elements-selector-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  pointer-events: none;
 }
 
 #selector {
   position: absolute;
   right: 0;
   bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
+  padding: 10px 0;
+  background: rgba(33, 33, 33, .7);
+
+  * {
+    text-shadow: 0 0 1px #222222;
+    color: white;
+    font-family: 'PressStart2P', sans-serif;
+    border: 0;
+    background: transparent;
+    user-select: none;
+    font-size: 10px;
+  }
+
+  button {
+    border: 2px solid white;
+    padding: 5px;
+    position: relative;
+    margin: 5px;
+
+    &:active {
+      &::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        bottom: -2px;
+        left: -2px;
+        background: rgba(33, 33, 33, .3);
+      }
+    }
+
+    &#layer-btn {
+      border: 2px solid gold;
+      color: gold;
+
+      &.active {
+        border-color: plum;
+        color: plum;
+      }
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  label {
+    font-size: 12px;
+    padding: 5px;
+    position: relative;
+    border: 2px solid crimson;
+
+    &:active {
+      &::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        bottom: -2px;
+        left: -2px;
+        background: rgba(33, 33, 33, .3);
+      }
+    }
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 5px;
+    border: 2px solid grey;
+
+    > *:nth-child(4) {
+      margin: 0 5px;
+    }
+
+    > input:valid + label {
+      border: 2px solid green;
+    }
+  }
 }
 
 .hidden {

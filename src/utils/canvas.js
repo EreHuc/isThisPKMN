@@ -4,7 +4,6 @@ import { store } from '../store';
 export function createCanvas({
   id,
   containerElement,
-  scale = canvas.scale,
   width = canvas.width,
   height = canvas.height,
 }) {
@@ -12,8 +11,8 @@ export function createCanvas({
     const canvas = document.createElement('canvas');
     canvas.classList.add('canvas');
     canvas.setAttribute('id', id);
-    canvas.width = width * scale;
-    canvas.height = height * scale;
+    canvas.width = width;
+    canvas.height = height;
 
     const context = containerElement
       .insertBefore(canvas, containerElement.firstChild)
@@ -59,8 +58,8 @@ function setTransform(
     0,
     0,
     scale,
-    -scale * (x - width / 2 + playerTile.width / 2),
-    -scale * (y - height / 2 + playerTile.height / 2),
+    -scale * (x - width / (2 * scale) + playerTile.width / 2),
+    -scale * (y - height / (2 * scale) + playerTile.height / 2),
   );
 }
 
@@ -71,10 +70,11 @@ function _setContextTransform(store) {
         positions: { x, y },
       },
       contexts,
+      map: { scale = canvas.scale },
     } = store.getState();
 
     Object.values(contexts).forEach(context => {
-      setTransform(x, y, context);
+      setTransform(x, y, context, scale);
     });
   };
 }
@@ -88,6 +88,11 @@ const createBackgroundCanvas = createCanvas({
   containerElement: document.getElementById('gbc-canvas'),
 });
 
+const createForegroundCanvas = createCanvas({
+  id: 'canvas_foreground',
+  containerElement: document.getElementById('gbc-canvas'),
+});
+
 const createPlayerCanvas = createCanvas({
   id: 'canvas_player',
   containerElement: document.getElementById('gbc-canvas'),
@@ -98,6 +103,7 @@ export const setContextTransform = _setContextTransform(store);
 export {
   drawTile,
   clearTile,
+  createForegroundCanvas,
   createBackgroundCanvas,
   createPlayerCanvas,
   setTransform,
