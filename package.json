@@ -17,7 +17,8 @@
     "start": "npm run start:game",
     "start:game": "parcel index.html",
     "prod:game": "parcel build index.html",
-    "dev:editor": "parcel editor_index.html --port 1337"
+    "dev:editor": "parcel editor_index.html --port 1337",
+    "prod:editor": "parcel build editor_index.html --out-file index.html"
   },
   "repository": {
     "type": "git",
