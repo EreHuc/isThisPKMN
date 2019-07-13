@@ -1,6 +1,7 @@
 import {
   SetBackgroundMap,
   SetForegroundMap,
+  SetLayerMap,
   SetMaps,
   SetPlayerPositions,
   SetSelectedCanvas,
@@ -26,9 +27,9 @@ export const setForegroundMap = (x, y, element) => ({
   },
 });
 
-export const setMaps = maps => ({
+export const setMaps = ({ background, foreground, layer }) => ({
   type: SetMaps,
-  payload: maps,
+  payload: { background, foreground, layer },
 });
 
 export const setSelectedElement = selectedElement => ({
@@ -54,5 +55,14 @@ export const setPlayerPositions = (x, y) => ({
   payload: {
     x,
     y,
+  },
+});
+
+export const setLayerMap = (x, y, element) => ({
+  type: SetLayerMap,
+  payload: {
+    x,
+    y,
+    element,
   },
 });

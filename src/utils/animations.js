@@ -2,7 +2,6 @@ import { backgroundTile } from '../variables';
 import { store } from '../store';
 import { clearTile, setContextTransform } from './canvas';
 import localState from './local-state';
-import map from '../maps.js';
 import { foregroundStep, drawForeground, initDrawForeground } from './map';
 import { drawPlayer, playerStep } from './player';
 import { keydownCallback, keyHandler, keyupCallback } from './key-handler';
@@ -14,7 +13,6 @@ const _animation = (
   drawForeground,
   clearTile,
   initDrawForeground,
-  map,
   foregroundStep,
   keyHandler,
   keydownCallback,
@@ -36,6 +34,7 @@ const _animation = (
   const step = timestamp => {
     const {
       contexts: { foreground, player, background },
+      map: { tilePerRow, tilePerColumn },
     } = store.getState();
 
     Object.values({ foreground, player, background }).forEach(context => {
@@ -43,8 +42,8 @@ const _animation = (
         context,
         x: 0,
         y: 0,
-        w: map.tilePerRow * backgroundTile.width,
-        h: map.tilePerColumn * backgroundTile.height,
+        w: tilePerRow * backgroundTile.width,
+        h: tilePerColumn * backgroundTile.height,
       });
     });
 
@@ -57,7 +56,11 @@ const _animation = (
   };
 
   const start = () => {
-    initDrawForeground(map, state);
+    const {
+      map: { foreground },
+    } = store.getState();
+
+    initDrawForeground(foreground, state);
     requestNextFrame(state);
     localKeyHandler.start();
   };
@@ -81,7 +84,6 @@ export const animations = _animation(
   drawForeground,
   clearTile,
   initDrawForeground,
-  map,
   foregroundStep,
   keyHandler,
   keydownCallback,

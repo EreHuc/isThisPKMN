@@ -1,12 +1,13 @@
 import { store } from '../store';
 import { setMaps, setPlayerPositions } from '../store/actions/canvas.actions';
-import { backgroundTile } from '../variables';
 
 export function _exportMaps(store) {
   return () => {
     const {
       canvas: {
-        maps: { background, foreground },
+        background,
+        foreground,
+        layer,
         playerPositions: { x, y },
         size: { width, height },
       },
@@ -14,9 +15,9 @@ export function _exportMaps(store) {
 
     const name = prompt('Map name');
 
-    const downloadFile = (tileList, type, name) => {
+    const downloadFile = (tileList, name) => {
       const map = {
-        tileList,
+        ...tileList,
         startPosition: { x: x * 16, y: y * 16 },
         tilePerColumn: height,
         tilePerRow: width,
@@ -27,25 +28,23 @@ export function _exportMaps(store) {
         encodeURIComponent(JSON.stringify(map, null, 4));
       const dlAnchorElement = document.getElementById('dl-a');
       dlAnchorElement.setAttribute('href', dataStr);
-      dlAnchorElement.setAttribute('download', `${name}_${type}.json`);
+      dlAnchorElement.setAttribute('download', `${name}.json`);
       dlAnchorElement.click();
     };
 
     if (name && name.trim()) {
-      downloadFile(background, 'background', name);
-      downloadFile(foreground, 'foreground', name);
+      downloadFile({ background, foreground, layer }, name);
     }
   };
 }
 
-export function _uploadMaps(store) {
+export function _uploadMapsOld(store) {
   return submitEvent => {
     submitEvent.preventDefault();
     const {
       target: { background, foreground },
     } = submitEvent;
 
-    // [...background.files[0], ...foreground.files[0]];
     const reader = new FileReader();
 
     new Promise(resolve => {
@@ -84,6 +83,37 @@ export function _uploadMaps(store) {
           ),
         );
       });
+  };
+}
+
+export function _uploadMaps(store) {
+  return submitEvent => {
+    submitEvent.preventDefault();
+    const {
+      target: { map },
+    } = submitEvent;
+
+    const reader = new FileReader();
+
+    new Promise(resolve => {
+      reader.onload = ({ target: { result } }) => {
+        resolve(JSON.parse(result));
+      };
+      if (map.files.length) {
+        reader.readAsText(map.files[0]);
+      } else {
+        resolve(null);
+      }
+    }).then(({ background, foreground, layer, startPosition: { x, y } }) => {
+      store.dispatch(
+        setMaps({
+          background,
+          foreground,
+          layer,
+        }),
+      );
+      store.dispatch(setPlayerPositions(x, y));
+    });
   };
 }
 

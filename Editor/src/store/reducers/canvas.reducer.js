@@ -7,6 +7,7 @@ export const SetSelectedElement = 'SET_SELECTED_ELEMENT';
 export const SetSelectedElementPositions = 'SET_SELECTED_ELEMENT_POSITIONS';
 export const SetSelectedCanvas = 'SET_SELECTED_CANVAS';
 export const SetPlayerPositions = 'SET_PLAYER_POSITIONS';
+export const SetLayerMap = 'SET_LAYER_MAP';
 
 const createMap = (baseElement, width, height) => {
   return JSON.parse(
@@ -15,10 +16,8 @@ const createMap = (baseElement, width, height) => {
 };
 
 const mapState = {
-  maps: {
-    background: createMap(null, 36, 36),
-    foreground: createMap(backgroundTile.list.empty, 36, 36),
-  },
+  background: createMap(null, 36, 36),
+  foreground: createMap(null, 36, 36),
   size: {
     width: 36,
     height: 36,
@@ -27,6 +26,7 @@ const mapState = {
     x: null,
     y: null,
   },
+  layer: createMap(backgroundTile.list.empty.layer, 36, 36),
   selectedElement: null,
   selectedElementPositions: null,
   selectedCanvas: 'background',
@@ -43,13 +43,17 @@ export function canvasReducer(state = mapState, { type, payload }) {
     case SetForegroundMap: {
       return handleSideEffectForeground(state, payload);
     }
+    case SetLayerMap: {
+      return handleSideEffectLayer(state, payload);
+    }
     case SetMaps: {
-      let { background, foreground } = payload;
+      let { background, foreground, layer } = payload;
 
       background = background || createMap(null, 36, 36);
-      foreground = foreground || createMap(backgroundTile.list.empty, 36, 36);
+      foreground = foreground || createMap(null, 36, 36);
+      layer = layer || createMap(backgroundTile.list.empty.layer, 36, 36);
 
-      return { ...state, maps: { background, foreground } };
+      return { ...state, background, foreground, layer };
     }
     case SetSelectedCanvas: {
       return { ...state, selectedCanvas: payload };
@@ -67,12 +71,13 @@ export function canvasReducer(state = mapState, { type, payload }) {
 
 function handleSideEffect(mapName) {
   return (state, { x, y, element }) => {
-    const { maps } = state;
-    maps[mapName][y][x] = element;
+    const map = state[mapName];
+    map[y][x] = element;
 
-    return { ...state, maps };
+    return { ...state, [mapName]: map };
   };
 }
 
 const handleSideEffectForeground = handleSideEffect('foreground');
 const handleSideEffectBackground = handleSideEffect('background');
+const handleSideEffectLayer = handleSideEffect('layer');

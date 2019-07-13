@@ -1,7 +1,6 @@
 import { backgroundTile, canvas } from '../variables';
 import { store } from '../store';
 import { drawTile } from './canvas';
-import { background } from '../maps';
 
 const _foregroundStep = () => {
   let start = 0;
@@ -86,13 +85,13 @@ const _drawForeground = (store, drawTile, canDraw) => state => {
     }
   });
 
-  drawBackground(store, background.tileList, canDraw);
+  drawBackground(store, canDraw);
 };
 
-const initDrawForeground = (map, state) => {
-  for (let y = 0; y < map.tileList.length; y++) {
-    for (let x = 0; x < map.tileList[y].length; x++) {
-      const { id, ids } = map.tileList[y][x];
+const initDrawForeground = (foreground, state) => {
+  for (let y = 0; y < foreground.length; y++) {
+    for (let x = 0; x < foreground[y].length; x++) {
+      const { id, ids } = foreground[y][x];
       const { idleTiles = [], animatedTiles = [] } = state.getLocalState();
       const xDest = x * backgroundTile.width;
       const yDest = y * backgroundTile.height;
@@ -130,10 +129,11 @@ const drawForeground = _drawForeground(store, drawTile, canDraw);
 
 const foregroundStep = _foregroundStep();
 
-export const drawBackground = (store, background, canDraw) => {
+export const drawBackground = (store, canDraw) => {
   const {
     contexts: { background: backgroundContext },
     images: { background: backgroundImg },
+    map: { background },
   } = store.getState();
 
   background.forEach((tiles, y) => {

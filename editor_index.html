@@ -14,14 +14,17 @@
 <aside id="selector">
 <!--  <label for="switch" id="switch-label">background</label>-->
 <!--  <input type="checkbox" id="switch" checked>-->
-  <button type="button" id="layer-btn">Background</button>
+  <button type="button" id="layer-btn">show&nbsp;collision</button>
+  <button type="button" id="canvas-btn">Background</button>
   <a href="" id="dl-a" style="display: none;"></a>
-  <button id="dl-btn" type="button">download maps</button>
+  <button id="dl-btn" type="button">download map</button>
   <form id="upload-files-form">
-    <input type="file" name="background" id="file-input-background" accept="application/json" required>
-    <label for="file-input-background">Background file</label>
-    <input type="file" name="foreground" id="file-input-foreground" accept="application/json" required>
-    <label for="file-input-foreground">Foreground file</label>
+<!--    <input type="file" name="background" id="file-input-background" accept="application/json" required>-->
+<!--    <label for="file-input-background">Background file</label>-->
+<!--    <input type="file" name="foreground" id="file-input-foreground" accept="application/json" required>-->
+<!--    <label for="file-input-foreground">Foreground file</label>-->
+    <input type="file" name="map" id="file-input-background" accept="application/json" required>
+    <label for="file-input-background">Map file</label>
     <button type="submit" id="upload-files-btn">Upload file</button>
   </form>
   <button id="reset-map-btn" type="button">Reset map</button>

@@ -214,8 +214,7 @@ export const backgroundTile = {
     bottomBookTable: { layer: layer.obstacle, id: 244 },
     scrollHouseWall2: { layer: layer.obstacle, id: 245 },
     trash: { layer: layer.obstacle, id: 246 },
-    bed2Bottom: { layer: layer.obstacle, id: 247 },
-    invisibleWall: { layer: layer.obstacle, id: 79 },
+    bed2Bottom: { layer: layer.obstacle, id: 247 }
   },
 };
 

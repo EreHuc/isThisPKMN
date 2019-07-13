@@ -4,6 +4,7 @@ import {
   backgroundTile,
   elementCanvas as eCanvas,
   elementCanvas,
+  layer,
 } from '../variables';
 import { store } from '../store';
 
@@ -32,25 +33,36 @@ function _drawMap(store, drawTile, clearTile) {
   return () => {
     const {
       canvas: {
-        maps: { background: backgroundMap, foreground: foregroundMap },
+        background: backgroundMap,
+        foreground: foregroundMap,
         playerPositions,
       },
       images: { background },
       contexts: {
         background: backgroundContext,
         foreground: foregroundContext,
+        layer: layerContext,
+        elements: elementsContext,
+        backgroundGrid: backgroundGridContext,
+        elementsGrid: elementsGridContext,
       },
     } = store.getState();
 
-    [backgroundContext, foregroundContext].forEach(context => {
+    [
+      layerContext,
+      backgroundContext,
+      foregroundContext,
+      backgroundGridContext,
+      elementsGridContext,
+    ].forEach(context =>
       clearTile({
         context,
         y: 0,
         x: 0,
         w: backgroundCanvas.width,
         h: backgroundCanvas.height,
-      });
-    });
+      }),
+    );
 
     backgroundMap.forEach((map, y) => {
       map.forEach((element, x) => {
@@ -82,6 +94,13 @@ function _drawMap(store, drawTile, clearTile) {
       });
     });
 
+    [
+      [backgroundGridContext, backgroundCanvas],
+      [elementsGridContext, elementCanvas],
+    ].forEach(context => {
+      drawGrid(...context);
+    });
+
     if (playerPositions.x && playerPositions.y) {
       drawTile({
         tile: backgroundTile,
@@ -93,7 +112,9 @@ function _drawMap(store, drawTile, clearTile) {
       });
     }
 
+    // TODO: REFACTO
     drawSelector();
+    drawLayer();
   };
 }
 
@@ -128,22 +149,66 @@ function _drawSelector(store) {
   };
 }
 
-export function drawGrid(context, canvasDetail) {
+function _drawLayer(store) {
+  return () => {
+    const {
+      contexts: { layer: layerContext },
+      canvas: { layer: layerMap },
+    } = store.getState();
+
+    // layerContext.clearRect(0, 0, eCanvas.width * 32, eCanvas.height * 32);
+
+    layerMap.forEach((row, y) => {
+      row.forEach((col, x) => {
+        switch (col) {
+          case layer.floor:
+          case layer.player:
+            layerContext.fillStyle = 'transparent';
+            layerContext.strokeStyle = 'transparent';
+            break;
+          case layer.obstacle:
+            layerContext.fillStyle = 'rgba(255, 255, 255, .5)';
+            layerContext.strokeStyle = 'white';
+        }
+
+        layerContext.strokeRect(
+          x * 32,
+          y * 32,
+          backgroundTile.width * 2,
+          backgroundTile.height * 2,
+        );
+        layerContext.fillRect(
+          x * 32,
+          y * 32,
+          backgroundTile.width * 2,
+          backgroundTile.height * 2,
+        );
+      });
+    });
+  };
+}
+
+const drawSelector = _drawSelector(store);
+
+const drawLayer = _drawLayer(store);
+
+function drawGrid(context, canvasDetail) {
+  context.strokeStyle = 'rgba(0, 0, 0, .5)';
   for (let y = 0; y < canvasDetail.height / 32; y++) {
     context.beginPath();
     context.moveTo(0, y * 32);
     context.lineTo(canvasDetail.width, y * 32);
+    context.closePath();
     context.stroke();
   }
   for (let x = 0; x < canvasDetail.width / 32; x++) {
     context.beginPath();
     context.moveTo(x * 32, 0);
     context.lineTo(x * 32, canvasDetail.height);
+    context.closePath();
     context.stroke();
   }
 }
-
-export const drawSelector = _drawSelector(store);
 
 export const drawElementList = _drawElementList(drawTile);
 

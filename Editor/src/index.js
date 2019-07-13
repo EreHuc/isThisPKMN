@@ -3,7 +3,7 @@ import {
   backgroundCanvas as bCanvas,
   elementCanvas as eCanvas,
 } from './variables';
-import { drawElementList, drawGrid } from './utils/draw';
+import { drawElementList } from './utils/draw';
 import { backgroundTile } from './variables';
 import { store } from './store';
 import { setBackgroundImage } from './store/actions/images.actions';
@@ -14,14 +14,17 @@ import {
   setElementsGridContext,
   setElementsSelectorContext,
   setForegroundContext,
+  setLayerContext,
 } from './store/actions/contexts.actions';
 import {
   setBackgroundMap,
   setForegroundMap,
+  setLayerMap,
   setMaps,
   setPlayerPositions,
   setSelectedCanvas,
-  setSelectedElement, setSelectedElementPositions,
+  setSelectedElement,
+  setSelectedElementPositions,
 } from './store/actions/canvas.actions';
 import { animation } from './utils/animations';
 import { exportMaps, uploadMaps } from './utils';
@@ -33,6 +36,15 @@ window.addEventListener('DOMContentLoaded', () => {
     height: eCanvas.height,
     width: eCanvas.width,
     scale: 1,
+  })();
+
+  const layerContext = createCanvas({
+    id: 'layer-canvas',
+    containerElement: document.getElementById('canvas-map-container'),
+    height: bCanvas.height,
+    width: bCanvas.width,
+    scale: 1,
+    className: 'hidden',
   })();
 
   const backgroundGridContext = createCanvas({
@@ -75,7 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
     scale: 1,
   })();
 
-  const oldMaps = JSON.parse(localStorage.getItem('maps') || '[]');
+  const oldMaps = JSON.parse(localStorage.getItem('maps'));
   const oldPlayerPositions = JSON.parse(
     localStorage.getItem('playerPositions'),
   );
@@ -92,6 +104,8 @@ window.addEventListener('DOMContentLoaded', () => {
   backgroundContext.scale(bCanvas.scale, bCanvas.scale);
   elementsSelectorContext.lineWidth = 2;
   elementsSelectorContext.lineJoin = 'bevel';
+  layerContext.lineWidth = 2;
+  layerContext.lineJoin = 'bevel';
 
   store.dispatch(setBackgroundContext(backgroundContext));
   store.dispatch(setForegroundContext(foregroundContext));
@@ -99,16 +113,16 @@ window.addEventListener('DOMContentLoaded', () => {
   store.dispatch(setBackgroundGridContext(backgroundGridContext));
   store.dispatch(setElementsGridContext(elementsGridContext));
   store.dispatch(setElementsSelectorContext(elementsSelectorContext));
+  store.dispatch(setLayerContext(layerContext));
 
   const elementCanvas = document.getElementById('elements-canvas');
   const elementGridCanvas = document.getElementById('elements-grid-canvas');
   const backgroundCanvas = document.getElementById('background-canvas');
   const foregroundCanvas = document.getElementById('foreground-canvas');
+  const layerCanvas = document.getElementById('layer-canvas');
   const gridCanvas = document.getElementById('background-grid-canvas');
-  const switchCanvasElement = document.getElementById('layer-btn');
-
-  drawGrid(backgroundGridContext, bCanvas);
-  drawGrid(elementsGridContext, eCanvas);
+  const switchCanvas = document.getElementById('canvas-btn');
+  const switchCanvasLayer = document.getElementById('layer-btn');
 
   elementGridCanvas.addEventListener(
     'click',
@@ -120,9 +134,17 @@ window.addEventListener('DOMContentLoaded', () => {
     setCurrentElementOnClickHandler(backgroundCanvas, store),
   );
 
-  switchCanvasElement.addEventListener('click', ({ target }) => {
+  layerCanvas.addEventListener('click', clickEvent => {
+    const { canvas } = store.getState();
+    setCurrentElementOnClickHandler(layerCanvas, {
+      getState: () => ({ canvas: { ...canvas, selectedCanvas: 'layer' } }),
+      dispatch: store.dispatch,
+    })(clickEvent);
+  });
+
+  switchCanvas.addEventListener('click', ({ target }) => {
     const { innerText } = target;
-    if (innerText === 'Background') {
+    if (innerText.toLowerCase().includes('background')) {
       store.dispatch(setSelectedCanvas('foreground'));
       target.innerText = 'Foreground';
     } else {
@@ -130,6 +152,16 @@ window.addEventListener('DOMContentLoaded', () => {
       target.innerText = 'Background';
     }
     target.classList.toggle('active');
+  });
+
+  switchCanvasLayer.addEventListener('click', ({ target }) => {
+    const { innerText } = target;
+    if (innerText.toLowerCase().includes('show')) {
+      target.innerText = 'HIDE COLLISION';
+    } else {
+      target.innerText = 'SHOW COLLISION';
+    }
+    layerCanvas.classList.toggle('hidden');
   });
 
   loadBackground.then(backgroundImg => {
@@ -183,9 +215,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('beforeunload', () => {
   const {
-    canvas: { maps, playerPositions },
+    canvas: { background, foreground, layer, playerPositions },
   } = store.getState();
-  localStorage.setItem('maps', JSON.stringify(maps));
+  localStorage.setItem(
+    'maps',
+    JSON.stringify({ background, foreground, layer }),
+  );
   localStorage.setItem('playerPositions', JSON.stringify(playerPositions));
 });
 
@@ -197,7 +232,8 @@ const getCurrentElementOnClickHandler = (
   const elementX = Math.floor(x / (backgroundTile.width * eCanvas.scale));
   const elementY = Math.floor(y / (backgroundTile.height * eCanvas.scale));
   const indexToTarget = elementY * eCanvas.elementPerRow + elementX;
-  const [name, element] = Object.entries(backgroundTile.list)[indexToTarget];
+  const [name, element] =
+    Object.entries(backgroundTile.list)[indexToTarget] || [];
 
   if (element) {
     switch (name) {
@@ -218,6 +254,7 @@ const setCurrentElementOnClickHandler = (
   backgroundCanvas,
   store,
 ) => clickEvent => {
+  clickEvent.stopPropagation();
   const {
     canvas: { selectedElement, selectedCanvas },
   } = store.getState();
@@ -229,17 +266,17 @@ const setCurrentElementOnClickHandler = (
   if (selectedElement && selectedElement.id === backgroundTile.list.start.id) {
     store.dispatch(setPlayerPositions(backgroundX, backgroundY));
   } else {
+    const { id, ids, layer } = selectedElement;
     switch (selectedCanvas) {
       case 'background':
-        store.dispatch(
-          setBackgroundMap(backgroundX, backgroundY, selectedElement),
-        );
+        store.dispatch(setBackgroundMap(backgroundX, backgroundY, { id, ids }));
         break;
       case 'foreground':
-        store.dispatch(
-          setForegroundMap(backgroundX, backgroundY, selectedElement),
-        );
+        store.dispatch(setForegroundMap(backgroundX, backgroundY, { id, ids }));
+        store.dispatch(setLayerMap(backgroundX, backgroundY, layer));
         break;
+      case 'layer':
+        store.dispatch(setLayerMap(backgroundX, backgroundY, layer));
     }
   }
 };

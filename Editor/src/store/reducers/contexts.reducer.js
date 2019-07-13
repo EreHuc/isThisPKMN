@@ -4,6 +4,7 @@ export const SetForegroundContext = 'SET_FOREGROUND_CONTEXT';
 export const SetElementsContext = 'SET_ELEMENTS_CONTEXT';
 export const SetElementsGridContext = 'SET_ELEMENTS_GRID_CONTEXT';
 export const SetElementsSelectorContext = 'SET_ELEMENTS_SELECTOR_CONTEXT';
+export const SetLayerContext = 'SET_LAYER_CONTEXT';
 
 const contextState = {
   elements: null,
@@ -12,6 +13,7 @@ const contextState = {
   backgroundGrid: null,
   elementsGrid: null,
   elementsSelector: null,
+  layer: null,
 };
 
 export function contextsReducer(state = contextState, { type, payload }) {
@@ -25,9 +27,11 @@ export function contextsReducer(state = contextState, { type, payload }) {
     case SetElementsContext:
       return { ...state, elements: payload };
     case SetElementsGridContext:
-      return { ...state, backgroundGrid: payload };
+      return { ...state, elementsGrid: payload };
     case SetElementsSelectorContext:
       return { ...state, elementsSelector: payload };
+    case SetLayerContext:
+      return { ...state, layer: payload };
     default:
       return state;
   }

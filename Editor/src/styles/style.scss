@@ -94,23 +94,31 @@ body {
 }
 
 
-#background-canvas, #foreground-canvas, #background-grid-canvas {
+#background-canvas, #foreground-canvas, #background-grid-canvas, #collision-canvas, #layer-canvas {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+#foreground-canvas {
   z-index: 0;
 }
 
 #background-canvas {
+  z-index: -1;
   background: grey;
 }
 
-#background-grid-canvas {
+#layer-canvas {
   z-index: 2;
+
+  &.hidden {
+    pointer-events: none;
+  }
 }
 
-#elements-canvas {
-  background: #b0b0b0;
+#background-grid-canvas {
+  z-index: 1;
 }
 
 #canvas-element-container {
@@ -122,19 +130,25 @@ body {
   overflow: auto;
 }
 
-#elements-grid-canvas {
+
+#elements-canvas, #elements-grid-canvas, #elements-selector-canvas {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 3;
+}
+
+#elements-canvas {
+  background: #b0b0b0;
+  position: relative;
+}
+
+#elements-grid-canvas {
+  z-index: 1;
 
 }
 
 #elements-selector-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 4;
+  z-index: 2;
   pointer-events: none;
 }
 
@@ -158,6 +172,7 @@ body {
     background: transparent;
     user-select: none;
     font-size: 10px;
+    text-transform: uppercase;
   }
 
   button {
@@ -178,7 +193,7 @@ body {
       }
     }
 
-    &#layer-btn {
+    &#canvas-btn {
       border: 2px solid gold;
       color: gold;
 

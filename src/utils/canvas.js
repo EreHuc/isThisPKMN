@@ -3,6 +3,7 @@ import { store } from '../store';
 
 export function createCanvas({
   id,
+  className,
   containerElement,
   width = canvas.width,
   height = canvas.height,
@@ -13,6 +14,7 @@ export function createCanvas({
     canvas.setAttribute('id', id);
     canvas.width = width;
     canvas.height = height;
+    className && canvas.classList.add(className);
 
     const context = containerElement
       .insertBefore(canvas, containerElement.firstChild)

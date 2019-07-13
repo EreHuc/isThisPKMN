@@ -20,10 +20,14 @@ export const backgroundTile = {
     erase: {
       id: 86,
     },
-    empty: {
+    portalIn: {
       id: 79,
     },
-    invisibleWall: { layer: layer.obstacle, id: 87 },
+    portalOut: { id: 87 },
+    empty: {
+      id: 300,
+      layer: layer.floor,
+    },
   },
 };
 

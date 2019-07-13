@@ -1,5 +1,4 @@
 import { keyCodes, layer, playerTile } from '../variables';
-import map from '../maps';
 import {
   setPlayerPosition,
   setPlayerTileId,
@@ -12,31 +11,36 @@ function _canMove(wall) {
   };
 }
 
-function wall(x, y) {
-  // Define player hit box.
-  // Hit box smaller than player because of error in block detection
-  // Hit box size : top : -5 px higher; bottom: -2px lower; left & right : -2px wider;
-  // Top as an higher value because of realism ( head can go through obstacle )
-  const x1 = Math.floor((x + 2) / playerTile.width);
-  const x2 = Math.floor((x + 14) / playerTile.width);
-  const y1 = Math.floor((y + 5) / playerTile.height);
-  const y2 = Math.floor((y + 14) / playerTile.height);
+function _wall(store) {
+  return (x, y) => {
+    const {
+      map: { collision },
+    } = store.getState();
+    // Define player hit box.
+    // Hit box smaller than player because of error in block detection
+    // Hit box size : top : -5 px higher; bottom: -2px lower; left & right : -2px wider;
+    // Top as an higher value because of realism ( head can go through obstacle )
+    const x1 = Math.floor((x + 2) / playerTile.width);
+    const x2 = Math.floor((x + 14) / playerTile.width);
+    const y1 = Math.floor((y + 5) / playerTile.height);
+    const y2 = Math.floor((y + 14) / playerTile.height);
 
-  return [[x1, y1], [x1, y2], [x2, y1], [x2, y2]].reduce(
-    (acc, [tileX, tileY]) => {
-      if (
-        !map.tileList[tileY] ||
-        !map.tileList[tileY][tileX] ||
-        map.tileList[tileY][tileX].layer === layer.obstacle
-      ) {
-        return false;
-      }
-      return acc;
-    },
-    true,
-  );
+    return [[x1, y1], [x1, y2], [x2, y1], [x2, y2]].reduce(
+      (acc, [tileX, tileY]) => {
+        if (
+          !collision ||
+          !collision[tileY] ||
+          collision[tileY][tileX] === undefined ||
+          collision[tileY][tileX] === layer.obstacle
+        ) {
+          return false;
+        }
+        return acc;
+      },
+      true,
+    );
+  };
 }
-
 function _moveAnimation({ moveTiles = [], store }) {
   return () => {
     const {
@@ -80,6 +84,8 @@ function _idle({ idleTile, store }) {
     store.dispatch(setPlayerTileId(idleTile));
   };
 }
+
+const wall = _wall(store);
 
 const canMove = _canMove(wall);
 
