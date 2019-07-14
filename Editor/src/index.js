@@ -18,6 +18,8 @@ import {
 } from './store/actions/contexts.actions';
 import {
   setBackgroundMap,
+  setEndMovePoint,
+  setEraseMap,
   setForegroundMap,
   setLayerMap,
   setMaps,
@@ -25,6 +27,7 @@ import {
   setSelectedCanvas,
   setSelectedElement,
   setSelectedElementPositions,
+  SetStartMovePoint,
 } from './store/actions/canvas.actions';
 import { animation } from './utils/animations';
 import { exportMaps, uploadMaps } from './utils';
@@ -237,9 +240,6 @@ const getCurrentElementOnClickHandler = (
 
   if (element) {
     switch (name) {
-      case 'erase':
-        store.dispatch(setSelectedElement(backgroundTile.list.empty));
-        break;
       case 'start':
         store.dispatch(setSelectedElement(backgroundTile.list.start));
         break;
@@ -262,22 +262,43 @@ const setCurrentElementOnClickHandler = (
   const { x, y } = getMousePos(backgroundCanvas, clickEvent);
   const backgroundX = Math.floor(x / (backgroundTile.width * eCanvas.scale));
   const backgroundY = Math.floor(y / (backgroundTile.height * eCanvas.scale));
+  const { id, ids, layer } = selectedElement || {};
 
-  if (selectedElement && selectedElement.id === backgroundTile.list.start.id) {
-    store.dispatch(setPlayerPositions(backgroundX, backgroundY));
-  } else {
-    const { id, ids, layer } = selectedElement;
-    switch (selectedCanvas) {
-      case 'background':
-        store.dispatch(setBackgroundMap(backgroundX, backgroundY, { id, ids }));
-        break;
-      case 'foreground':
-        store.dispatch(setForegroundMap(backgroundX, backgroundY, { id, ids }));
-        store.dispatch(setLayerMap(backgroundX, backgroundY, layer));
-        break;
-      case 'layer':
-        store.dispatch(setLayerMap(backgroundX, backgroundY, layer));
-    }
+  switch (id) {
+    case backgroundTile.list.start.id:
+      store.dispatch(setPlayerPositions(backgroundX, backgroundY));
+      break;
+    case backgroundTile.list.erase.id:
+      store.dispatch(setEraseMap(backgroundX, backgroundY, selectedCanvas));
+      break;
+    case backgroundTile.list.portalIn.id:
+      store.dispatch(
+        SetStartMovePoint(backgroundX, backgroundY, prompt('Choose id')),
+      );
+      break;
+    case backgroundTile.list.portalOut.id:
+      store.dispatch(
+        setEndMovePoint(backgroundX, backgroundY, prompt('Choose id')),
+      );
+      break;
+    case backgroundTile.list.changeMap:
+      break;
+    default:
+      switch (selectedCanvas) {
+        case 'background':
+          store.dispatch(
+            setBackgroundMap(backgroundX, backgroundY, { id, ids }),
+          );
+          break;
+        case 'foreground':
+          store.dispatch(
+            setForegroundMap(backgroundX, backgroundY, { id, ids }),
+          );
+          store.dispatch(setLayerMap(backgroundX, backgroundY, layer));
+          break;
+        case 'layer':
+          store.dispatch(setLayerMap(backgroundX, backgroundY, layer));
+      }
   }
 };
 

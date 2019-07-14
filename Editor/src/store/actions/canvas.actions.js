@@ -7,7 +7,11 @@ import {
   SetSelectedCanvas,
   SetSelectedElement,
   SetSelectedElementPositions,
+  SetEraseMap,
+  SetMovePoint,
+  RemoveMovePoint,
 } from '../reducers/canvas.reducer';
+import { layer } from '../../variables';
 
 export const setBackgroundMap = (x, y, element) => ({
   type: SetBackgroundMap,
@@ -24,6 +28,16 @@ export const setForegroundMap = (x, y, element) => ({
     x,
     y,
     element,
+  },
+});
+
+export const setEraseMap = (x, y, canvas) => ({
+  type: SetEraseMap,
+  payload: {
+    x,
+    y,
+    canvas,
+    element: canvas.includes('layer') ? layer.floor : null,
   },
 });
 
@@ -64,5 +78,34 @@ export const setLayerMap = (x, y, element) => ({
     x,
     y,
     element,
+  },
+});
+
+export const SetStartMovePoint = (x, y, id) => ({
+  type: SetMovePoint,
+  payload: {
+    start: {
+      x,
+      y,
+    },
+    id,
+  },
+});
+
+export const setEndMovePoint = (x, y, id) => ({
+  type: SetMovePoint,
+  payload: {
+    end: {
+      x,
+      y,
+    },
+    id,
+  },
+});
+
+export const removeMovePoint = id => ({
+  type: RemoveMovePoint,
+  payload: {
+    id,
   },
 });

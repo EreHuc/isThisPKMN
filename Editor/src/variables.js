@@ -24,10 +24,7 @@ export const backgroundTile = {
       id: 79,
     },
     portalOut: { id: 87 },
-    empty: {
-      id: 300,
-      layer: layer.floor,
-    },
+    changeMap: { id: 135 },
   },
 };
 

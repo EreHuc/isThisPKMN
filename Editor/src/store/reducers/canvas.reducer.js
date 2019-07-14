@@ -1,4 +1,4 @@
-import { backgroundTile } from '../../variables';
+import { layer as defaultLayer } from '../../../../src/variables';
 
 export const SetMaps = 'SET_MAP';
 export const SetBackgroundMap = 'SET_BACKGROUND_MAP';
@@ -8,6 +8,9 @@ export const SetSelectedElementPositions = 'SET_SELECTED_ELEMENT_POSITIONS';
 export const SetSelectedCanvas = 'SET_SELECTED_CANVAS';
 export const SetPlayerPositions = 'SET_PLAYER_POSITIONS';
 export const SetLayerMap = 'SET_LAYER_MAP';
+export const SetEraseMap = 'SET_ERASE_MAP';
+export const SetMovePoint = 'SET_MOVE_POINT';
+export const RemoveMovePoint = 'REMOVE_MOVE_POINT';
 
 const createMap = (baseElement, width, height) => {
   return JSON.parse(
@@ -26,11 +29,14 @@ const mapState = {
     x: null,
     y: null,
   },
-  layer: createMap(backgroundTile.list.empty.layer, 36, 36),
+  layer: createMap(defaultLayer.floor, 36, 36),
   selectedElement: null,
   selectedElementPositions: null,
   selectedCanvas: 'background',
+  movePoints: [],
 };
+
+// movePoint = { id: string: start: { x: number, y: number }, end: { x: number, y: number } } }
 
 export function canvasReducer(state = mapState, { type, payload }) {
   switch (type) {
@@ -46,12 +52,15 @@ export function canvasReducer(state = mapState, { type, payload }) {
     case SetLayerMap: {
       return handleSideEffectLayer(state, payload);
     }
+    case SetEraseMap: {
+      return handleSideEffect(payload.canvas)(state, payload);
+    }
     case SetMaps: {
       let { background, foreground, layer } = payload;
 
       background = background || createMap(null, 36, 36);
       foreground = foreground || createMap(null, 36, 36);
-      layer = layer || createMap(backgroundTile.list.empty.layer, 36, 36);
+      layer = layer || createMap(defaultLayer.floor, 36, 36);
 
       return { ...state, background, foreground, layer };
     }
@@ -64,9 +73,34 @@ export function canvasReducer(state = mapState, { type, payload }) {
     case SetSelectedElementPositions: {
       return { ...state, selectedElementPositions: payload };
     }
+    case SetMovePoint: {
+      return {
+        ...state,
+        movePoints: handleAddMovePoint(state.movePoints, payload),
+      };
+    }
+    case RemoveMovePoint: {
+      return {
+        ...state,
+        movePoints: handleRemoveMovePoint(state.movePoints, payload),
+      };
+    }
     default:
       return state;
   }
+}
+
+function handleAddMovePoint(movePoints, payload) {
+  if (movePoints.filter(({ id }) => id === payload.id).length) {
+    return movePoints.map(movePoint =>
+      movePoint.id === payload.id ? { ...movePoint, ...payload } : movePoint,
+    );
+  }
+  return [...movePoints, payload];
+}
+
+function handleRemoveMovePoint(movePoints, payload) {
+  return movePoints.filter(movePoint => movePoint.id !== payload.id);
 }
 
 function handleSideEffect(mapName) {
