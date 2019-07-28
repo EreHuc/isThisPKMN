@@ -1,6 +1,6 @@
 import { layer as defaultLayer } from '../../../../src/variables';
 
-export const SetMaps = 'SET_MAP';
+export const InitCanvas = 'INIT_CANVAS';
 export const SetBackgroundMap = 'SET_BACKGROUND_MAP';
 export const SetForegroundMap = 'SET_FOREGROUND_MAP';
 export const SetSelectedElement = 'SET_SELECTED_ELEMENT';
@@ -33,10 +33,8 @@ const mapState = {
   selectedElement: null,
   selectedElementPositions: null,
   selectedCanvas: 'background',
-  movePoints: [],
+  movePoints: {},
 };
-
-// movePoint = { id: string: start: { x: number, y: number }, end: { x: number, y: number } } }
 
 export function canvasReducer(state = mapState, { type, payload }) {
   switch (type) {
@@ -55,14 +53,23 @@ export function canvasReducer(state = mapState, { type, payload }) {
     case SetEraseMap: {
       return handleSideEffect(payload.canvas)(state, payload);
     }
-    case SetMaps: {
-      let { background, foreground, collision } = payload;
+    case InitCanvas: {
+      const {
+        background = createMap(null, 36, 36),
+        foreground = createMap(null, 36, 36),
+        collision = createMap(defaultLayer.floor, 36, 36),
+        movePoints = {},
+        playerPositions = { x: null, y: null },
+      } = payload;
 
-      background = background || createMap(null, 36, 36);
-      foreground = foreground || createMap(null, 36, 36);
-      collision = collision || createMap(defaultLayer.floor, 36, 36);
-
-      return { ...state, background, foreground, collision };
+      return {
+        ...state,
+        background,
+        foreground,
+        collision,
+        movePoints,
+        playerPositions,
+      };
     }
     case SetSelectedCanvas: {
       return { ...state, selectedCanvas: payload };
@@ -90,17 +97,24 @@ export function canvasReducer(state = mapState, { type, payload }) {
   }
 }
 
-function handleAddMovePoint(movePoints, payload) {
-  if (movePoints.filter(({ id }) => id === payload.id).length) {
-    return movePoints.map(movePoint =>
-      movePoint.id === payload.id ? { ...movePoint, ...payload } : movePoint,
-    );
-  }
-  return [...movePoints, payload];
+const paddedNumber = (number, length = 2) =>
+  String(number).padStart(length, '0');
+
+function handleAddMovePoint(movePoints, { x, y, ...payload }) {
+  const id = `${paddedNumber(x)}:${paddedNumber(y)}`;
+  return {
+    ...movePoints,
+    [id]: payload,
+  };
 }
 
 function handleRemoveMovePoint(movePoints, payload) {
-  return movePoints.filter(movePoint => movePoint.id !== payload.id);
+  const id = `${paddedNumber(payload.x)}:${paddedNumber(payload.y)}`;
+
+  // eslint-disable-next-line no-unused-vars
+  const { [id]: _, ...filteredMovePoints } = movePoints;
+
+  return { ...filteredMovePoints };
 }
 
 function handleSideEffect(mapName) {

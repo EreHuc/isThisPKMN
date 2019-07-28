@@ -13,7 +13,10 @@ import {
   setForegroundContext,
   setCollisionContext,
 } from '../store/actions/contexts.actions';
-import { setMaps, setPlayerPositions } from '../store/actions/canvas.actions';
+import {
+  initCanvas,
+  setPlayerPositions,
+} from '../store/actions/canvas.actions';
 
 function _setContexts(store) {
   return () => {
@@ -88,31 +91,17 @@ function _setContexts(store) {
 
 function _loadDataFromLocalStorage(store) {
   return () => {
-    const oldMaps = JSON.parse(localStorage.getItem('maps'));
-    const oldPlayerPositions = JSON.parse(
-      localStorage.getItem('playerPositions'),
-    );
+    const oldCanvasState = JSON.parse(localStorage.getItem('canvas'));
 
-    oldMaps && oldMaps.background && store.dispatch(setMaps(oldMaps));
-
-    oldPlayerPositions &&
-      store.dispatch(
-        setPlayerPositions(oldPlayerPositions.x, oldPlayerPositions.y),
-      );
+    oldCanvasState && store.dispatch(initCanvas(oldCanvasState));
   };
 }
 
 function _saveDataInLocalStorage(store) {
   return () => {
-    const {
-      canvas: { background, foreground, collision, playerPositions },
-    } = store.getState();
+    const { canvas } = store.getState();
 
-    localStorage.setItem(
-      'maps',
-      JSON.stringify({ background, foreground, collision }),
-    );
-    localStorage.setItem('playerPositions', JSON.stringify(playerPositions));
+    localStorage.setItem('canvas', JSON.stringify(canvas));
   };
 }
 

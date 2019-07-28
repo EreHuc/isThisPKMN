@@ -1,7 +1,6 @@
 import { backgroundTile, elementCanvas as eCanvas } from '../variables';
 import {
   setBackgroundMap,
-  setEndMovePoint,
   setEraseMap,
   setForegroundMap,
   setCollisionMap,
@@ -9,7 +8,9 @@ import {
   setSelectedCanvas,
   setSelectedElement,
   setSelectedElementPositions,
-  SetStartMovePoint,
+  setMoveIn,
+  setMoveOut,
+  removeMovePoint,
 } from '../store/actions/canvas.actions';
 import localState from '../../../src/utils/local-state';
 import { store } from '../store';
@@ -23,13 +24,7 @@ export function getCurrentElementOnClickHandler(canvasDomElement, store) {
     const element = Object.values(backgroundTile.list)[indexToTarget];
 
     if (element) {
-      // switch (name) {
-      //   case 'start':
-      //     store.dispatch(setSelectedElement(backgroundTile.list.start));
-      //     break;
-      //   default:
       store.dispatch(setSelectedElement(element));
-      // }
       store.dispatch(setSelectedElementPositions(elementX, elementY));
     }
   };
@@ -47,25 +42,32 @@ export function setCurrentElementOnClickHandler(backgroundCanvas, store) {
     const backgroundY = Math.floor(y / (backgroundTile.height * eCanvas.scale));
     const { id, ids, layer } = selectedElement || {};
 
-    if (id || ids) {
+    if (id !== undefined || ids !== undefined) {
       switch (id) {
         case backgroundTile.list.start.id:
           store.dispatch(setPlayerPositions(backgroundX, backgroundY));
           break;
         case backgroundTile.list.erase.id:
+          if (selectedCanvas === 'collision') {
+            store.dispatch(removeMovePoint(backgroundX, backgroundY));
+          }
           store.dispatch(setEraseMap(backgroundX, backgroundY, selectedCanvas));
           break;
+        case backgroundTile.list.changeMap:
+          break;
         case backgroundTile.list.portalIn.id:
-          store.dispatch(
-            SetStartMovePoint(backgroundX, backgroundY, prompt('Choose id')),
-          );
+          if (selectedCanvas === 'collision') {
+            const id = prompt('Choose id for : tpIn');
+            store.dispatch(setMoveIn(backgroundX, backgroundY, id));
+            store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
+          }
           break;
         case backgroundTile.list.portalOut.id:
-          store.dispatch(
-            setEndMovePoint(backgroundX, backgroundY, prompt('Choose id')),
-          );
-          break;
-        case backgroundTile.list.changeMap:
+          if (selectedCanvas === 'collision') {
+            const id = prompt('Choose id for : tpOut');
+            store.dispatch(setMoveOut(backgroundX, backgroundY, id));
+            store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
+          }
           break;
         default:
           switch (selectedCanvas) {

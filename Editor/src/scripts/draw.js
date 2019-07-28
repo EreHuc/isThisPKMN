@@ -168,6 +168,15 @@ function _drawLayer(store) {
           case layer.obstacle:
             collisionContext.fillStyle = 'rgba(255, 255, 255, .5)';
             collisionContext.strokeStyle = 'white';
+            break;
+          case layer.tpIn:
+            collisionContext.fillStyle = 'rgba(13,33,255,0.5)';
+            collisionContext.strokeStyle = 'blue';
+            break;
+          case layer.tpOut:
+            collisionContext.fillStyle = 'rgba(255,118,15,0.5)';
+            collisionContext.strokeStyle = 'orange';
+            break;
         }
 
         collisionContext.strokeRect(

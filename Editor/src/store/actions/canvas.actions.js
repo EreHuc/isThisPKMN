@@ -2,7 +2,7 @@ import {
   SetBackgroundMap,
   SetForegroundMap,
   SetCollisionMap,
-  SetMaps,
+  InitCanvas,
   SetPlayerPositions,
   SetSelectedCanvas,
   SetSelectedElement,
@@ -41,9 +41,15 @@ export const setEraseMap = (x, y, canvas) => ({
   },
 });
 
-export const setMaps = ({ background, foreground, collision }) => ({
-  type: SetMaps,
-  payload: { background, foreground, collision },
+export const initCanvas = ({
+  background,
+  foreground,
+  collision,
+  movePoints,
+  playerPositions,
+}) => ({
+  type: InitCanvas,
+  payload: { background, foreground, collision, movePoints, playerPositions },
 });
 
 export const setSelectedElement = selectedElement => ({
@@ -81,31 +87,23 @@ export const setCollisionMap = (x, y, element) => ({
   },
 });
 
-export const SetStartMovePoint = (x, y, id) => ({
+const setMovePoint = type => (x, y, id) => ({
   type: SetMovePoint,
   payload: {
-    start: {
-      x,
-      y,
-    },
+    x,
+    y,
     id,
+    type,
   },
 });
 
-export const setEndMovePoint = (x, y, id) => ({
-  type: SetMovePoint,
-  payload: {
-    end: {
-      x,
-      y,
-    },
-    id,
-  },
-});
+export const setMoveIn = setMovePoint('in');
+export const setMoveOut = setMovePoint('out');
 
-export const removeMovePoint = id => ({
+export const removeMovePoint = (x, y) => ({
   type: RemoveMovePoint,
   payload: {
-    id,
+    x,
+    y,
   },
 });

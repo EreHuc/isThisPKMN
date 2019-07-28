@@ -1,5 +1,8 @@
 import { store } from '../store';
-import { setMaps, setPlayerPositions } from '../store/actions/canvas.actions';
+import {
+  initCanvas,
+  setPlayerPositions,
+} from '../store/actions/canvas.actions';
 
 function _exportMaps(store) {
   return () => {
@@ -8,6 +11,7 @@ function _exportMaps(store) {
         background,
         foreground,
         collision,
+        movePoints,
         playerPositions: { x, y },
         size: { width, height },
       },
@@ -33,7 +37,7 @@ function _exportMaps(store) {
     };
 
     if (name && name.trim()) {
-      downloadFile({ background, foreground, collision }, name);
+      downloadFile({ background, foreground, collision, movePoints }, name);
     }
   };
 }
@@ -71,7 +75,7 @@ function _uploadMapsOld(store) {
       })
       .then(([background, foreground]) => {
         store.dispatch(
-          setMaps({
+          initCanvas({
             background: background.tileList,
             foreground: foreground.tileList,
           }),
@@ -105,15 +109,16 @@ function _uploadMaps(store) {
         resolve(null);
       }
     }).then(
-      ({ background, foreground, collision, startPosition: { x, y } }) => {
+      ({ background, foreground, collision, startPosition, movePoints }) => {
         store.dispatch(
-          setMaps({
+          initCanvas({
             background,
             foreground,
             collision,
+            movePoints,
+            startPosition,
           }),
         );
-        store.dispatch(setPlayerPositions(x, y));
       },
     );
   };
@@ -121,8 +126,7 @@ function _uploadMaps(store) {
 
 function _resetMap(store) {
   return () => {
-    store.dispatch(setMaps({}));
-    store.dispatch(setPlayerPositions(null, null));
+    store.dispatch(initCanvas({}));
   };
 }
 

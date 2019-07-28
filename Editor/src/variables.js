@@ -5,6 +5,8 @@ export const layer = {
   floor: 0,
   player: 1,
   obstacle: 2,
+  tpIn: 3,
+  tpOut: 4,
 };
 
 export const backgroundTile = {
@@ -22,8 +24,9 @@ export const backgroundTile = {
     },
     portalIn: {
       id: 79,
+      layer: layer.tpIn,
     },
-    portalOut: { id: 87 },
+    portalOut: { id: 87, layer: layer.tpOut },
     changeMap: { id: 135 },
   },
 };
