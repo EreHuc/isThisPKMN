@@ -1,4 +1,4 @@
-import { createCanvas } from '../../../src/utils/canvas';
+import { createCanvas } from '../../../src/scripts/canvas';
 import {
   backgroundCanvas as bCanvas,
   elementCanvas as eCanvas,

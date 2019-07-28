@@ -41,6 +41,7 @@ function _wall(store) {
     );
   };
 }
+
 function _moveAnimation({ moveTiles = [], store }) {
   return () => {
     const {

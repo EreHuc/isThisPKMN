@@ -2,7 +2,6 @@ import { clearTile, drawTile } from './canvas';
 import { playerTile } from '../variables';
 import { store } from '../store';
 import localState from './local-state';
-import { keyHandler } from './key-handler';
 import { idles, moveAnimations, moves } from './moves';
 
 function _drawPlayer(drawTile, clearTile, localState, store) {
@@ -44,14 +43,7 @@ function _drawPlayer(drawTile, clearTile, localState, store) {
   };
 }
 
-function _playerStep(
-  store,
-  localState,
-  keyHandler,
-  moves,
-  moveAnimations,
-  idles,
-) {
+function _playerStep(store, localState, moves, moveAnimations, idles) {
   const state = localState();
 
   return timestamp => {
@@ -109,7 +101,6 @@ export const drawPlayer = _drawPlayer(drawTile, clearTile, localState, store);
 export const playerStep = _playerStep(
   store,
   localState,
-  keyHandler,
   moves,
   moveAnimations,
   idles,

@@ -2,7 +2,7 @@ import {
   createBackgroundCanvas,
   createForegroundCanvas,
   createPlayerCanvas,
-} from './utils/canvas';
+} from './scripts/canvas';
 import { backgroundTile, playerTile } from './variables';
 import map from './maps';
 import {
@@ -19,15 +19,8 @@ import {
   setBackgroundImage,
   setPlayerImage,
 } from './store/actions/images.actions';
-import { animations } from './utils/animations';
-import {
-  setBackgroundMap,
-  setCollisionMap,
-  setForegroundMap,
-  setScale,
-  setTilePerColumn,
-  setTilePerRow,
-} from './store/actions/map.actions';
+import { animations } from './scripts/animations';
+import { setMap, setScale } from './store/actions/map.actions';
 
 function initGame(store) {
   const foregroundContext = createForegroundCanvas();
@@ -51,12 +44,7 @@ function initGame(store) {
     loadPlayer.then(playerImg => {
       store.dispatch(setPlayerImage(playerImg));
       store.dispatch(setPlayerCurrentImage(playerImg));
-      store.dispatch(setBackgroundMap(map.background));
-      store.dispatch(setForegroundMap(map.foreground));
-      store.dispatch(setCollisionMap(map.layer));
-      store.dispatch(setTilePerRow(map.tilePerRow));
-      store.dispatch(setTilePerColumn(map.tilePerColumn));
-      // playerAnimation.start();
+      store.dispatch(setMap(map));
       animations.start();
     });
   });

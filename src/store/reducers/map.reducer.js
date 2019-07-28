@@ -7,6 +7,7 @@ export const SetTilePerRowMap = 'SET_TILE_PER_ROW_MAP';
 export const SetTilePerColumnMap = 'SET_TILE_PER_COLUMN_MAP';
 export const SetMapAnimatedWater = 'SET_MAP_ANIMATED_WATER';
 export const SetScale = 'SET_SCALE';
+export const SetMap = 'SET_MAP';
 
 const mapState = {
   animateWaterTile: true,
@@ -16,6 +17,7 @@ const mapState = {
   collision: null,
   tilePerRow: 0,
   tilePerColumn: 0,
+  movePoints: {},
 };
 
 export function mapReducer(state = mapState, { type, payload }) {
@@ -34,6 +36,9 @@ export function mapReducer(state = mapState, { type, payload }) {
       return { ...state, tilePerColumn: payload };
     case SetCollisionMap:
       return { ...state, collision: payload };
+    case SetMap: {
+      return { ...state, ...payload };
+    }
     default:
       return state;
   }

@@ -452,6 +452,6 @@ const map = {
   tilePerColumn: 46,
 };
 
-export { map };
+export { map, bigMap };
 
-export default bigMap;
+export default house;

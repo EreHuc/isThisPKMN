@@ -6,6 +6,7 @@ import {
   SetTilePerRowMap,
   SetTilePerColumnMap,
   SetCollisionMap,
+  SetMap,
 } from '../reducers/map.reducer';
 
 export const setMapAnimatedWater = isAnimatedWater => ({
@@ -41,4 +42,9 @@ export const setTilePerRow = tilePerRow => ({
 export const setTilePerColumn = tilePerColumn => ({
   type: SetTilePerColumnMap,
   payload: tilePerColumn,
+});
+
+export const setMap = map => ({
+  type: SetMap,
+  payload: map,
 });

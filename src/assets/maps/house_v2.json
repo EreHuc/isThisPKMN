@@ -5845,7 +5845,7 @@
             }
         ]
     ],
-    "layer": [
+    "collision": [
         [
             0,
             0,
@@ -7220,5 +7220,6 @@
         "y": 128
     },
     "tilePerColumn": 36,
-    "tilePerRow": 36
+    "tilePerRow": 36,
+    "scale": 3
 }

@@ -12,7 +12,7 @@ import {
   setMoveOut,
   removeMovePoint,
 } from '../store/actions/canvas.actions';
-import localState from '../../../src/utils/local-state';
+import localState from '../../../src/scripts/local-state';
 import { store } from '../store';
 
 export function getCurrentElementOnClickHandler(canvasDomElement, store) {

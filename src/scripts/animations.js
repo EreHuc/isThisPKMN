@@ -26,7 +26,7 @@ const _animation = (
     onKeyUp: keyupCallback(store),
   });
 
-  const requestNextFrame = () => {
+  const requestNextFrame = state => {
     const rafId = window.requestAnimationFrame(step);
     state.setLocalState({ rafId });
   };
