@@ -4,7 +4,8 @@ import {
   SetElementsContext,
   SetElementsGridContext,
   SetForegroundContext,
-  SetElementsSelectorContext, SetLayerContext,
+  SetElementsSelectorContext,
+  SetCollisionContext,
 } from '../reducers/contexts.reducer';
 
 export const setBackgroundContext = backgroundContext => ({
@@ -37,7 +38,7 @@ export const setElementsSelectorContext = elementsSelectorContext => ({
   payload: elementsSelectorContext,
 });
 
-export const setLayerContext = layerContext => ({
-  type: SetLayerContext,
-  payload: layerContext,
+export const setCollisionContext = collisionContext => ({
+  type: SetCollisionContext,
+  payload: collisionContext,
 });

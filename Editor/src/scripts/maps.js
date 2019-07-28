@@ -1,13 +1,13 @@
 import { store } from '../store';
 import { setMaps, setPlayerPositions } from '../store/actions/canvas.actions';
 
-export function _exportMaps(store) {
+function _exportMaps(store) {
   return () => {
     const {
       canvas: {
         background,
         foreground,
-        layer,
+        collision,
         playerPositions: { x, y },
         size: { width, height },
       },
@@ -33,12 +33,12 @@ export function _exportMaps(store) {
     };
 
     if (name && name.trim()) {
-      downloadFile({ background, foreground, layer }, name);
+      downloadFile({ background, foreground, collision }, name);
     }
   };
 }
 
-export function _uploadMapsOld(store) {
+function _uploadMapsOld(store) {
   return submitEvent => {
     submitEvent.preventDefault();
     const {
@@ -86,7 +86,7 @@ export function _uploadMapsOld(store) {
   };
 }
 
-export function _uploadMaps(store) {
+function _uploadMaps(store) {
   return submitEvent => {
     submitEvent.preventDefault();
     const {
@@ -104,19 +104,30 @@ export function _uploadMaps(store) {
       } else {
         resolve(null);
       }
-    }).then(({ background, foreground, layer, startPosition: { x, y } }) => {
-      store.dispatch(
-        setMaps({
-          background,
-          foreground,
-          layer,
-        }),
-      );
-      store.dispatch(setPlayerPositions(x, y));
-    });
+    }).then(
+      ({ background, foreground, collision, startPosition: { x, y } }) => {
+        store.dispatch(
+          setMaps({
+            background,
+            foreground,
+            collision,
+          }),
+        );
+        store.dispatch(setPlayerPositions(x, y));
+      },
+    );
+  };
+}
+
+function _resetMap(store) {
+  return () => {
+    store.dispatch(setMaps({}));
+    store.dispatch(setPlayerPositions(null, null));
   };
 }
 
 export const uploadMaps = _uploadMaps(store);
 
 export const exportMaps = _exportMaps(store);
+
+export const resetMap = _resetMap(store);

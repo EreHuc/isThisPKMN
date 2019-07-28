@@ -41,15 +41,14 @@ function _drawMap(store, drawTile, clearTile) {
       contexts: {
         background: backgroundContext,
         foreground: foregroundContext,
-        layer: layerContext,
-        elements: elementsContext,
+        collision: collisionContext,
         backgroundGrid: backgroundGridContext,
         elementsGrid: elementsGridContext,
       },
     } = store.getState();
 
     [
-      layerContext,
+      collisionContext,
       backgroundContext,
       foregroundContext,
       backgroundGridContext,
@@ -152,32 +151,32 @@ function _drawSelector(store) {
 function _drawLayer(store) {
   return () => {
     const {
-      contexts: { layer: layerContext },
-      canvas: { layer: layerMap },
+      contexts: { collision: collisionContext },
+      canvas: { collision: collisionMap },
     } = store.getState();
 
-    // layerContext.clearRect(0, 0, eCanvas.width * 32, eCanvas.height * 32);
+    // collisionContext.clearRect(0, 0, eCanvas.width * 32, eCanvas.height * 32);
 
-    layerMap.forEach((row, y) => {
+    collisionMap.forEach((row, y) => {
       row.forEach((col, x) => {
         switch (col) {
           case layer.floor:
           case layer.player:
-            layerContext.fillStyle = 'transparent';
-            layerContext.strokeStyle = 'transparent';
+            collisionContext.fillStyle = 'transparent';
+            collisionContext.strokeStyle = 'transparent';
             break;
           case layer.obstacle:
-            layerContext.fillStyle = 'rgba(255, 255, 255, .5)';
-            layerContext.strokeStyle = 'white';
+            collisionContext.fillStyle = 'rgba(255, 255, 255, .5)';
+            collisionContext.strokeStyle = 'white';
         }
 
-        layerContext.strokeRect(
+        collisionContext.strokeRect(
           x * 32,
           y * 32,
           backgroundTile.width * 2,
           backgroundTile.height * 2,
         );
-        layerContext.fillRect(
+        collisionContext.fillRect(
           x * 32,
           y * 32,
           backgroundTile.width * 2,

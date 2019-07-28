@@ -7,7 +7,7 @@ export const SetSelectedElement = 'SET_SELECTED_ELEMENT';
 export const SetSelectedElementPositions = 'SET_SELECTED_ELEMENT_POSITIONS';
 export const SetSelectedCanvas = 'SET_SELECTED_CANVAS';
 export const SetPlayerPositions = 'SET_PLAYER_POSITIONS';
-export const SetLayerMap = 'SET_LAYER_MAP';
+export const SetCollisionMap = 'SET_COLLISION_MAP';
 export const SetEraseMap = 'SET_ERASE_MAP';
 export const SetMovePoint = 'SET_MOVE_POINT';
 export const RemoveMovePoint = 'REMOVE_MOVE_POINT';
@@ -29,7 +29,7 @@ const mapState = {
     x: null,
     y: null,
   },
-  layer: createMap(defaultLayer.floor, 36, 36),
+  collision: createMap(defaultLayer.floor, 36, 36),
   selectedElement: null,
   selectedElementPositions: null,
   selectedCanvas: 'background',
@@ -49,20 +49,20 @@ export function canvasReducer(state = mapState, { type, payload }) {
     case SetForegroundMap: {
       return handleSideEffectForeground(state, payload);
     }
-    case SetLayerMap: {
-      return handleSideEffectLayer(state, payload);
+    case SetCollisionMap: {
+      return handleSideEffectCollision(state, payload);
     }
     case SetEraseMap: {
       return handleSideEffect(payload.canvas)(state, payload);
     }
     case SetMaps: {
-      let { background, foreground, layer } = payload;
+      let { background, foreground, collision } = payload;
 
       background = background || createMap(null, 36, 36);
       foreground = foreground || createMap(null, 36, 36);
-      layer = layer || createMap(defaultLayer.floor, 36, 36);
+      collision = collision || createMap(defaultLayer.floor, 36, 36);
 
-      return { ...state, background, foreground, layer };
+      return { ...state, background, foreground, collision };
     }
     case SetSelectedCanvas: {
       return { ...state, selectedCanvas: payload };
@@ -114,4 +114,4 @@ function handleSideEffect(mapName) {
 
 const handleSideEffectForeground = handleSideEffect('foreground');
 const handleSideEffectBackground = handleSideEffect('background');
-const handleSideEffectLayer = handleSideEffect('layer');
+const handleSideEffectCollision = handleSideEffect('collision');

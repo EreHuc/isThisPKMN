@@ -5,6 +5,7 @@ export default function localState(state = {}) {
     getLocalState: () => ({
       ...localState,
     }),
+    // dangerous method, can easily throw err
     setLocalState: newState => {
       localState = {
         ...localState,

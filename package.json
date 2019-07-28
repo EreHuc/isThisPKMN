@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "nes.css": "^2.2.0",
     "parcel": "^1.12.3",
     "redux": "^4.0.1",
     "sass": "^1.22.1"

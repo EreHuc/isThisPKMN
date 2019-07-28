@@ -1,7 +1,7 @@
 import {
   SetBackgroundMap,
   SetForegroundMap,
-  SetLayerMap,
+  SetCollisionMap,
   SetMaps,
   SetPlayerPositions,
   SetSelectedCanvas,
@@ -37,13 +37,13 @@ export const setEraseMap = (x, y, canvas) => ({
     x,
     y,
     canvas,
-    element: canvas.includes('layer') ? layer.floor : null,
+    element: canvas.includes('collision') ? layer.floor : null,
   },
 });
 
-export const setMaps = ({ background, foreground, layer }) => ({
+export const setMaps = ({ background, foreground, collision }) => ({
   type: SetMaps,
-  payload: { background, foreground, layer },
+  payload: { background, foreground, collision },
 });
 
 export const setSelectedElement = selectedElement => ({
@@ -72,8 +72,8 @@ export const setPlayerPositions = (x, y) => ({
   },
 });
 
-export const setLayerMap = (x, y, element) => ({
-  type: SetLayerMap,
+export const setCollisionMap = (x, y, element) => ({
+  type: SetCollisionMap,
   payload: {
     x,
     y,
