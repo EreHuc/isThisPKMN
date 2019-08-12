@@ -10,6 +10,8 @@ export const layer = {
   floor: 0,
   player: 1,
   obstacle: 2,
+  tpIn: 3,
+  tpOut: 4,
 };
 
 export const backgroundTile = {
@@ -217,7 +219,7 @@ export const backgroundTile = {
     bottomBookTable: { layer: layer.obstacle, id: 244 },
     scrollHouseWall2: { layer: layer.obstacle, id: 245 },
     trash: { layer: layer.obstacle, id: 246 },
-    bed2Bottom: { layer: layer.obstacle, id: 247 }
+    bed2Bottom: { layer: layer.obstacle, id: 247 },
   },
 };
 
@@ -267,3 +269,7 @@ export const keyCodes = {
   right: 'ArrowRight',
   left: 'ArrowLeft',
 };
+
+export const MAP_STATUS_LOADING = 'loading';
+
+export const MAP_STATUS_PLAYING = 'playing';

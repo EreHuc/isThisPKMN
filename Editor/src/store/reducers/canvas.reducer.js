@@ -1,4 +1,5 @@
 import { layer as defaultLayer } from '../../../../src/variables';
+import { getId, paddedNumber } from '../../scripts/utils';
 
 export const InitCanvas = 'INIT_CANVAS';
 export const SetBackgroundMap = 'SET_BACKGROUND_MAP';
@@ -97,9 +98,6 @@ export function canvasReducer(state = mapState, { type, payload }) {
   }
 }
 
-const paddedNumber = (number, length = 2) =>
-  String(number).padStart(length, '0');
-
 function handleAddMovePoint(movePoints, { x, y, ...payload }) {
   const id = `${paddedNumber(x)}:${paddedNumber(y)}`;
   return {
@@ -109,7 +107,7 @@ function handleAddMovePoint(movePoints, { x, y, ...payload }) {
 }
 
 function handleRemoveMovePoint(movePoints, payload) {
-  const id = `${paddedNumber(payload.x)}:${paddedNumber(payload.y)}`;
+  const id = getId(payload.x, payload.y);
 
   // eslint-disable-next-line no-unused-vars
   const { [id]: _, ...filteredMovePoints } = movePoints;

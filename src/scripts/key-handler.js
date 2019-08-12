@@ -10,7 +10,7 @@ export const keyHandler = ({ onKeyDown, onKeyUp }) => {
 
     return {
       addKeyCode: keyCode => {
-        if (state.indexOf(keyCode) === -1) {
+        if (!state.find(code => code === keyCode)) {
           state = [...state, keyCode];
         }
       },
@@ -23,20 +23,14 @@ export const keyHandler = ({ onKeyDown, onKeyUp }) => {
 
   const state = localKeyState();
 
-  const keyDownHandler = state => ({ code }) => {
+  const keyDownHandler = ({ code }) => {
     const [oldKeyCode] = state.getCurrentKeyCode();
     switch (code) {
       case keyCodes.up:
-        state.addKeyCode(keyCodes.up);
-        break;
       case keyCodes.down:
-        state.addKeyCode(keyCodes.down);
-        break;
       case keyCodes.left:
-        state.addKeyCode(keyCodes.left);
-        break;
       case keyCodes.right:
-        state.addKeyCode(keyCodes.right);
+        state.addKeyCode(code);
         break;
       default:
         break;
@@ -47,21 +41,15 @@ export const keyHandler = ({ onKeyDown, onKeyUp }) => {
     }
   };
 
-  const keyUpHandler = state => ({ code }) => {
+  const keyUpHandler = ({ code }) => {
     const [oldKeyCode] = state.getCurrentKeyCode();
 
     switch (code) {
       case keyCodes.up:
-        state.removeKeyCode(keyCodes.up);
-        break;
       case keyCodes.down:
-        state.removeKeyCode(keyCodes.down);
-        break;
       case keyCodes.left:
-        state.removeKeyCode(keyCodes.left);
-        break;
       case keyCodes.right:
-        state.removeKeyCode(keyCodes.right);
+        state.removeKeyCode(code);
         break;
       default:
         break;
@@ -78,13 +66,13 @@ export const keyHandler = ({ onKeyDown, onKeyUp }) => {
   };
 
   const start = () => {
-    window.addEventListener('keydown', keyDownHandler(state));
-    window.addEventListener('keyup', keyUpHandler(state));
+    window.addEventListener('keydown', keyDownHandler);
+    window.addEventListener('keyup', keyUpHandler);
   };
 
   const stop = () => {
-    window.removeEventListener('keydown', keyDownHandler(state));
-    window.removeEventListener('keyup', keyUpHandler(state));
+    window.removeEventListener('keydown', keyDownHandler);
+    window.removeEventListener('keyup', keyUpHandler);
   };
 
   return {
@@ -97,28 +85,15 @@ export const keydownCallback = store => keyCode => {
   let canMove = false;
   switch (keyCode) {
     case keyCodes.up:
-      // moveUp();
-      store.dispatch(setPlayerDirection(keyCodes.up));
-      canMove = true;
-      break;
     case keyCodes.down:
-      // moveDown();
-      store.dispatch(setPlayerDirection(keyCodes.down));
-      canMove = true;
-      break;
     case keyCodes.right:
-      // moveRight();
-      store.dispatch(setPlayerDirection(keyCodes.right));
-      canMove = true;
-      break;
     case keyCodes.left:
-      // moveLeft();
-      store.dispatch(setPlayerDirection(keyCodes.left));
+      store.dispatch(setPlayerDirection(keyCode));
       canMove = true;
       break;
     default:
       // eslint-disable-next-line no-console
-      console.log('NOT HANDLED');
+      console.warn('Key code not handled');
   }
 
   canMove && store.dispatch(setPlayerMovement(true));
@@ -128,20 +103,14 @@ export const keyupCallback = store => keyCode => {
   let canStop = false;
   switch (keyCode) {
     case keyCodes.up:
-      canStop = true;
-      break;
     case keyCodes.down:
-      canStop = true;
-      break;
     case keyCodes.right:
-      canStop = true;
-      break;
     case keyCodes.left:
       canStop = true;
       break;
     default:
       // eslint-disable-next-line no-console
-      console.log('NOT HANDLED');
+      console.warn('Key code not handled');
   }
 
   canStop && store.dispatch(setPlayerMovement(false));

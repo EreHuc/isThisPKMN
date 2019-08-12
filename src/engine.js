@@ -3,7 +3,6 @@ import {
   createForegroundCanvas,
   createPlayerCanvas,
 } from './scripts/canvas';
-import { backgroundTile, playerTile } from './variables';
 import map from './maps';
 import {
   setPlayerCurrentImage,
@@ -20,7 +19,22 @@ import {
   setPlayerImage,
 } from './store/actions/images.actions';
 import { animations } from './scripts/animations';
-import { setMap, setScale } from './store/actions/map.actions';
+import {
+  setMap,
+  setScale,
+  setStatusPlaying,
+} from './store/actions/map.actions';
+import {
+  loadBackground,
+  loadPlayer,
+  loadPikachu,
+  loadPkmn,
+  loadMelofee,
+  loadJessie,
+  loadJames,
+} from './scripts/asset-loader';
+import localState from './scripts/local-state';
+import { MAP_STATUS_LOADING, MAP_STATUS_PLAYING } from './variables';
 
 function initGame(store) {
   const foregroundContext = createForegroundCanvas();
@@ -45,7 +59,8 @@ function initGame(store) {
       store.dispatch(setPlayerImage(playerImg));
       store.dispatch(setPlayerCurrentImage(playerImg));
       store.dispatch(setMap(map));
-      animations.start();
+      store.dispatch(setStatusPlaying());
+      // animations.start();
     });
   });
 
@@ -83,26 +98,31 @@ function initGame(store) {
 
     store.dispatch(setScale(scale + 1));
   });
-}
+  const state = localState();
 
-function loadImage(src) {
-  return new Promise(resolve => {
-    const image = new Image();
-    image.onload = loadEvent => {
-      resolve(loadEvent.target);
-    };
-    image.src = src;
+  store.subscribe(() => {
+    const {
+      map: { status },
+    } = store.getState();
+
+    const { status: oldStatus = status } = state.getLocalState();
+
+    if (oldStatus !== status) {
+      switch (status) {
+        case MAP_STATUS_LOADING:
+          console.log(MAP_STATUS_LOADING);
+          animations.stop();
+          break;
+        case MAP_STATUS_PLAYING:
+          animations.start();
+          break;
+      }
+    }
+
+    state.setLocalState({
+      status,
+    });
   });
 }
-
-const loadBackground = loadImage(backgroundTile.src);
-
-const loadPlayer = loadImage(playerTile.src);
-
-const loadPikachu = loadImage(playerTile.pikachuSrc);
-const loadPkmn = loadImage(playerTile.pkmnSrc);
-const loadMelofee = loadImage(playerTile.melofeeSrc);
-const loadJessie = loadImage(playerTile.jessieSrc);
-const loadJames = loadImage(playerTile.jamesSrc);
 
 export { initGame };

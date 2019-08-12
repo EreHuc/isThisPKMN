@@ -1,15 +1,17 @@
-import { canvas } from '../../variables';
+import { canvas, MAP_STATUS_LOADING } from '../../variables';
 
 export const SetBackgroundMap = 'SET_BACKGROUND_MAP';
 export const SetForegroundMap = 'SET_FOREGROUND_MAP';
 export const SetCollisionMap = 'SET_COLLISION_MAP';
 export const SetTilePerRowMap = 'SET_TILE_PER_ROW_MAP';
 export const SetTilePerColumnMap = 'SET_TILE_PER_COLUMN_MAP';
-export const SetMapAnimatedWater = 'SET_MAP_ANIMATED_WATER';
-export const SetScale = 'SET_SCALE';
+export const SetMapAnimatedWater = 'SET_MAP_ANIMATED_WATER_MAP';
+export const SetScale = 'SET_SCALE_MAP';
 export const SetMap = 'SET_MAP';
+export const SetStatusMap = 'SET_STATUS_MAP';
 
 const mapState = {
+  status: MAP_STATUS_LOADING,
   animateWaterTile: true,
   scale: canvas.scale,
   background: null,
@@ -38,6 +40,9 @@ export function mapReducer(state = mapState, { type, payload }) {
       return { ...state, collision: payload };
     case SetMap: {
       return { ...state, ...payload };
+    }
+    case SetStatusMap: {
+      return { ...state, status: payload };
     }
     default:
       return state;

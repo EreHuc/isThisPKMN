@@ -1,4 +1,4 @@
-import { backgroundTile } from '../variables';
+import { backgroundTile, MAP_STATUS_LOADING } from '../variables';
 import { store } from '../store';
 import { clearTile, setContextTransform } from './canvas';
 import localState from './local-state';
@@ -34,7 +34,7 @@ const _animation = (
   const step = timestamp => {
     const {
       contexts: { foreground, player, background },
-      map: { tilePerRow, tilePerColumn },
+      map: { tilePerRow, tilePerColumn, status },
     } = store.getState();
 
     Object.values({ foreground, player, background }).forEach(context => {
@@ -52,7 +52,10 @@ const _animation = (
     setContextTransform();
     drawPlayer();
     drawForeground(state);
-    requestNextFrame(state);
+
+    if (status !== MAP_STATUS_LOADING) {
+      requestNextFrame(state);
+    }
   };
 
   const start = () => {
@@ -61,8 +64,8 @@ const _animation = (
     } = store.getState();
 
     initDrawForeground(foreground, state);
-    requestNextFrame(state);
     localKeyHandler.start();
+    requestNextFrame(state);
   };
 
   const stop = () => {

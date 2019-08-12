@@ -13,10 +13,7 @@ import {
   setForegroundContext,
   setCollisionContext,
 } from '../store/actions/contexts.actions';
-import {
-  initCanvas,
-  setPlayerPositions,
-} from '../store/actions/canvas.actions';
+import { initCanvas } from '../store/actions/canvas.actions';
 
 function _setContexts(store) {
   return () => {
@@ -78,6 +75,9 @@ function _setContexts(store) {
     elementsSelectorContext.lineJoin = 'bevel';
     collisionContext.lineWidth = 2;
     collisionContext.lineJoin = 'bevel';
+    collisionContext.font = '15px PressStart2P';
+    collisionContext.textAlign = 'center';
+    collisionContext.textBaseline = 'middle';
 
     store.dispatch(setBackgroundContext(backgroundContext));
     store.dispatch(setForegroundContext(foregroundContext));

@@ -7,7 +7,9 @@ import {
   SetTilePerColumnMap,
   SetCollisionMap,
   SetMap,
+  SetStatusMap,
 } from '../reducers/map.reducer';
+import { MAP_STATUS_LOADING, MAP_STATUS_PLAYING } from '../../variables';
 
 export const setMapAnimatedWater = isAnimatedWater => ({
   type: SetMapAnimatedWater,
@@ -48,3 +50,11 @@ export const setMap = map => ({
   type: SetMap,
   payload: map,
 });
+
+const setStatusMap = status => () => ({
+  type: SetStatusMap,
+  payload: status,
+});
+
+export const setStatusLoading = setStatusMap(MAP_STATUS_LOADING);
+export const setStatusPlaying = setStatusMap(MAP_STATUS_PLAYING);

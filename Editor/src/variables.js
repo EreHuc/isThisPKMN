@@ -1,12 +1,11 @@
 import tileSrc from '../../src/assets/tiles.png';
-import { backgroundTile as originalBackgroundTile } from '../../src/variables';
+import {
+  backgroundTile as originalBackgroundTile,
+  layer as originalLayer,
+} from '../../src/variables';
 
 export const layer = {
-  floor: 0,
-  player: 1,
-  obstacle: 2,
-  tpIn: 3,
-  tpOut: 4,
+  ...originalLayer,
 };
 
 export const backgroundTile = {

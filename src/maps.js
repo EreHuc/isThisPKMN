@@ -1,5 +1,5 @@
 import { backgroundTile } from './variables';
-import house from './assets/maps/house_v2.json';
+import house from './assets/maps/house_v2.1.json';
 import bigMap from './assets/maps/big.json';
 // import bigForeground from './assets/maps/houses_2_foreground.json';
 

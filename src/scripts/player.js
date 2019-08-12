@@ -2,7 +2,7 @@ import { clearTile, drawTile } from './canvas';
 import { playerTile } from '../variables';
 import { store } from '../store';
 import localState from './local-state';
-import { idles, moveAnimations, moves } from './moves';
+import { idles, moveAnimations, movesState } from './moves-state';
 
 function _drawPlayer(drawTile, clearTile, localState, store) {
   const state = localState();
@@ -16,16 +16,6 @@ function _drawPlayer(drawTile, clearTile, localState, store) {
       },
       contexts: { player: context },
     } = store.getState();
-    const { x: prevX = 0, y: prevY = 0 } = state.getLocalState();
-
-    // Add -1 and +2 to increase clear radius and destroy shadow-effect
-    clearTile({
-      context,
-      x: prevX - 1,
-      y: prevY - 1,
-      w: playerTile.width + 2,
-      h: playerTile.height + 2,
-    });
 
     drawTile({
       tile: playerTile,
@@ -101,7 +91,7 @@ export const drawPlayer = _drawPlayer(drawTile, clearTile, localState, store);
 export const playerStep = _playerStep(
   store,
   localState,
-  moves,
+  movesState,
   moveAnimations,
   idles,
 );

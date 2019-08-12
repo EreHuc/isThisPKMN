@@ -7,6 +7,7 @@ import {
   layer,
 } from '../variables';
 import { store } from '../store';
+import { getId } from './utils';
 
 function _drawElementList(drawTile) {
   return (
@@ -148,14 +149,30 @@ function _drawSelector(store) {
   };
 }
 
+function setPortalText(x, y, movePoints, collisionContext) {
+  const id = getId(x, y);
+  collisionContext.strokeStyle = 'black';
+  collisionContext.fillStyle = 'white';
+  collisionContext.fillText(
+    movePoints[id].id,
+    x * 32 + backgroundTile.width,
+    y * 32 + backgroundTile.height,
+    backgroundTile.width * 2 - 4,
+  );
+  collisionContext.strokeText(
+    movePoints[id].id,
+    x * 32 + backgroundTile.width,
+    y * 32 + backgroundTile.height,
+    backgroundTile.width * 2 - 4,
+  );
+}
+
 function _drawLayer(store) {
   return () => {
     const {
       contexts: { collision: collisionContext },
-      canvas: { collision: collisionMap },
+      canvas: { collision: collisionMap, movePoints },
     } = store.getState();
-
-    // collisionContext.clearRect(0, 0, eCanvas.width * 32, eCanvas.height * 32);
 
     collisionMap.forEach((row, y) => {
       row.forEach((col, x) => {
@@ -170,15 +187,16 @@ function _drawLayer(store) {
             collisionContext.strokeStyle = 'white';
             break;
           case layer.tpIn:
-            collisionContext.fillStyle = 'rgba(13,33,255,0.5)';
+            setPortalText(x, y, movePoints, collisionContext);
+            collisionContext.fillStyle = 'rgba(95,110,255,0.5)';
             collisionContext.strokeStyle = 'blue';
             break;
           case layer.tpOut:
-            collisionContext.fillStyle = 'rgba(255,118,15,0.5)';
+            setPortalText(x, y, movePoints, collisionContext);
             collisionContext.strokeStyle = 'orange';
+            collisionContext.fillStyle = 'rgba(255,156,97,0.5)';
             break;
         }
-
         collisionContext.strokeRect(
           x * 32,
           y * 32,
