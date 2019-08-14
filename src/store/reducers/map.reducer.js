@@ -12,7 +12,7 @@ export const SetStatusMap = 'SET_STATUS_MAP';
 
 const mapState = {
   status: MAP_STATUS_LOADING,
-  animateWaterTile: true,
+  isAnimated: true,
   scale: canvas.scale,
   background: null,
   foreground: null,
@@ -25,7 +25,7 @@ const mapState = {
 export function mapReducer(state = mapState, { type, payload }) {
   switch (type) {
     case SetMapAnimatedWater:
-      return { ...state, animateWaterTile: payload };
+      return { ...state, isAnimated: payload };
     case SetScale:
       return { ...state, scale: payload };
     case SetBackgroundMap:

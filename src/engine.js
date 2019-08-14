@@ -3,27 +3,22 @@ import {
   createForegroundCanvas,
   createPlayerCanvas,
 } from './scripts/canvas';
-import map from './maps';
-import {
+import store, {
   setPlayerCurrentImage,
   setPlayerPosition,
-} from './store/actions/player.actions';
-import {
   setBackgroundContext,
   setForegroundContext,
   setPlayerContext,
-} from './store/actions/contexts.actions';
-import {
   setAltPlayerImage,
   setBackgroundImage,
   setPlayerImage,
-} from './store/actions/images.actions';
-import { animations } from './scripts/animations';
-import {
   setMap,
   setScale,
   setStatusPlaying,
-} from './store/actions/map.actions';
+  getMapStatus,
+  getMapScale,
+} from './store';
+import { animations } from './scripts/animations';
 import {
   loadBackground,
   loadPlayer,
@@ -33,10 +28,10 @@ import {
   loadJessie,
   loadJames,
 } from './scripts/asset-loader';
-import localState from './scripts/local-state';
 import { MAP_STATUS_LOADING, MAP_STATUS_PLAYING } from './variables';
+import map from './maps';
 
-function initGame(store) {
+export function initGame() {
   const foregroundContext = createForegroundCanvas();
   const backgroundContext = createBackgroundCanvas();
   const playerContext = createPlayerCanvas({
@@ -51,7 +46,6 @@ function initGame(store) {
   store.dispatch(setBackgroundContext(backgroundContext));
 
   loadBackground.then(backgroundImg => {
-    // drawMap({ map, context: backgroundContext, backgroundImg });
     store.dispatch(setPlayerPosition(map.startPosition));
     store.dispatch(setBackgroundImage(backgroundImg));
 
@@ -60,7 +54,6 @@ function initGame(store) {
       store.dispatch(setPlayerCurrentImage(playerImg));
       store.dispatch(setMap(map));
       store.dispatch(setStatusPlaying());
-      // animations.start();
     });
   });
 
@@ -85,44 +78,36 @@ function initGame(store) {
   });
 
   document.getElementById('down-scale').addEventListener('click', () => {
-    const {
-      map: { scale },
-    } = store.getState();
+    const scale = getMapScale();
 
     store.dispatch(setScale(scale - 1));
   });
   document.getElementById('up-scale').addEventListener('click', () => {
-    const {
-      map: { scale },
-    } = store.getState();
+    const scale = getMapScale();
 
     store.dispatch(setScale(scale + 1));
   });
-  const state = localState();
+
+  let oldStatus;
 
   store.subscribe(() => {
-    const {
-      map: { status },
-    } = store.getState();
-
-    const { status: oldStatus = status } = state.getLocalState();
+    const status = getMapStatus();
 
     if (oldStatus !== status) {
       switch (status) {
         case MAP_STATUS_LOADING:
+          // eslint-disable-next-line no-console
           console.log(MAP_STATUS_LOADING);
           animations.stop();
           break;
         case MAP_STATUS_PLAYING:
+          // eslint-disable-next-line no-console
+          console.log(MAP_STATUS_PLAYING);
           animations.start();
           break;
       }
     }
 
-    state.setLocalState({
-      status,
-    });
+    oldStatus = status;
   });
 }
-
-export { initGame };

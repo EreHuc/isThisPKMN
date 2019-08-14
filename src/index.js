@@ -1,10 +1,9 @@
 import { initGame } from './engine';
-import { store } from './store';
-import { setPlayerCurrentImage } from './store/actions/player.actions';
+import store, { setPlayerCurrentImage } from './store';
 
 window.addEventListener('DOMContentLoaded', () => {
-  initGame(store);
-  selectCharacter(store);
+  initGame();
+  selectCharacter();
   handleSize();
 });
 
@@ -30,7 +29,7 @@ function handleSize() {
   resizeEventHandler();
 }
 
-function selectCharacter(store) {
+function selectCharacter() {
   let sprites = [];
   const container = document.querySelector('[data-tag="select-sprites"]');
 

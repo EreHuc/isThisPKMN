@@ -1,17 +1,16 @@
-import { keyCodes, playerTile } from '../variables';
-import {
+import { canMove } from '../movement';
+import { keyCodes, playerTile } from '../../variables';
+import store, {
+  getPlayerMoveDirection,
+  getPlayerPositions,
+  getPlayerTileId,
   setPlayerPosition,
   setPlayerTileId,
-} from '../store/actions/player.actions';
-import { store } from '../store';
-import { canMove, shouldTeleport, teleport } from './moves';
-import { setStatusLoading } from '../store/actions/map.actions';
+} from '../../store';
 
-function _moveAnimation({ moveTiles = [], store }) {
+function _moveAnimation({ moveTiles = [] }) {
   return () => {
-    const {
-      player: { tileId: playerTileId },
-    } = store.getState();
+    const playerTileId = getPlayerTileId();
 
     const currentTileIndex = moveTiles.findIndex(
       tileId => tileId === playerTileId,
@@ -25,11 +24,10 @@ function _moveAnimation({ moveTiles = [], store }) {
   };
 }
 
-function _move({ x = 0, y = 0, store, canMove }) {
+function _movePlayerPosition({ x = 0, y = 0 }) {
   return () => {
-    const {
-      player: { positions, moveDirection },
-    } = store.getState();
+    const positions = getPlayerPositions();
+    const moveDirection = getPlayerMoveDirection();
 
     const playerX = positions.x + x;
     const playerY = positions.y + y;
@@ -41,13 +39,11 @@ function _move({ x = 0, y = 0, store, canMove }) {
           x: playerX,
         }),
       );
-    } else if (!teleport(playerX, playerY, moveDirection)) {
-      store.dispatch(setStatusLoading());
     }
   };
 }
 
-function _idle({ idleTile, store }) {
+function _idleAnimation({ idleTile }) {
   return () => {
     store.dispatch(setPlayerTileId(idleTile));
   };
@@ -55,46 +51,34 @@ function _idle({ idleTile, store }) {
 
 const moveAnimationUp = _moveAnimation({
   moveTiles: [playerTile.move.up, playerTile.move.upAlt],
-  store,
 });
 const moveAnimationDown = _moveAnimation({
   moveTiles: [playerTile.move.down, playerTile.move.downAlt],
-  store,
 });
 const moveAnimationLeft = _moveAnimation({
   moveTiles: [playerTile.idle.left, playerTile.move.left],
-  store,
 });
 const moveAnimationRight = _moveAnimation({
   moveTiles: [playerTile.idle.right, playerTile.move.right],
-  store,
 });
 
-const moveUp = _move({
+const moveUp = _movePlayerPosition({
   y: -playerTile.pxPerFrameMovement,
-  store,
-  canMove: canMove,
 });
-const moveDown = _move({
+const moveDown = _movePlayerPosition({
   y: playerTile.pxPerFrameMovement,
-  store,
-  canMove: canMove,
 });
-const moveLeft = _move({
+const moveLeft = _movePlayerPosition({
   x: -playerTile.pxPerFrameMovement,
-  store,
-  canMove: canMove,
 });
-const moveRight = _move({
+const moveRight = _movePlayerPosition({
   x: playerTile.pxPerFrameMovement,
-  store,
-  canMove: canMove,
 });
 
-const idleUp = _idle({ store, idleTile: playerTile.idle.up });
-const idleDown = _idle({ store, idleTile: playerTile.idle.down });
-const idleLeft = _idle({ store, idleTile: playerTile.idle.left });
-const idleRight = _idle({ store, idleTile: playerTile.idle.right });
+const idleUp = _idleAnimation({ idleTile: playerTile.idle.up });
+const idleDown = _idleAnimation({ idleTile: playerTile.idle.down });
+const idleLeft = _idleAnimation({ idleTile: playerTile.idle.left });
+const idleRight = _idleAnimation({ idleTile: playerTile.idle.right });
 
 export const moveAnimations = {
   [keyCodes.right]: moveAnimationRight,
@@ -102,15 +86,13 @@ export const moveAnimations = {
   [keyCodes.up]: moveAnimationUp,
   [keyCodes.down]: moveAnimationDown,
 };
-
 export const movesState = {
   [keyCodes.right]: moveRight,
   [keyCodes.left]: moveLeft,
   [keyCodes.up]: moveUp,
   [keyCodes.down]: moveDown,
 };
-
-export const idles = {
+export const idlesAnimation = {
   [keyCodes.up]: idleUp,
   [keyCodes.down]: idleDown,
   [keyCodes.left]: idleLeft,
