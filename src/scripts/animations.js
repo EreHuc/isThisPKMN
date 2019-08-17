@@ -3,6 +3,7 @@ import {
   getContextBackground,
   getContextForeground,
   getContextPlayer,
+  getMapBackground,
   getMapForeground,
   getMapStatus,
   getMapTilePerColumn,
@@ -17,6 +18,10 @@ import {
 } from './map';
 import { drawPlayer, playerStep } from './player';
 import { keydownCallback, keyHandler, keyupCallback } from './keyboard';
+import map, { bigMap } from '../maps';
+import { initMap } from '../engine';
+
+let a = true;
 
 const _animation = () => {
   let rafId;
@@ -26,11 +31,13 @@ const _animation = () => {
     onKeyUp: keyupCallback,
   });
 
-  const requestNextFrame = (animatedTiles, idleTiles) => {
-    rafId = window.requestAnimationFrame(step(animatedTiles, idleTiles));
+  const requestNextFrame = (animatedTiles, idleTiles, backgroundTiles) => {
+    rafId = window.requestAnimationFrame(
+      step(animatedTiles, idleTiles, backgroundTiles),
+    );
   };
 
-  const step = (animatedTiles, idleTiles) => {
+  const step = (animatedTiles, idleTiles, backgroundTiles) => {
     return timestamp => {
       const foreground = getContextForeground();
       const player = getContextPlayer();
@@ -53,20 +60,26 @@ const _animation = () => {
       setContextTransform();
       drawPlayer();
       drawForeground(animatedTiles, idleTiles, tileAnimationIndex);
-      drawBackground();
+      drawBackground(backgroundTiles);
 
       if (status !== MAP_STATUS_LOADING) {
-        requestNextFrame(animatedTiles, idleTiles);
+        requestNextFrame(animatedTiles, idleTiles, backgroundTiles);
+      } else {
+        a && initMap(bigMap);
+        !a && initMap(map);
+
+        a = !a;
       }
     };
   };
 
   const start = () => {
     const foreground = getMapForeground();
+    const backgroundTiles = getMapBackground();
 
     const [animatedTiles, idleTiles] = initForeground(foreground);
     localKeyHandler.start();
-    requestNextFrame(animatedTiles, idleTiles);
+    requestNextFrame(animatedTiles, idleTiles, backgroundTiles);
   };
 
   const stop = () => {

@@ -1,16 +1,11 @@
 import { canDraw } from './map.utils';
 import { drawTile } from '../canvas';
-import {
-  getContextBackground,
-  getImagesBackground,
-  getMapBackground,
-} from '../../store';
+import { getContextBackground, getImagesBackground } from '../../store';
 import { backgroundTile } from '../../variables';
 
-export function drawBackground() {
+export function drawBackground(background) {
   const backgroundContext = getContextBackground();
   const backgroundImg = getImagesBackground();
-  const background = getMapBackground();
 
   background.forEach((row, y) => {
     row.forEach((tile, x) => {

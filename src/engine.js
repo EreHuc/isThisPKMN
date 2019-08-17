@@ -28,10 +28,20 @@ import {
   loadJessie,
   loadJames,
 } from './scripts/asset-loader';
-import { MAP_STATUS_LOADING, MAP_STATUS_PLAYING } from './variables';
-import map from './maps';
+import {
+  MAP_STATUS_INIT,
+  MAP_STATUS_LOADING,
+  MAP_STATUS_PLAYING,
+} from './variables';
+import defaultMap, { bigMap } from './maps';
 
-export function initGame() {
+export function initMap(map) {
+  store.dispatch(setPlayerPosition(map.startPosition));
+  store.dispatch(setMap(map));
+  store.dispatch(setStatusPlaying());
+}
+
+export function initEngine() {
   const foregroundContext = createForegroundCanvas();
   const backgroundContext = createBackgroundCanvas();
   const playerContext = createPlayerCanvas({
@@ -46,14 +56,11 @@ export function initGame() {
   store.dispatch(setBackgroundContext(backgroundContext));
 
   loadBackground.then(backgroundImg => {
-    store.dispatch(setPlayerPosition(map.startPosition));
-    store.dispatch(setBackgroundImage(backgroundImg));
-
     loadPlayer.then(playerImg => {
+      store.dispatch(setBackgroundImage(backgroundImg));
       store.dispatch(setPlayerImage(playerImg));
       store.dispatch(setPlayerCurrentImage(playerImg));
-      store.dispatch(setMap(map));
-      store.dispatch(setStatusPlaying());
+      initMap(defaultMap);
     });
   });
 
@@ -94,11 +101,18 @@ export function initGame() {
     const status = getMapStatus();
 
     if (oldStatus !== status) {
+      oldStatus = status;
+
       switch (status) {
+        case MAP_STATUS_INIT:
+          // eslint-disable-next-line no-console
+          console.log(MAP_STATUS_INIT);
+          break;
         case MAP_STATUS_LOADING:
           // eslint-disable-next-line no-console
           console.log(MAP_STATUS_LOADING);
           animations.stop();
+          // TODO: black fadeout
           break;
         case MAP_STATUS_PLAYING:
           // eslint-disable-next-line no-console
@@ -107,7 +121,12 @@ export function initGame() {
           break;
       }
     }
-
-    oldStatus = status;
   });
 }
+
+// Start fadeout
+// Stop animation
+// If same map then change playerPositions
+// Else load next map and set playerPositions
+// Start animation
+// End Fadeout

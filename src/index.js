@@ -1,8 +1,8 @@
-import { initGame } from './engine';
+import { initEngine } from './engine';
 import store, { setPlayerCurrentImage } from './store';
 
 window.addEventListener('DOMContentLoaded', () => {
-  initGame();
+  initEngine();
   selectCharacter();
   handleSize();
 });

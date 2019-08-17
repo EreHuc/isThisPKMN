@@ -1,4 +1,4 @@
-import { canMove } from '../movement';
+import { teleport, wall } from '../movement';
 import { keyCodes, playerTile } from '../../variables';
 import store, {
   getPlayerMoveDirection,
@@ -7,6 +7,7 @@ import store, {
   setPlayerPosition,
   setPlayerTileId,
 } from '../../store';
+import { setStatusLoading } from '../../store/actions';
 
 function _moveAnimation({ moveTiles = [] }) {
   return () => {
@@ -28,11 +29,16 @@ function _movePlayerPosition({ x = 0, y = 0 }) {
   return () => {
     const positions = getPlayerPositions();
     const moveDirection = getPlayerMoveDirection();
-
     const playerX = positions.x + x;
     const playerY = positions.y + y;
+    const isWall = wall(playerX, playerY, moveDirection);
+    const isTeleport = teleport(playerX, playerY, moveDirection);
 
-    if (canMove(playerX, playerY, moveDirection)) {
+    if (isTeleport) {
+      store.dispatch(setStatusLoading());
+    }
+
+    if (!isWall) {
       store.dispatch(
         setPlayerPosition({
           y: playerY,

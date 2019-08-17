@@ -17,7 +17,10 @@ function teleportCoordinateToLookup(x, y) {
 function shouldTeleport([x, y]) {
   const collision = getMapCollision();
 
-  return !(collision[y][x] === layer.tpIn);
+  return collision[y][x] === layer.tpIn;
 }
 
-export default movementCheck(teleportCoordinateToLookup, shouldTeleport);
+export const teleport = movementCheck(
+  teleportCoordinateToLookup,
+  shouldTeleport,
+);

@@ -273,3 +273,5 @@ export const keyCodes = {
 export const MAP_STATUS_LOADING = 'loading';
 
 export const MAP_STATUS_PLAYING = 'playing';
+
+export const MAP_STATUS_INIT = 'initializing';

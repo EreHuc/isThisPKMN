@@ -1,4 +1,4 @@
-import { canvas, MAP_STATUS_LOADING } from '../../variables';
+import { canvas, MAP_STATUS_INIT } from '../../variables';
 
 export const SetBackgroundMap = 'SET_BACKGROUND_MAP';
 export const SetForegroundMap = 'SET_FOREGROUND_MAP';
@@ -11,7 +11,7 @@ export const SetMap = 'SET_MAP';
 export const SetStatusMap = 'SET_STATUS_MAP';
 
 const mapState = {
-  status: MAP_STATUS_LOADING,
+  status: MAP_STATUS_INIT,
   isAnimated: true,
   scale: canvas.scale,
   background: null,

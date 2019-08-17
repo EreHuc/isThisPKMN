@@ -3,10 +3,10 @@ import { getMapCollision } from '../../store';
 import { movementCheck, positionToTile } from './movement.check';
 
 function wallCoordinateToLookup(x, y, direction) {
-  const x1 = positionToTile(x + 2);
+  const x1 = positionToTile(x + 1);
   const x2 = positionToTile(x + 14);
   const y1 = positionToTile(y + 5);
-  const y2 = positionToTile(y + 14);
+  const y2 = positionToTile(y + 15);
 
   switch (direction) {
     case keyCodes.up:
@@ -36,10 +36,10 @@ function shouldBlockOnWall(coordinates) {
 
   return coordinates.reduce((acc, [x, y]) => {
     if (shouldStop(x, y)) {
-      return false;
+      return true;
     }
     return acc;
-  }, true);
+  }, false);
 }
 
-export default movementCheck(wallCoordinateToLookup, shouldBlockOnWall);
+export const wall = movementCheck(wallCoordinateToLookup, shouldBlockOnWall);
