@@ -1,5 +1,5 @@
 import { getPlayerPositions } from '../../store';
-import { canvas } from '../../variables';
+import { backgroundTile, canvas } from '../../variables';
 
 export function canDraw(x, y) {
   const { x: xPlayer, y: yPlayer } = getPlayerPositions();
@@ -10,4 +10,11 @@ export function canDraw(x, y) {
   const isY = Math.abs(yPlayer - y) <= deltaY + 16;
 
   return isX && isY;
+}
+
+export function tileToPosition(x, y) {
+  return {
+    x: Math.floor(x * backgroundTile.width),
+    y: Math.floor(y * backgroundTile.height),
+  };
 }

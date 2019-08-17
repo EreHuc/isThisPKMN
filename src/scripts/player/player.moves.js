@@ -3,11 +3,11 @@ import { keyCodes, playerTile } from '../../variables';
 import store, {
   getPlayerMoveDirection,
   getPlayerPositions,
-  getPlayerTileId,
+  getPlayerTileId, setPlayerMovement,
   setPlayerPosition,
   setPlayerTileId,
 } from '../../store';
-import { setStatusLoading } from '../../store/actions';
+import { setCurrentMovePoint, setStatusLoading } from '../../store/actions';
 
 function _moveAnimation({ moveTiles = [] }) {
   return () => {
@@ -32,10 +32,13 @@ function _movePlayerPosition({ x = 0, y = 0 }) {
     const playerX = positions.x + x;
     const playerY = positions.y + y;
     const isWall = wall(playerX, playerY, moveDirection);
-    const isTeleport = teleport(playerX, playerY, moveDirection);
+    const teleportPoint = teleport(playerX, playerY, moveDirection);
 
-    if (isTeleport) {
+    if (teleportPoint) {
+      store.dispatch(setCurrentMovePoint(teleportPoint));
       store.dispatch(setStatusLoading());
+      store.dispatch(setPlayerMovement(false));
+      return;
     }
 
     if (!isWall) {

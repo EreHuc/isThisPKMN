@@ -19,3 +19,7 @@ export const getMapTilePerColumn = createSelector(
 );
 
 export const getMapMovePoints = createSelector(state => state.map.movePoints);
+
+export const getMapCurrentMovePoint = createSelector(
+  state => state.map.currentMovePoint,
+);

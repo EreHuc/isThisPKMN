@@ -8,6 +8,7 @@ import {
   SetCollisionMap,
   SetMap,
   SetStatusMap,
+  SetCurrentMovePoint,
 } from '../reducers/map.reducer';
 import { MAP_STATUS_LOADING, MAP_STATUS_PLAYING } from '../../variables';
 
@@ -49,6 +50,11 @@ export const setTilePerColumn = tilePerColumn => ({
 export const setMap = map => ({
   type: SetMap,
   payload: map,
+});
+
+export const setCurrentMovePoint = movePoint => ({
+  type: SetCurrentMovePoint,
+  payload: movePoint,
 });
 
 const setStatusMap = status => () => ({

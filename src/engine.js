@@ -33,7 +33,7 @@ import {
   MAP_STATUS_LOADING,
   MAP_STATUS_PLAYING,
 } from './variables';
-import defaultMap, { bigMap } from './maps';
+import maps from './maps';
 
 export function initMap(map) {
   store.dispatch(setPlayerPosition(map.startPosition));
@@ -42,6 +42,7 @@ export function initMap(map) {
 }
 
 export function initEngine() {
+  const fadeElement = document.getElementById('gbc-canvas-fade');
   const foregroundContext = createForegroundCanvas();
   const backgroundContext = createBackgroundCanvas();
   const playerContext = createPlayerCanvas({
@@ -60,7 +61,7 @@ export function initEngine() {
       store.dispatch(setBackgroundImage(backgroundImg));
       store.dispatch(setPlayerImage(playerImg));
       store.dispatch(setPlayerCurrentImage(playerImg));
-      initMap(defaultMap);
+      initMap(maps.default);
     });
   });
 
@@ -105,16 +106,19 @@ export function initEngine() {
 
       switch (status) {
         case MAP_STATUS_INIT:
+          fadeElement.classList.add('in');
           // eslint-disable-next-line no-console
           console.log(MAP_STATUS_INIT);
           break;
         case MAP_STATUS_LOADING:
+          fadeElement.classList.add('in');
           // eslint-disable-next-line no-console
           console.log(MAP_STATUS_LOADING);
           animations.stop();
           // TODO: black fadeout
           break;
         case MAP_STATUS_PLAYING:
+          fadeElement.classList.remove('in');
           // eslint-disable-next-line no-console
           console.log(MAP_STATUS_PLAYING);
           animations.start();

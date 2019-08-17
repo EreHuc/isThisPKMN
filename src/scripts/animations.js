@@ -18,10 +18,7 @@ import {
 } from './map';
 import { drawPlayer, playerStep } from './player';
 import { keydownCallback, keyHandler, keyupCallback } from './keyboard';
-import map, { bigMap } from '../maps';
-import { initMap } from '../engine';
-
-let a = true;
+import { switchMap } from './map/map.switch';
 
 const _animation = () => {
   let rafId;
@@ -65,10 +62,7 @@ const _animation = () => {
       if (status !== MAP_STATUS_LOADING) {
         requestNextFrame(animatedTiles, idleTiles, backgroundTiles);
       } else {
-        a && initMap(bigMap);
-        !a && initMap(map);
-
-        a = !a;
+        switchMap();
       }
     };
   };
@@ -83,7 +77,7 @@ const _animation = () => {
   };
 
   const stop = () => {
-    localKeyHandler.stop();
+    // localKeyHandler.stop();
     window.cancelAnimationFrame(rafId);
   };
 

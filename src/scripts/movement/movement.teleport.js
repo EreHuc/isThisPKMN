@@ -1,6 +1,7 @@
 import { layer, playerTile } from '../../variables';
-import { getMapCollision } from '../../store';
+import { getMapCollision, getMapMovePoints } from '../../store';
 import { movementCheck, positionToTile } from './movement.check';
+import { getId } from '../../../Editor/src/scripts/utils';
 
 function teleportCoordinateToLookup(x, y) {
   const coordX = x + playerTile.width / 2;
@@ -16,8 +17,9 @@ function teleportCoordinateToLookup(x, y) {
  */
 function shouldTeleport([x, y]) {
   const collision = getMapCollision();
+  const movePoints = getMapMovePoints();
 
-  return collision[y][x] === layer.tpIn;
+  return collision[y][x] === layer.tpIn ? movePoints[getId(x, y)] : false;
 }
 
 export const teleport = movementCheck(

@@ -9,6 +9,7 @@ export const SetMapAnimatedWater = 'SET_MAP_ANIMATED_WATER_MAP';
 export const SetScale = 'SET_SCALE_MAP';
 export const SetMap = 'SET_MAP';
 export const SetStatusMap = 'SET_STATUS_MAP';
+export const SetCurrentMovePoint = 'SET_CURRENT_MOVE_POINT';
 
 const mapState = {
   status: MAP_STATUS_INIT,
@@ -20,6 +21,7 @@ const mapState = {
   tilePerRow: 0,
   tilePerColumn: 0,
   movePoints: {},
+  currentMovePoint: null,
 };
 
 export function mapReducer(state = mapState, { type, payload }) {
@@ -38,12 +40,12 @@ export function mapReducer(state = mapState, { type, payload }) {
       return { ...state, tilePerColumn: payload };
     case SetCollisionMap:
       return { ...state, collision: payload };
-    case SetMap: {
+    case SetMap:
       return { ...state, ...payload };
-    }
-    case SetStatusMap: {
+    case SetStatusMap:
       return { ...state, status: payload };
-    }
+    case SetCurrentMovePoint:
+      return { ...state, currentMovePoint: payload };
     default:
       return state;
   }
