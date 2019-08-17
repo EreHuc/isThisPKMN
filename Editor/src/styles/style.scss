@@ -293,4 +293,14 @@ body {
       margin-bottom: 10px;
     }
   }
+
+  #teleport-form-actions {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+
+    > button {
+      width: 50%;
+    }
+  }
 }

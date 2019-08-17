@@ -87,13 +87,14 @@ export const setCollisionMap = (x, y, element) => ({
   },
 });
 
-const setMovePoint = type => (x, y, id) => ({
+const setMovePoint = type => (x, y, id, mapName) => ({
   type: SetMovePoint,
   payload: {
     x,
     y,
     id,
     type,
+    mapName,
   },
 });
 

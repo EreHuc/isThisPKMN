@@ -9,6 +9,8 @@ import {
   setSelectedElement,
   setSelectedElementPositions,
   removeMovePoint,
+  setMoveIn,
+  setMoveOut,
 } from '../store/actions/canvas.actions';
 import localState from '../../../src/scripts/local-state';
 import { store } from '../store';
@@ -47,27 +49,35 @@ export function setCurrentElementOnClickHandler(backgroundCanvas, store) {
           store.dispatch(setPlayerPositions(backgroundX, backgroundY));
           break;
         case backgroundTile.list.erase.id:
+          store.dispatch(setEraseMap(backgroundX, backgroundY, selectedCanvas));
           if (selectedCanvas === 'collision') {
             store.dispatch(removeMovePoint(backgroundX, backgroundY));
           }
-          store.dispatch(setEraseMap(backgroundX, backgroundY, selectedCanvas));
           break;
         case backgroundTile.list.changeMap:
           break;
         case backgroundTile.list.portalIn.id:
           if (selectedCanvas === 'collision') {
-            const { id, mapName } = await createDialog();
-            console.log('eventsHandler.js - ', id, mapName);
-            // store.dispatch(setMoveIn(backgroundX, backgroundY, id));
-            // store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
+            try {
+              const { id, mapName } = await createDialog('Teleport entrance');
+
+              store.dispatch(setMoveIn(backgroundX, backgroundY, id, mapName));
+              store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
+            } catch (_) {
+              // dialog closed
+            }
           }
           break;
         case backgroundTile.list.portalOut.id:
           if (selectedCanvas === 'collision') {
-            const { id, mapName } = await createDialog();
-            console.log('eventsHandler.js - ', id, mapName);
-            // store.dispatch(setMoveOut(backgroundX, backgroundY, id));
-            // store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
+            try {
+              const { id, mapName } = await createDialog('Teleport exit');
+
+              store.dispatch(setMoveOut(backgroundX, backgroundY, id, mapName));
+              store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
+            } catch (_) {
+              // dialog closed
+            }
           }
           break;
         default:
