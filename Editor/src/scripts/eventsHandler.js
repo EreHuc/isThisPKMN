@@ -8,12 +8,11 @@ import {
   setSelectedCanvas,
   setSelectedElement,
   setSelectedElementPositions,
-  setMoveIn,
-  setMoveOut,
   removeMovePoint,
 } from '../store/actions/canvas.actions';
 import localState from '../../../src/scripts/local-state';
 import { store } from '../store';
+import { createDialog } from './dialog';
 
 export function getCurrentElementOnClickHandler(canvasDomElement, store) {
   return clickEvent => {
@@ -24,14 +23,14 @@ export function getCurrentElementOnClickHandler(canvasDomElement, store) {
     const element = Object.values(backgroundTile.list)[indexToTarget];
 
     if (element) {
-      store.dispatch(setSelectedElement(element));
       store.dispatch(setSelectedElementPositions(elementX, elementY));
+      store.dispatch(setSelectedElement(element));
     }
   };
 }
 
 export function setCurrentElementOnClickHandler(backgroundCanvas, store) {
-  return clickEvent => {
+  return async clickEvent => {
     clickEvent.stopPropagation();
     const {
       canvas: { selectedElement, selectedCanvas },
@@ -57,16 +56,18 @@ export function setCurrentElementOnClickHandler(backgroundCanvas, store) {
           break;
         case backgroundTile.list.portalIn.id:
           if (selectedCanvas === 'collision') {
-            const id = prompt('Choose id for : tpIn');
-            store.dispatch(setMoveIn(backgroundX, backgroundY, id));
-            store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
+            const { id, mapName } = await createDialog();
+            console.log('eventsHandler.js - ', id, mapName);
+            // store.dispatch(setMoveIn(backgroundX, backgroundY, id));
+            // store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
           }
           break;
         case backgroundTile.list.portalOut.id:
           if (selectedCanvas === 'collision') {
-            const id = prompt('Choose id for : tpOut');
-            store.dispatch(setMoveOut(backgroundX, backgroundY, id));
-            store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
+            const { id, mapName } = await createDialog();
+            console.log('eventsHandler.js - ', id, mapName);
+            // store.dispatch(setMoveOut(backgroundX, backgroundY, id));
+            // store.dispatch(setCollisionMap(backgroundX, backgroundY, layer));
           }
           break;
         default:

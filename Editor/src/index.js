@@ -14,6 +14,7 @@ import {
   toggleForegroundHandler,
   toggleGridHandler,
 } from './scripts/eventsHandler';
+import '@babel/polyfill';
 
 window.addEventListener('DOMContentLoaded', () => {
   setup.setContexts();
