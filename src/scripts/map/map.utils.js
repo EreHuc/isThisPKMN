@@ -12,9 +12,9 @@ export function canDraw(x, y) {
   return isX && isY;
 }
 
-export function tileToPosition(x, y) {
+export function tileToPosition(x, y, deltaX, deltaY) {
   return {
-    x: Math.floor(x * backgroundTile.width),
-    y: Math.floor(y * backgroundTile.height),
+    x: Math.floor(x * backgroundTile.width) + deltaX,
+    y: Math.floor(y * backgroundTile.height) + deltaY,
   };
 }

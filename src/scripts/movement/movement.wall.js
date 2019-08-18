@@ -5,7 +5,7 @@ import { movementCheck, positionToTile } from './movement.check';
 function wallCoordinateToLookup(x, y, direction) {
   const x1 = positionToTile(x + 1);
   const x2 = positionToTile(x + 14);
-  const y1 = positionToTile(y + 5);
+  const y1 = positionToTile(y + 10);
   const y2 = positionToTile(y + 15);
 
   switch (direction) {

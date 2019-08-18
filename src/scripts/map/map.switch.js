@@ -43,7 +43,7 @@ export function switchMap() {
 
   tileToPosition(...currentMovePointId.split(':'));
   store.dispatch(
-    setPlayerPosition(tileToPosition(...currentMovePointId.split(':'))),
+    setPlayerPosition(tileToPosition(...currentMovePointId.split(':'), 0, -4)),
   );
   store.dispatch(setPlayerDirection(keyCodes.down));
   store.dispatch(setPlayerTileId(playerTile.idle.down));

@@ -80,6 +80,8 @@ $ npm run dev:editor
 
 🔜 UX Design
 
+🔜 Show / Update map property ( width / height / scale )
+
 ## Editor tips ( 'cause my UX suck ! )
 
 - First button toggle collision mode:
