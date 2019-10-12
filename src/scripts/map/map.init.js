@@ -12,7 +12,7 @@ export function init(foreground) {
 
   for (let y = 0; y < foreground.length; y++) {
     for (let x = 0; x < foreground[y].length; x++) {
-      const { id, ids } = foreground[y][x];
+      const { id, ids } = foreground[y][x] || { id: 700 };
       const xDest = x * backgroundTile.width;
       const yDest = y * backgroundTile.height;
 
