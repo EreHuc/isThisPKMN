@@ -1,4 +1,4 @@
-import { clearTile, drawTile } from '../../../src/scripts/canvas';
+import { clearTile, drawTile } from '../../../Game/src/scripts/canvas';
 import {
   backgroundCanvas,
   backgroundTile,

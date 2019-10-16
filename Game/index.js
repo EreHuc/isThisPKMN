@@ -1,5 +1,5 @@
-import { initEngine } from './engine';
-import store, { setPlayerCurrentImage } from './store';
+import { initEngine } from './src/engine';
+import store, { setPlayerCurrentImage } from './src/store';
 
 window.addEventListener('DOMContentLoaded', () => {
   initEngine();

@@ -1,8 +1,8 @@
-import tileSrc from '../../src/assets/tiles.png';
+import tileSrc from '../../Game/src/assets/tiles.png';
 import {
   backgroundTile as originalBackgroundTile,
   layer as originalLayer,
-} from '../../src/variables';
+} from '../../Game/src/variables';
 
 export const layer = {
   ...originalLayer,
