@@ -12,7 +12,7 @@ import {
   setMoveIn,
   setMoveOut,
 } from '../store/actions/canvas.actions';
-import localState from '../../../src/scripts/local-state';
+import localState from '../../../Game/src/scripts/local-state';
 import { store } from '../store';
 import { createDialog } from './dialog';
 
@@ -148,8 +148,8 @@ function getMousePos(canvas, mouseEvent) {
   const { left, top } = canvas.getBoundingClientRect();
 
   return {
-    x: mouseEvent.clientX - left,
-    y: mouseEvent.clientY - top,
+    x: mouseEvent.clientX - (left / 2),
+    y: mouseEvent.clientY - (top / 2),
   };
 }
 

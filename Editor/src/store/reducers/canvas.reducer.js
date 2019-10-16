@@ -1,4 +1,4 @@
-import { layer as defaultLayer } from '../../../../src/variables';
+import { layer as defaultLayer } from '../../../../Game/src/variables';
 import { getId, paddedNumber } from '../../scripts/utils';
 
 export const InitCanvas = 'INIT_CANVAS';

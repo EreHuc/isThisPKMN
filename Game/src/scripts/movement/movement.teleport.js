@@ -1,7 +1,7 @@
 import { layer, playerTile } from '../../variables';
 import { getMapCollision, getMapMovePoints } from '../../store';
 import { movementCheck, positionToTile } from './movement.check';
-import { getId } from '../../../Editor/src/scripts/utils';
+import { getId } from '../../../../Editor/src/scripts/utils';
 
 function teleportCoordinateToLookup(x, y) {
   const coordX = x + playerTile.width / 2;
