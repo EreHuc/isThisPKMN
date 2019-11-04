@@ -1,5 +1,10 @@
-# Pokemon gen. 1 sprite based game + map editor
+# Pokemon gen. 1 sprite based game + map editor 
 Because I can do it 💪
+
+|[Game](https://is-this-pkmn-game.netlify.com/)|[Map editor](https://editor-is-this-pkmn-game.netlify.com/)|[Game](https://is-this-pkmn-game.netlify.com/)|
+|---|---|---|
+|![](src/assets/PSD/screenshot1.png)|![](src/assets/PSD/screenshot3.png)|![](src/assets/PSD/screenshot2.png)|
+|Road house !|Editor view|Big city life|
 
 \>>> [Game](https://is-this-pkmn-game.netlify.com/) <<<
 
