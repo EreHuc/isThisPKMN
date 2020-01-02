@@ -3,7 +3,8 @@ import { keyCodes, playerTile } from '../../variables';
 import store, {
   getPlayerMoveDirection,
   getPlayerPositions,
-  getPlayerTileId, setPlayerMovement,
+  getPlayerTileId,
+  setPlayerMovement,
   setPlayerPosition,
   setPlayerTileId,
 } from '../../store';

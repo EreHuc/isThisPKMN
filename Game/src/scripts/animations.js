@@ -20,7 +20,7 @@ import { drawPlayer, playerStep } from './player';
 import { keydownCallback, keyHandler, keyupCallback } from './keyboard';
 import { switchMap } from './map/map.switch';
 
-const _animation = () => {
+const animation = () => {
   let rafId;
 
   const localKeyHandler = keyHandler({
@@ -52,7 +52,9 @@ const _animation = () => {
           h: tilePerColumn * backgroundTile.height,
         });
       });
+
       const tileAnimationIndex = foregroundStep(timestamp, animatedTiles);
+
       playerStep(timestamp);
       setContextTransform();
       drawPlayer();
@@ -67,24 +69,20 @@ const _animation = () => {
     };
   };
 
-  const start = () => {
-    const foreground = getMapForeground();
-    const backgroundTiles = getMapBackground();
-
-    const [animatedTiles, idleTiles] = initForeground(foreground);
-    localKeyHandler.start();
-    requestNextFrame(animatedTiles, idleTiles, backgroundTiles);
-  };
-
-  const stop = () => {
-    // localKeyHandler.stop();
-    window.cancelAnimationFrame(rafId);
-  };
-
   return {
-    start,
-    stop,
+    start: () => {
+      const foreground = getMapForeground();
+      const backgroundTiles = getMapBackground();
+      const [animatedTiles, idleTiles] = initForeground(foreground);
+
+      localKeyHandler.start();
+      requestNextFrame(animatedTiles, idleTiles, backgroundTiles);
+    },
+    stop: () => {
+      // localKeyHandler.stop();
+      window.cancelAnimationFrame(rafId);
+    },
   };
 };
 
-export const animations = _animation();
+export default animation();

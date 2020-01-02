@@ -39,14 +39,16 @@ export function switchMap() {
       }
 
       return acc;
-    }, '') || {};
+    }, '') || '';
 
-  tileToPosition(...currentMovePointId.split(':'));
   store.dispatch(
     setPlayerPosition(tileToPosition(...currentMovePointId.split(':'), 0, -4)),
   );
+
   store.dispatch(setPlayerDirection(keyCodes.down));
+
   store.dispatch(setPlayerTileId(playerTile.idle.down));
+
   window.setTimeout(() => {
     store.dispatch(setStatusPlaying());
   }, 400);

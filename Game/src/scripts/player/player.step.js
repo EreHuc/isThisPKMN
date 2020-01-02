@@ -14,6 +14,7 @@ function _playerStep() {
     if (timestamp - start > 200 || moveDirection !== lastMoveDirection) {
       // if player is already in movement more than 2 frame then update move animation
       if (isMoving) {
+        // change tile id of player sprites
         moveAnimations[moveDirection]();
       }
 
@@ -22,6 +23,7 @@ function _playerStep() {
 
     // if player is moving
     if (isMoving && moveDirection === lastMoveDirection) {
+      // Detect if a player can continue to move or stop by wall / teleport block
       movesState[moveDirection]();
 
       lastMoveDirection = moveDirection;

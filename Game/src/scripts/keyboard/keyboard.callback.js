@@ -3,6 +3,7 @@ import { keyCodes } from '../../variables';
 
 export function keydownCallback(keyCode) {
   let canMove = false;
+
   switch (keyCode) {
     case keyCodes.up:
     case keyCodes.down:
@@ -21,6 +22,7 @@ export function keydownCallback(keyCode) {
 
 export function keyupCallback(keyCode) {
   let canStop = false;
+
   switch (keyCode) {
     case keyCodes.up:
     case keyCodes.down:

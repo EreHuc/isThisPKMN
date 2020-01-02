@@ -13,12 +13,9 @@ import store, {
   setBackgroundImage,
   setPlayerImage,
   setMap,
-  setScale,
   setStatusPlaying,
   getMapStatus,
-  getMapScale,
 } from './store';
-import { animations } from './scripts/animations';
 import {
   loadBackground,
   loadPlayer,
@@ -28,19 +25,68 @@ import {
   loadJessie,
   loadJames,
 } from './scripts/asset-loader';
+import maps from './maps';
+import handleMapScale from './UI/change-map-scale';
 import {
   MAP_STATUS_INIT,
   MAP_STATUS_LOADING,
   MAP_STATUS_PLAYING,
 } from './variables';
-import maps from './maps';
+import animations from './scripts/animations';
 
-export function initMap(map) {
+/**
+ * Init map and make it playable
+ * @param map
+ */
+function initMap(map) {
   store.dispatch(setPlayerPosition(map.startPosition));
   store.dispatch(setMap(map));
   store.dispatch(setStatusPlaying());
 }
 
+/**
+ * Handle change map lifecycle
+ * @param fadeElement
+ * @returns {Function}
+ */
+function handleMapLifeCycle(fadeElement) {
+  let oldStatus;
+
+  return () => {
+    const status = getMapStatus();
+
+    if (oldStatus !== status) {
+      oldStatus = status;
+
+      switch (status) {
+        case MAP_STATUS_INIT:
+          fadeElement.classList.add('in');
+
+          // eslint-disable-next-line no-console
+          console.log(MAP_STATUS_INIT);
+          break;
+        case MAP_STATUS_LOADING:
+          fadeElement.classList.add('in');
+
+          // eslint-disable-next-line no-console
+          console.log(MAP_STATUS_LOADING);
+          animations.stop();
+          break;
+        case MAP_STATUS_PLAYING:
+          fadeElement.classList.remove('in');
+
+          // eslint-disable-next-line no-console
+          console.log(MAP_STATUS_PLAYING);
+          animations.start();
+          break;
+      }
+    }
+  };
+}
+
+/**
+ * Load all mandatory data to the game
+ */
 export function initEngine() {
   const fadeElement = document.getElementById('gbc-canvas-fade');
   const foregroundContext = createForegroundCanvas();
@@ -85,47 +131,9 @@ export function initEngine() {
     store.dispatch(setAltPlayerImage('james', altPlayerImage));
   });
 
-  document.getElementById('down-scale').addEventListener('click', () => {
-    const scale = getMapScale();
+  handleMapScale();
 
-    store.dispatch(setScale(scale - 1));
-  });
-  document.getElementById('up-scale').addEventListener('click', () => {
-    const scale = getMapScale();
-
-    store.dispatch(setScale(scale + 1));
-  });
-
-  let oldStatus;
-
-  store.subscribe(() => {
-    const status = getMapStatus();
-
-    if (oldStatus !== status) {
-      oldStatus = status;
-
-      switch (status) {
-        case MAP_STATUS_INIT:
-          fadeElement.classList.add('in');
-          // eslint-disable-next-line no-console
-          console.log(MAP_STATUS_INIT);
-          break;
-        case MAP_STATUS_LOADING:
-          fadeElement.classList.add('in');
-          // eslint-disable-next-line no-console
-          console.log(MAP_STATUS_LOADING);
-          animations.stop();
-          // TODO: black fadeout
-          break;
-        case MAP_STATUS_PLAYING:
-          fadeElement.classList.remove('in');
-          // eslint-disable-next-line no-console
-          console.log(MAP_STATUS_PLAYING);
-          animations.start();
-          break;
-      }
-    }
-  });
+  store.subscribe(handleMapLifeCycle(fadeElement));
 }
 
 // Start fadeout
